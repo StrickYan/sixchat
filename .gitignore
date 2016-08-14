@@ -1,4 +1,4 @@
 #ignore these files 
-Runtime/* 
+Application/Runtime/* 
 moment_img/*
 avatar_img/*
