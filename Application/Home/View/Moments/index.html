@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+	<head>
+		<title>sixchat</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes" />    
+		<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+		<meta name="format-detection" content="telephone=no"/>
+		<meta name="msapplication-tap-highlight" content="no" />
+
+		<meta name="full-screen" content="yes">
+		<meta name="x5-fullscreen" content="true">
+
+		<link rel="apple-touch-icon-precomposed" href="__PUBLIC__/Home/img/default/icon.png" />
+		<link rel="apple-touch-startup-image" href="__PUBLIC__/Home/img/default/welcome.png" />
+		<link rel="icon" href="__PUBLIC__/Home/img/default/my.ico" type="image/x-icon" />
+		<link rel="shortcut icon" href="__PUBLIC__/Home/img/default/my.ico" type="image/x-icon" />
+		<link rel="bookmark" href="__PUBLIC__/Home/img/default/my.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="__PUBLIC__/Home/css/swiper.min.css">
+		<link rel="stylesheet" href="__PUBLIC__/Home/css/lightbox.min.css">
+		<link rel="stylesheet" href="__PUBLIC__/Home/css/moments.css" type="text/css" />
+    	<link rel="stylesheet" href="__PUBLIC__/Home/css/messages.css" type="text/css" />
+    	<!-- <link rel="stylesheet" type="text/css" media="screen and (min-device-width: 568px)" href="pc.css" /> -->
+    	<script src="__PUBLIC__/Home/js/formatImg.js"></script>
+	</head>
+	<body>
+		<div id="top" data-role="header">
+			<img id="back_img" src="__PUBLIC__/Home/img/default/icon_back.png" alt="" >
+			<span id="back">M</span>
+			<span id="current_location">SixChat</span>
+			<img id="camera" name="{$my_name}" src="__PUBLIC__/Home/img/default/camera.png" alt="" > 
+		</div>
+		<div id="slidebar"></div>
+<!-- 		<div id="slidebar_post"></div>
+		<div id="slidebar_friends"></div> -->
+		<div id="slidebar_profile"></div>
+		<div id="slide_wall">	
+	    	<div class="swiper-container">
+		        <div class="swiper-wrapper">
+		            <div class="swiper-slide"></div>
+		            <div class="swiper-slide"></div>
+		            <div class="swiper-slide"></div>
+		        </div>	       
+		        <div class="swiper-pagination"></div>   
+	    	</div>
+	    	<div id="avatar" name="{$my_name}"><img src="__PUBLIC__/../avatar_img/{$avatar}" alt=""></div>
+		</div>
+		<volist name="list" id="vo">
+			<div class="info_flow" >
+				<div class="info_flow_left">
+					<img src="__PUBLIC__/../avatar_img/{$vo.avatar}" alt="">
+				</div>
+				<div class="info_flow_right" id="{$vo.moment_id}">
+					<div class="info_flow_right_user_name">{$vo.user_name}</div>
+					<div class="info_flow_right_text">{$vo.info}</div>
+					<if condition="$vo.img_url neq ''">
+						<div class="info_flow_right_img">
+							<a href="__PUBLIC__/../moment_img/{$vo.img_url}" data-lightbox="{$vo.moment_id}">
+								<!-- <img src="__PUBLIC__/../moment_img/{$vo.img_url}" alt="" onload="formatImg(this)" /> -->
+								<img class="lazy" data-original="__PUBLIC__/../moment_img/{$vo.img_url}" onload="formatImg(this)" />
+							</a>
+						</div>
+					</if>
+					<div class="info_flow_right_time">{$vo.time}</div>
+					<if condition="$vo.user_name eq $_SESSION['name']">
+						<div class="delete_moment">Delete</div>
+					</if>
+					<div class="info_flow_right_button">
+						<img name="button" class="button_img" src="__PUBLIC__/Home/img/default/feed_comment.png" />
+						<!-- 弹出层 -->  
+					    <div class="divPop">  
+					        <img class="like_png" src="__PUBLIC__/Home/img/default/logout_like.png" />
+					        <img class="comment_png" src="__PUBLIC__/Home/img/default/logout_comment.png" />  
+					    </div>  
+					</div>
+					<div class="info_flow_right_like"></div>
+					<div class="info_flow_right_comment" ></div>
+					<!-- 评论框 -->
+					<div class="info_flow_right_input" name="div_comment">
+						<input type="text" class="comment_box" placeholder="Comment" maxlength="140" required/>
+					</div>
+				</div>
+				<div class="line"><hr/></div>
+			</div>
+		</volist>
+		<div id="footer" data-role="footer">
+			<div class="info_flow" >
+				<div class="footer_left">
+					<img src="__PUBLIC__/Home/img/default/my.ico" alt="">
+				</div>
+				<div class="footer_right" >
+					<div class="footer_right_user_name">旧街场</div>
+					<div class="footer_right_text">
+						Copyright © 两十两 SHENZHEN<br>
+						— 削笔工作室 Tel:18503056101 —
+					</div>				
+					<div class="footer_right_img">
+						<img src="__PUBLIC__/Home/img/default/my.ico" alt="">
+					</div>				
+					<div class="footer_right_time">2016年8月1日 凌晨 the Begin</div>
+				</div>
+			</div>
+		</div> 
+		<script src="__PUBLIC__/Home/js/jquery-3.1.0.min.js"></script>	
+		<script src="__PUBLIC__/Home/js/swiper.min.js"></script>
+		<script src="__PUBLIC__/Home/js/lightbox.min.js"></script>
+		<script src="__PUBLIC__/Home/js/jquery.lazyload.min.js"></script>
+		<script src="__PUBLIC__/Home/js/global.js"></script>
+		<script src="__PUBLIC__/Home/js/moments.js"></script>	
+	</body>	
+</html>

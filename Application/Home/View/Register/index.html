@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+	<head>
+		<title>SixChat</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes" />    
+		<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+		<meta name="format-detection" content="telephone=yes"/>
+		<meta name="msapplication-tap-highlight" content="no" />
+		<link rel="apple-touch-icon-precomposed" href="__PUBLIC__/Home/img/default/icon.png" />
+		<link rel="apple-touch-startup-image" href="__PUBLIC__/Home/img/default/welcome.png" />
+		<link rel="icon" href="__PUBLIC__/Home/img/default/my.ico" type="image/x-icon" />
+		<link rel="shortcut icon" href="__PUBLIC__/Home/img/default/my.ico" type="image/x-icon" />
+		<link rel="bookmark" href="__PUBLIC__/Home/img/default/my.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="__PUBLIC__/Home/css/login.css" type="text/css" />
+		<script src="__PUBLIC__/Home/js/preventOpenLinksInSafari.js"></script>
+	</head>
+	<body>		
+		<div id="login" data-role="page">
+			<div id="brand_name" data-role="header">SixChat</div>
+			<div data-role="content">
+				<img src="__PUBLIC__/Home/img/default/default_head.jpg">
+				<br>
+				<form name="registerForm" action="" method="post" autocomplete="off">
+					<input type="text" name="id" id="id"  class="input_box" placeholder="{$text_placeholder}" onkeypress="EnterPress(event)" onkeydown="EnterPress()" 
+						maxlength="20" required>			
+					<input type="password" name="password"  class="input_box" placeholder="设置密码" onkeypress="EnterPress(event)" onkeydown="EnterPress()"  
+						maxlength="20" onkeyup="this.value=this.value.replace(/^ +| +$/g,'')" required>
+					<input type="password" name="password2" class="input_box" placeholder="确认密码" onkeypress="EnterPress(event)" onkeydown="EnterPress()"  
+						maxlength="20" onkeyup="this.value=this.value.replace(/^ +| +$/g,'')" required>
+					<button id="submit_button" type="button" name="button" onclick="validate()">注 册</button>
+					<a href="{:U('Login/index')}">现在登录</a>
+				</form>
+			</div>
+			<div data-role="footer"></div>
+		</div>
+		<script>
+        function validate(){
+           if(registerForm.id.value==""){
+                alert("请输入您的账号");
+                document.registerForm.id.focus();//聚焦
+                return;
+           }
+           else if(registerForm.password.value==""){
+               alert("请输入您的密码");
+               document.registerForm.password.focus();//聚焦
+               return;
+           }
+		   else if(registerForm.password2.value==""){
+               alert("请确认您的密码");
+               document.registerForm.password2.focus();//聚焦
+               return;
+           }
+		    else if(registerForm.password.value!=registerForm.password2.value){
+               alert("您输入的密码不一致，请重新输入");
+               document.registerForm.password2.focus();//聚焦
+               return;
+           }
+		   registerForm.submit();
+		}	
+		function EnterPress(e){ //传入 event   
+		    var e = e || window.event;   
+		    if(e.keyCode == 13){   
+		    document.getElementById("submit_button").click();   
+		    }   
+		    return false;
+		}  
+		</script>
+	</body>	
+</html>

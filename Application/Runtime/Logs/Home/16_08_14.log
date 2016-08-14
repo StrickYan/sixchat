@@ -1,0 +1,297 @@
+[ 2016-08-14T17:09:45+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000009s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001834s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001523s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001547s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:10:03+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000013s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001221s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001225s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001267s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:10:44+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000012s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001243s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001096s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001138s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:11:03+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000010s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000945s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001017s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001053s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:11:44+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000011s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001014s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001121s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001164s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:12:03+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000012s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001106s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001228s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001271s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:12:44+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000014s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001155s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001327s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001381s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:13:03+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000021s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002136s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002290s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002390s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:13:44+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000015s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001455s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001594s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001654s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:14:03+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000010s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000953s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001109s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001151s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:14:44+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000017s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001583s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001758s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001818s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:15:03+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000007s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000605s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000658s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000683s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:15:44+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000011s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000931s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001014s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001054s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:16:03+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000015s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001346s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001568s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001627s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:16:44+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000007s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000515s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000626s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000647s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:17:03+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000009s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000850s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000984s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001018s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:17:44+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000009s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000720s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000778s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000806s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:18:03+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000010s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000910s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001020s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001061s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:18:44+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000012s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001018s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001144s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001187s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:19:03+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000012s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001640s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001585s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001623s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:19:44+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000016s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001919s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002091s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002153s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:20:03+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000008s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000701s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000837s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000870s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:20:44+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000011s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000922s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001018s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001058s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:21:03+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000006s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000502s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000565s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000585s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:21:44+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000011s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001022s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000786s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000814s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:22:03+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000006s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000552s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000636s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000658s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:22:44+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000010s ]
+INFO: [ app_init ] --END-- [ RunTime:0.002687s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001695s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001718s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:23:03+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000009s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000644s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000707s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000733s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:23:44+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000014s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001296s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001655s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001721s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:24:03+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000012s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001193s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001118s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001162s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:24:44+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000008s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001114s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000601s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000621s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:25:03+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000009s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000652s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000709s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000736s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
+[ 2016-08-14T17:25:44+08:00 ] ::1 /sixchat/index.php/Home/Moments/loadNews
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000009s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000756s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000867s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000900s ]
+ERR: SQLSTATE[HY000] [1045] Access denied for user 'S2013150028'@'localhost' (using password: YES)
+
