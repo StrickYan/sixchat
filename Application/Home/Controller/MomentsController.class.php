@@ -2,7 +2,7 @@
 namespace Home\Controller;
 use Think\Controller;
 class MomentsController extends CommonController {
-    
+   
 	/*显示朋友圈信息流*/
     public function index(){
     	$obj=new SixChatApi2016Controller();
@@ -31,7 +31,6 @@ class MomentsController extends CommonController {
       	$this->assign('my_name',$user_name);
         $this->display();
     }
-
 
   /*jquery异步加载每条朋友圈下面的赞用到的后台获取赞函数*/
     public function getLikes(){
@@ -72,7 +71,6 @@ class MomentsController extends CommonController {
 		    }  
 		}  
     }
-
 
     /*jquery异步加载每条朋友圈下面的评论用到的后台获取评论函数*/
     public function getComments(){
@@ -123,9 +121,7 @@ class MomentsController extends CommonController {
 		}  
     }
 
-
-
-  /*jquery异步加载增加d点赞函数*/
+  /*jquery异步加载增加点赞函数*/
     public function addLike(){
 	    if( isset($_REQUEST['moment_id'])  && isset($_REQUEST['moment_user_name']) ){ 
 	    	$moment_id = htmlspecialchars($_REQUEST['moment_id']);
@@ -731,7 +727,7 @@ class MomentsController extends CommonController {
 	 //    echo json_encode($response);
   //   }
 
-
+    /*加载下一页moments*/
     public function loadNextPage()
     {
     	$page = htmlspecialchars($_REQUEST['page']);
@@ -749,29 +745,22 @@ class MomentsController extends CommonController {
 			$list[$i]['time']=$obj->tranTime(strtotime($list[$i]['time']));
 			$list[$i]['info'] = htmlspecialchars($list[$i]['info']);
 		}
-
 		echo json_encode($list);
-
     }
 
-
+    /*加载未读消息数量*/
     public function loadNews()
     {
      	$obj=new SixChatApi2016Controller();
 		$user_name=$_SESSION["name"];
-
 		$map['user_name']=$user_name;
 		$user_id=M("User")->where($map)->getField('user_id');
-
 		$sql = "SELECT moment_id FROM think_comment c,think_user u where c.reply_id=u.user_id and state=1 and news=1 and ((reply_id<>".$user_id." and reply_id=replyed_id and moment_id in(select moment_id from think_moment where user_id=".$user_id.")) or (replyed_id=".$user_id." and reply_id<>replyed_id)) order by comment_id desc limit 0,100";
-		$list = M()->query($sql);
- 	
+		$list = M()->query($sql);	
     	$map1['requested_id']=$user_id;
     	$map1['state']=1;
 		$result=M("Friend_request")->where($map1)->select();
-
 		$num = count($list)+count($result);
-
 		echo json_encode(array("number"=>$num));
     }
 

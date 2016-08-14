@@ -51,15 +51,6 @@ $(function() {
         }
 	});
 
-
-    $(document).on("click",".message_flow",function() {
-        getOneMoment($(this).attr("name"));//传送moment_id查看具体该条moment
-        $("#back").click();
-        $("#current_location").text("Details"); 
-        $("#back").text("SixChat"); 
-    });
-
-
 	//点击camera图标触发发送编辑页面
 	$("#camera").bind("click",function() {
 		if($("#edit_box").length){
@@ -94,8 +85,7 @@ $(function() {
 		}
 	});
 
-
-	$("body").animate({opacity: 1},300);
+	$("body").animate({opacity: 1},100);
 
 });
 

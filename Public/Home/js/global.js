@@ -39,12 +39,12 @@ $(function() {
     });
     
     /*绑定消息点击事件*/
-    // $(document).on("click",".message_flow",function() {
-    //     getOneMoment($(this).attr("name"));//传送moment_id查看具体该条moment
-    //     $("#back").click();
-    //     $("#current_location").text("Details"); 
-    //     $("#back").text("SixChat"); 
-    // });
+    $(document).on("click",".message_flow",function() {
+        getOneMoment($(this).attr("name"));//传送moment_id查看具体该条moment
+        $("#back").click();
+        $("#current_location").text("Details"); 
+        $("#back").text("SixChat"); 
+    });
 
     /*响应好友请求*/
     $(document).on("click",".request_agree",function() {
@@ -61,15 +61,21 @@ $(function() {
         var input_4_val = $("#profile_region_val").text();
         var input_5_val = $("#profile_whatsup_val").text(); 
         var input_1 = "<div id='new_avatar_btn'><span>New Avatar Image</span><input type='file' name='profile_upfile' id='profile_photo'></div>";
-        var input_2 = "<input id='profile_name_box' name='profile_name_box' type='text' placeholder='Name' value="+input_2_val+" maxlength=140>";
-        var input_3 = "<input id='profile_sex_box' name='profile_sex_box' type='text' placeholder='Gender' value="+input_3_val+ " maxlength=140>";
-        var input_4 = "<input id='profile_region_box' name='profile_region_box' type='text' placeholder='Region' value="+input_4_val+" maxlength=140>";
-        var input_5 = "<input id='profile_whatsup_box' name='profile_whatsup_box' type='text' placeholder='WhatsUp' value="+input_5_val+" maxlength=140>";
+        var input_2 = "<input id='profile_name_box' name='profile_name_box' type='text' placeholder='Name' value='' maxlength=140>";
+        var input_3 = "<input id='profile_sex_box' name='profile_sex_box' type='text' placeholder='Gender' value='' maxlength=140>";
+        var input_4 = "<input id='profile_region_box' name='profile_region_box' type='text' placeholder='Region' value='' maxlength=140>";
+        var input_5 = "<input id='profile_whatsup_box' name='profile_whatsup_box' type='text' placeholder='WhatsUp' value='' maxlength=140>";
+        
         $("#profile_avatar").empty().append(input_1);
         $("#profile_name").empty().append(input_2);
         $("#profile_sex").empty().append(input_3);
         $("#profile_region").empty().append(input_4);
         $("#profile_whatsup").empty().append(input_5);
+
+        $("#profile_name_box").attr("value",input_2_val);
+        $("#profile_sex_box").attr("value",input_3_val);
+        $("#profile_region_box").attr("value",input_4_val);
+        $("#profile_whatsup_box").attr("value",input_5_val);
     });
     $(document).on("click","#confirm_modify",function() {
         if( $.trim($("#profile_name_box").val()) && $.trim($("#profile_sex_box").val()) && $.trim($("#profile_region_box").val()) && $.trim($("#profile_whatsup_box").val()) ){   
@@ -122,7 +128,6 @@ $(function() {
     });
 
 });
-
 
 function loadNextPage(page) {
     $.ajax({  
@@ -671,7 +676,7 @@ function loadMessages() {
             html+="<input type='text' id='search_box' placeholder='Search New Friends' maxlength=140 required/>"
             html+="</div>";
             for(var i=0;i<data.length;i++){  
-                html+="<div class='message_flow' name="+data[i].moment_id+">";
+                html+="<div class='message_flow' name="+data[i].moment_id+" onclick=click_message_flow("+data[i].moment_id+")>";
                 html+="<div class='message_flow_left'>";
                 html+="<img src=../../../avatar_img/"+data[i].avatar+" alt=''>";
                 html+="</div>";
