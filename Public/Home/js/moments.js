@@ -30,7 +30,15 @@ $(function() {
         	loadFriendRequest();
             $("#current_location").text("Messages"); 
             $("#back").text("SixChat"); 
-            $("#slidebar,#message_top").animate({left:0},300);
+            //$("#slidebar,#message_top").animate({left:0},300);
+
+            if(isPC()){//PC
+            	$("#slidebar,#message_top").animate({left:"30%"},300);
+            }
+            else{
+            	$("#slidebar,#message_top").animate({left:0},300);
+            }
+
             location.hash="#location";//跳到消息界面位置
             //$("#slidebar~div").fadeOut(300);
             $("#slidebar~div").animate({opacity: 0},300);
@@ -69,7 +77,7 @@ $(function() {
 			html+="</form>";
 			html+="</div>";
 			$("#top").after(html);
-			$("#edit_box").hide().slideDown('slow' ,function(){
+			$("#edit_box").hide().slideDown(300 ,function(){
 				$("#text_box").focus();
 			});		
 

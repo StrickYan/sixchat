@@ -334,7 +334,15 @@ function searchUser(search_name) {
 
             //$("#back").click();
             $("#slidebar_profile").empty().append(html);
-            $("#slidebar_profile").animate({right:0},300);
+           
+           //$("#slidebar_profile").animate({right:0},300);
+            if(isPC()){//PC
+                $("#slidebar_profile").animate({right:"30%"},300);
+            }
+            else{
+                $("#slidebar_profile").animate({right:0},300);
+            }
+
             $("#slidebar_profile~div").animate({opacity:0},300);
             $("#back").text("SixChat");
             $("#current_location").text("Profile");
