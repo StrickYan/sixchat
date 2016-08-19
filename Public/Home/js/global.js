@@ -462,7 +462,6 @@ function addMoment() {
             result += "<input type='text' class='comment_box' placeholder='Comment' maxlength=140 required/>";
             result += "</div>";
             result += "</div>";
-            result += "<div class='line'><hr/></div>";
             result += "</div>";
             
             $("#camera").click();
