@@ -3,8 +3,8 @@ namespace Home\Controller;
 use Think\Controller;
 class RegisterController extends Controller {
 	public function index(){
-		$id=$_POST['id'];
-		$password=$_POST['password'];
+		$id=trim($_POST['id']);
+		$password=trim($_POST['password']);
 		$text_placeholder="新的账号";
 		$userid=null;
 		if($id!=null&&$password!=null){

@@ -11,4 +11,7 @@ return array(
     'DB_PORT'   => 3306, // 端口
     'DB_PREFIX' => 'think_', // 数据库表前缀 
     'DB_CHARSET'=> 'utf8', // 字符集
+
+    'URL_MODEL' => '2',//url省略index.php
+
 );

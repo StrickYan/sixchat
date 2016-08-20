@@ -69,7 +69,7 @@ a {
 	height: 180px;
 	border-radius: 3px;
 }
-#modify_profile_button,#confirm_modify {
+#modify_profile_button,#confirm_modify,#logout {
 	background-color: rgb(91,197,190);
 	border: 0;
 	box-sizing: border-box;

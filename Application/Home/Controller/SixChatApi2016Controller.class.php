@@ -16,7 +16,7 @@ class SixChatApi2016Controller extends Controller{
 			$condition1['password'] = md5($password);
 			$user_name_1 = M('User')->where($condition1)->getfield('user_name');
 			if($user_name_1){		//登录成功
-				setcookie("password", "$password", time()+60*60*24);//登录成功再保存密码cookie
+				//setcookie("password", "$password", time()+60*60*1 );//登录成功再保存密码cookie
 				session_start();
 				$_SESSION["name"]=$user_name_1;
 				return 0;
@@ -119,8 +119,6 @@ class SixChatApi2016Controller extends Controller{
 				->select();
  		return $result;
 	}
-
-
 
 	/*图片上传函数*/
     public function uploadImg($destination_folder,$input_file_name,$maxwidth,$maxheight) {

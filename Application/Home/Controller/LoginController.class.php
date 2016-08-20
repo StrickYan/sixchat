@@ -16,11 +16,11 @@ class LoginController extends Controller {
 		if (isset($_COOKIE["password"])){	//获取cookie
 			$temp_password=$_COOKIE["password"];
 		}
-		$id=$_POST['id'];
+		$id=trim($_POST['id']);
 		if($id==null){		//为空则读入cookie值
 			$id=$temp_id;
 		}
-		$password=$_POST['password'];
+		$password=trim($_POST['password']);
 		if($password==null){	//为空则读入cookie值
 			$password=$temp_password;
 		}
@@ -37,7 +37,7 @@ class LoginController extends Controller {
 				$pw_placeholder="密码错误";
 			}
 			else if(!$result){	//登录成功
-				$this->redirect('Moments/index');
+			 	$this->redirect('Moments/index');
 				return;
 			}
 		}

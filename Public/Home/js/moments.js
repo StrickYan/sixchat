@@ -7,7 +7,8 @@ var swiper = new Swiper('.swiper-container', {	//定义滚动墙参数
     autoplayDisableOnInteraction: false
 });
 
-
+var pc_speed = 1000;//pc动画速度
+var mobile_speed = 200;//移动端动画速度
 
 $(function() {
 
@@ -22,7 +23,7 @@ $(function() {
 	loadNews();
 	setInterval("loadNews()",1000*60);
 	
-	$("img.lazy").lazyload({effect: "fadeIn",threshold: 200});//图片延迟加载
+	$("img.lazy").lazyload({effect: "fadeIn",threshold: mobile_speed});//图片延迟加载
 
 	$("#back").bind("click",function() {//定义点击左上角导航返回事件
         if($("#current_location").text()=="SixChat"){	//打开消息侧边栏
@@ -30,26 +31,26 @@ $(function() {
         	loadFriendRequest();
             $("#current_location").text("Messages"); 
             $("#back").text("SixChat"); 
-            //$("#slidebar,#message_top").animate({left:0},300);
-
             if(isPC()){//PC
-            	$("#slidebar,#message_top").animate({left:"30%"},300);
+            	$("#slidebar,#message_top").fadeIn(pc_speed);
             }
             else{
-            	$("#slidebar,#message_top").animate({left:0},300);
+            	$("#slidebar,#message_top").animate({left:0},mobile_speed);
             }
-
             location.hash="#location";//跳到消息界面位置
-            //$("#slidebar~div").fadeOut(300);
-            $("#slidebar~div").animate({opacity: 0},300);
+            $("#slidebar~div").animate({opacity: 0},mobile_speed);
         }
         else if($("#current_location").text()=="Messages") {//关闭消息侧边栏
             $("#current_location").text("SixChat");
             $("#back").text("M"); 
-            $("#slidebar,#message_top").animate({left:"-100%"},300);
+            if(isPC()){//PC
+				$("#slidebar,#message_top").fadeOut(pc_speed);
+            }
+            else{
+            	$("#slidebar,#message_top").animate({left:"-100%"},mobile_speed);
+            }
             location.hash="";
-           	//$("#slidebar~div").fadeIn(300);
-           	$("#slidebar~div").animate({opacity: 1},300);
+           	$("#slidebar~div").animate({opacity: 1},mobile_speed);
 
            	//不知为何，关闭侧边栏后会显示lightbox的隐藏区域，所以暂时想到的解决方法是加下面一句fix bug
            	$("#lightboxOverlay,#lightbox").hide();
@@ -62,7 +63,7 @@ $(function() {
 	//点击camera图标触发发送编辑页面
 	$("#camera").bind("click",function() {
 		if($("#edit_box").length){
-			$("#edit_box").slideUp(300,function() {
+			$("#edit_box").slideUp(mobile_speed,function() {
 				$("#edit_box").remove();
 			});
 		}
@@ -77,7 +78,7 @@ $(function() {
 			html+="</form>";
 			html+="</div>";
 			$("#top").after(html);
-			$("#edit_box").hide().slideDown(300 ,function(){
+			$("#edit_box").hide().slideDown(mobile_speed ,function(){
 				$("#text_box").focus();
 			});		
 
@@ -93,7 +94,7 @@ $(function() {
 		}
 	});
 
-	$("body").animate({opacity: 1},100);
+	$("body").animate({opacity: 1},pc_speed);
 
 });
 

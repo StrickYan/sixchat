@@ -1,4 +1,6 @@
 var page = 1;   //上拉加载更多全局页数
+var pc_speed = 1000;//pc动画速度
+var mobile_speed = 200;//移动端动画速度
 $(function() {
 
     /* 点击按钮弹出点赞或评论选项，点击周围则隐藏*/
@@ -18,13 +20,13 @@ $(function() {
         $(this).parent().parent().siblings(".info_flow_right_input").children("input")
         .attr("placeholder","Comment")
         .attr("id",$("#avatar").attr("name"))
-        .focus();//输入框聚焦 $(this).parent().parent().siblings(".info_flow_right_user_name").text()
+        .focus();//输入框聚焦
     });
     $( document ).on("blur",'.info_flow_right_input input',function(){  //评论框失去焦点则隐藏
         $(this).parent().hide();
     });
 
-    /*绑定删除朋友圈事件*/
+    /*绑定删除朋友圈事件*///不知为何这里如果用document会造成删除动画失效，所以暂时用bind解决
     $(".delete_moment").bind("click",function() {
         deleteMoment($(this).parent());
     });
@@ -50,7 +52,7 @@ $(function() {
     $(document).on("click",".request_agree",function() {
         //传送请求id和请求人名
         agreeRequest($(this).parent().parent(".request_flow").attr("name"),$(this).siblings(".line1").children(".request_flow_right_user_name").children("span").text());
-        $(this).parent().parent(".request_flow").slideUp(300);
+        $(this).parent().parent(".request_flow").slideUp(mobile_speed);
     });
 
     /*点击修改资料按钮事件*/
@@ -81,7 +83,6 @@ $(function() {
         if( $.trim($("#profile_name_box").val()) && $.trim($("#profile_sex_box").val()) && $.trim($("#profile_region_box").val()) && $.trim($("#profile_whatsup_box").val()) ){   
             modifyProfile();
             self.location.href="";
-            //searchUser($("#camera").attr("name"));
         } 
     });
 
@@ -95,8 +96,7 @@ $(function() {
         }                           
     });
 
-
-    //双击顶部中间栏刷新
+    //双击或长按顶部中间栏刷新
     if(isPC()==0){   //移动端
         $("#current_location").longPress(function() {
             self.location.href="";
@@ -123,12 +123,38 @@ $(function() {
         }
     });
 
+    /*点击主页头像*/
     $("#avatar").bind("click",function() {
         searchUser($("#camera").attr("name"));
     });
 
+    $(document).on("click","#logout",function() {
+        location.href="./logout";
+    });
+
+    /*替换文本内容*/
+    $(".info_flow_right_text").each(function(){
+        var str = $(this).text();
+        $(this).html(replace_str(str));
+    });
+
 });
 
+/*替换str*/
+function replace_str(str){
+    str = str.replace(/\</g,'&lt;');
+    str = str.replace(/\>/g,'&gt;');
+    str = str.replace(/\n/g,'<br />');
+    //str = str.replace(/\[em_([0-9]*)\]/g,'<img src="face/$1.gif" border="0" />');
+    
+    //文本中url替换成可点击的链接 target='_blank'指明打开新窗口
+    var regexp = /((http|ftp|https|file):[^'"\s]+)/ig;
+    str = str.replace(regexp,"<a target='_blank' href='$1'>$1</a>");
+    
+    return str;
+}
+
+/*加载更多moments*/
 function loadNextPage(page) {
     $.ajax({  
         type:"POST",  
@@ -145,7 +171,7 @@ function loadNextPage(page) {
             for(var i=0;i<data.length;i++){              
                 result += "<div class='info_flow' >";
                 result += "<div class='info_flow_left'>";
-                result += '<img src='+'../../../avatar_img/'+ data[i]['avatar'] +'>';
+                result += '<img src='+'../../avatar_img/'+ data[i]['avatar'] +'>';
                 result += "</div>";
                 result += "<div class='info_flow_right' id="+data[i]['moment_id']+">";
                 result += "<div class='info_flow_right_user_name'>"+ data[i]['user_name'] +"</div>";
@@ -154,8 +180,8 @@ function loadNextPage(page) {
                 }          
                 if(data[i]['img_url']){
                     result += "<div class='info_flow_right_img'>";
-                    result += "<a href=../../../moment_img/"+ data[i]['img_url']+" data-lightbox="+data[i]['moment_id']+">";
-                    result += '<img src=' +'../../../moment_img/'+ data[i]['img_url']  + " onload='formatImg(this)'>";
+                    result += "<a href=../../moment_img/"+ data[i]['img_url']+" data-lightbox="+data[i]['moment_id']+">";
+                    result += '<img src=' +'../../moment_img/'+ data[i]['img_url']  + " onload='formatImg(this)'>";
                     result += "</a></div>";
                 }
                 result += "<div class='info_flow_right_time'>"+ data[i]['time'] +"</div>";
@@ -163,10 +189,10 @@ function loadNextPage(page) {
                     result += "<div class='delete_moment'>Delete</div>";
                 }        
                 result += "<div class='info_flow_right_button'>";
-                result += "<img name='button' class='button_img' src='../../../Public/Home/img/default/feed_comment.png' />";
+                result += "<img name='button' class='button_img' src='../../Public/Home/img/default/feed_comment.png' />";
                 result += "<div class='divPop'>";
-                result += "<img class='like_png' src='../../../Public/Home/img/default/logout_like.png' />";
-                result += "<img class='comment_png' src='../../../Public/Home/img/default/logout_comment.png' />";
+                result += "<img class='like_png' src='../../Public/Home/img/default/logout_like.png' />";
+                result += "<img class='comment_png' src='../../Public/Home/img/default/logout_comment.png' />";
                 result += "</div>";
                 result += "</div>";
                 result += "<div class='info_flow_right_like'></div>";
@@ -175,10 +201,9 @@ function loadNextPage(page) {
                 result += "<input type='text' class='comment_box' placeholder='Comment' maxlength=140 required/>";
                 result += "</div>";
                 result += "</div>";
-                result += "<div class='line'><hr/></div>";
                 result += "</div>";         
             }   
-            $('#footer').before(result).fadeOut().fadeIn(1000);
+            $('#footer').before(result).fadeOut().fadeIn(pc_speed);
             $(".info_flow_right_button .button_img").each(function(){
                 divPop($(this));
             });
@@ -189,8 +214,6 @@ function loadNextPage(page) {
         } 
     });  
 }
-
-
 
 /*刷新赞与评论 */
 function refresh() {	
@@ -223,7 +246,7 @@ function getLikesForAjax(moment_id,moment_user_name){
             var html="";  
             var i=0;
             if (data.length){
-                html+="<img class='like_img' src='../../../Public/Home/img/default/like.png'/>";              
+                html+="<img class='like_img' src='../../Public/Home/img/default/like.png'/>";              
             }
             for(i=0;i<data.length-1;i++){  
                 html+="<span class='like_user_name'>"+data[i].reply_name+"</span>";//点赞人名字
@@ -300,7 +323,7 @@ document.onkeypress=function EnterPress(e) {
 
 };
 
-
+/*查看用户资料*/
 function searchUser(search_name) {
     $.ajax({  
         type:"POST",  
@@ -319,7 +342,7 @@ function searchUser(search_name) {
             }
             var html='';
             html+="<form name='form_profile' id='form_profile'>";
-            html+="<div id=profile_avatar><img src="+"../../../avatar_img/"+data.avatar+"></div>";
+            html+="<div id=profile_avatar><img src="+"../../avatar_img/"+data.avatar+"></div>";
             html+="<div id='profile_name' ><span class='profile_span'>Name：</span><span id='profile_name_val'>"+data.user_name+"</span></div><hr>";
             html+="<div id='profile_sex' ><span class='profile_span'>Gender：</span><span id='profile_sex_val'>"+data.sex+"</span></div><hr>";
             html+="<div id='profile_region' ><span class='profile_span'>Region：</span><span id='profile_region_val'>"+data.region+"</span></div><hr>";
@@ -331,19 +354,17 @@ function searchUser(search_name) {
             if(data.user_name==$("#camera").attr("name")){//自己的资料可以修改
                 html+="<div id='modify_profile_button'>modify</div>";
             }
-
-            //$("#back").click();
+            if(data.user_name==$("#camera").attr("name")){
+                html+="<div id='logout'>Log Out</div>";
+            }
             $("#slidebar_profile").empty().append(html);
-           
-           //$("#slidebar_profile").animate({right:0},300);
             if(isPC()){//PC
-                $("#slidebar_profile").animate({right:"30%"},300);
+                $("#slidebar_profile").fadeIn(pc_speed);
             }
             else{
-                $("#slidebar_profile").animate({right:0},300);
+                $("#slidebar_profile").animate({right:0},mobile_speed);
             }
-
-            $("#slidebar_profile~div").animate({opacity:0},300);
+            $("#slidebar_profile~div").animate({opacity:0},100);
             $("#back").text("SixChat");
             $("#current_location").text("Profile");
         } 
@@ -434,7 +455,7 @@ function addMoment() {
             var result = '';
             result += "<div class='info_flow' >";
             result += "<div class='info_flow_left'>";
-            result += '<img src='+'../../../avatar_img/'+ ret['avatar'] +'>';
+            result += '<img src='+'../../avatar_img/'+ ret['avatar'] +'>';
             result += "</div>";
             result += "<div class='info_flow_right' id="+ret['moment_id']+">";
             result += "<div class='info_flow_right_user_name'>"+ ret['user_name'] +"</div>";
@@ -443,17 +464,17 @@ function addMoment() {
             }          
             if(ret['photo']){
             	result += "<div class='info_flow_right_img'>";
-                result += "<a href=../../../moment_img/"+ ret['photo']+" data-lightbox="+ret['moment_id']+">";
-           		result += '<img src=' +'../../../moment_img/'+ ret['photo']  + " onload='formatImg(this)'>";
+                result += "<a href=../../moment_img/"+ ret['photo']+" data-lightbox="+ret['moment_id']+">";
+           		result += '<img src=' +'../../moment_img/'+ ret['photo']  + " onload='formatImg(this)'>";
             	result += "</a></div>";
             }
             result += "<div class='info_flow_right_time'>"+ ret['time'] +"</div>";
             result += "<div class='delete_moment'>Delete</div>";
             result += "<div class='info_flow_right_button'>";
-            result += "<img name='button' class='button_img' src='../../../Public/Home/img/default/feed_comment.png' />";
+            result += "<img name='button' class='button_img' src='../../Public/Home/img/default/feed_comment.png' />";
             result += "<div class='divPop'>";
-            result += "<img class='like_png' src='../../../Public/Home/img/default/logout_like.png' />";
-            result += "<img class='comment_png' src='../../../Public/Home/img/default/logout_comment.png' />";
+            result += "<img class='like_png' src='../../Public/Home/img/default/logout_like.png' />";
+            result += "<img class='comment_png' src='../../Public/Home/img/default/logout_comment.png' />";
             result += "</div>";
             result += "</div>";
             result += "<div class='info_flow_right_like'></div>";
@@ -465,16 +486,15 @@ function addMoment() {
             result += "</div>";
             
             $("#camera").click();
-			$('.info_flow').first().before(result).hide().slideDown(300);
+			$('.info_flow').first().before(result).hide().slideDown(mobile_speed);
             divPop($(".info_flow_right_button .button_img").first());//给新载入的按钮元素绑定事件
-            // $(".delete_moment").first().bind("click",function() {   //给新载入的删除朋友圈元素绑定事件
-            //     deleteMoment($(this).parent());
-            // });
+            $(".delete_moment").first().bind("click",function() {   //给新载入的删除朋友圈元素绑定事件
+                deleteMoment($(this).parent());
+            });
         }else{
             alert('发送失敗');
         }
     });
-    //return false;
 }
 
 /*jquery $.ajax() 异步加载随机3图url*/
@@ -490,9 +510,9 @@ function getRollingWall(){
             alert("加载错误，错误原因：\n"+errorThrown);  
         },  
         success:function(data){    
-            var html_1="<img name="+data[0].moment_id_1+" src=../../../moment_img/"+data[0].img_url_1+">";  
-            var html_2="<img name="+data[0].moment_id_2+" src=../../../moment_img/"+data[0].img_url_2+">";
-            var html_3="<img name="+data[0].moment_id_3+" src=../../../moment_img/"+data[0].img_url_3+">";
+            var html_1="<img name="+data[0].moment_id_1+" src=../../moment_img/"+data[0].img_url_1+">";  
+            var html_2="<img name="+data[0].moment_id_2+" src=../../moment_img/"+data[0].img_url_2+">";
+            var html_3="<img name="+data[0].moment_id_3+" src=../../moment_img/"+data[0].img_url_3+">";
 
             $(".swiper-slide").first().append(html_1);
             $(".swiper-slide").first().next().append(html_2);
@@ -501,7 +521,7 @@ function getRollingWall(){
                 getOneMoment($(this).attr("name"));
                 $("#current_location").text("Details"); 
                 $("#back").text("SixChat"); 
-                $("#top~div").hide().show(300);
+                $("#top~div").hide().show(mobile_speed);
             });
                 
         }  
@@ -509,8 +529,6 @@ function getRollingWall(){
 }
 
 function divPop(obj) {
-    //动画速度  
-    var speed = 300; 
     obj.click(function(event){
         //$(".divPop").hide(500);
         //取消事件冒泡  
@@ -519,12 +537,12 @@ function divPop(obj) {
         var offset = obj.offset();  
         obj.siblings(".divPop").css({ top: -10, right:  30 });  
         //动画显示  
-        obj.siblings(".divPop").show(speed);  
+        obj.siblings(".divPop").show(mobile_speed);  
     });
     //单击空白区域隐藏弹出层  
-    $(".info_flow").click(function() { obj.siblings(".divPop").hide(300);  });  
+    $(".info_flow").click(function() { obj.siblings(".divPop").hide(mobile_speed);  });  
     //单击弹出层则自身隐藏  
-    $(".divPop").click(function() { obj.siblings(".divPop").hide(300); });  
+    $(".divPop").click(function() { obj.siblings(".divPop").hide(mobile_speed); });  
 }
 
 function deleteMoment(obj) {
@@ -648,23 +666,6 @@ function preventDefault(event) {
 };
 
 /*异步加载信息*/
-// function loadMessages() {
-//     $.ajax({  
-//         type:"POST",  
-//         async:false,  
-//         data:{},   
-//         dataType:"html",  
-//         url:"../Messages/index", 
-
-//         error:function(XMLHttpRequest, textStatus, errorThrown) {  
-//             alert("信息加载错误，错误原因：\n"+errorThrown);  
-//         },  
-//         success:function(data){    
-//             $("#slidebar").children().remove();
-//             $("#slidebar").append(data);                 
-//         }  
-//     });  
-// };
 function loadMessages() {
     $.ajax({  
         type:"POST",  
@@ -685,7 +686,7 @@ function loadMessages() {
             for(var i=0;i<data.length;i++){  
                 html+="<div class='message_flow' name="+data[i].moment_id+" onclick=click_message_flow("+data[i].moment_id+")>";
                 html+="<div class='message_flow_left'>";
-                html+="<img src=../../../avatar_img/"+data[i].avatar+" alt=''>";
+                html+="<img src=../../avatar_img/"+data[i].avatar+" alt=''>";
                 html+="</div>";
                 html+="<div class='message_flow_right'>";
                 html+="<div class='line1'>";
@@ -716,7 +717,7 @@ function getOneMoment(moment_id) {
             var result = '';
             result += "<div class='info_flow' style='padding-top:48px;'>";
             result += "<div class='info_flow_left'>";
-            result += '<img src='+'../../../avatar_img/'+ data[0]['avatar'] +'>';
+            result += '<img src='+'../../avatar_img/'+ data[0]['avatar'] +'>';
             result += "</div>";
             result += "<div class='info_flow_right' id="+data[0]['moment_id']+">";
             result += "<div class='info_flow_right_user_name'>"+ data[0]['user_name'] +"</div>";
@@ -725,8 +726,8 @@ function getOneMoment(moment_id) {
             }          
             if(data[0]['photo']){
                 result += "<div class='info_flow_right_img'>";
-                result += "<a href=../../../moment_img/"+ data[0]['photo'] + " data-lightbox="+data[0]['moment_id']+">";
-                result += '<img src=' +'../../../moment_img/'+ data[0]['photo']  + " onload='formatImg(this)'>";
+                result += "<a href=../../moment_img/"+ data[0]['photo'] + " data-lightbox="+data[0]['moment_id']+">";
+                result += '<img src=' +'../../moment_img/'+ data[0]['photo']  + " onload='formatImg(this)'>";
                 result += "</a></div>";
             }
             result += "<div class='info_flow_right_time'>"+ data[0]['time'] +"</div>";
@@ -734,10 +735,10 @@ function getOneMoment(moment_id) {
                 result += "<div class='delete_moment'>Delete</div>";
             }
             result += "<div class='info_flow_right_button'>";
-            result += "<img name='button' class='button_img' src='../../../Public/Home/img/default/feed_comment.png' />";
+            result += "<img name='button' class='button_img' src='../../Public/Home/img/default/feed_comment.png' />";
             result += "<div class='divPop'>";
-            result += "<img class='like_png' src='../../../Public/Home/img/default/logout_like.png' />";
-            result += "<img class='comment_png' src='../../../Public/Home/img/default/logout_comment.png' />";
+            result += "<img class='like_png' src='../../Public/Home/img/default/logout_like.png' />";
+            result += "<img class='comment_png' src='../../Public/Home/img/default/logout_comment.png' />";
             result += "</div>";
             result += "</div>";
             result += "<div class='info_flow_right_like'></div>";
@@ -750,7 +751,7 @@ function getOneMoment(moment_id) {
             
             var my_name = $("#avatar").attr("name");//临时存储我的名字
 
-            $("#slidebar~div").remove();     
+            $("#slidebar~div").remove();    
             $("#slidebar").after(result);
 
             $(".comment_box").attr("id",my_name);//将我的名字赋值给输入框作为id属性
@@ -782,7 +783,7 @@ function loadFriendRequest() {
             for(var i=0;i<data.length;i++){  
                 html+="<div class='request_flow' name="+data[i].id+">";
                 html+="<div class='request_flow_left'>";
-                html+="<img src=../../../avatar_img/"+data[i].avatar+" alt=''>";
+                html+="<img src=../../avatar_img/"+data[i].avatar+" alt=''>";
                 html+="</div>";
                 html+="<div class='request_flow_right'>";
                 html+="<div class='line1'>";

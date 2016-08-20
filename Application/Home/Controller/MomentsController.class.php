@@ -166,7 +166,7 @@ class MomentsController extends CommonController {
 	    	$moment_id = htmlspecialchars($_REQUEST['moment_id']);
 		    $reply_name = $_SESSION["name"];  
 		    $replyed_name = htmlspecialchars($_REQUEST['replyed_name']);  
-		    $comment_val = htmlspecialchars($_REQUEST['comment_val']); 
+		    $comment_val = htmlspecialchars(trim($_REQUEST['comment_val'])); 
 
 			$obj=new SixChatApi2016Controller();
  			foreach ($obj->getUserId($reply_name, $replyed_name) as $k=>$val){
@@ -201,7 +201,7 @@ class MomentsController extends CommonController {
 
     //发送朋友圈功能函数
     public function addMoment() {
-		$text_box = isset($_POST['text_box'])? htmlspecialchars($_POST['text_box']) : '';	//获取朋友圈文本内容
+		$text_box = trim(isset($_POST['text_box']))? htmlspecialchars(trim($_POST['text_box'])) : '';	//获取朋友圈文本内容
 		$image_name='';
 		$response = array();
 		$obj=new SixChatApi2016Controller();
@@ -248,137 +248,8 @@ class MomentsController extends CommonController {
 	    echo json_encode($response);
     }
 
-
-  //   //发送朋友圈功能函数
-  //   public function addMoment() {
-
-		// /****************************************************************************** 	 
-		// 参数说明: 
-		// $max_file_size  : 上传文件大小限制, 单位BYTE 
-		// $destination_folder : 上传文件路径 
-		 
-		// 使用说明: 
-		// 1. 将PHP.INI文件里面的"extension=php_gd2.dll"一行前面的;号去掉,因为我们要用到GD库; 
-		// 2. 将extension_dir =改为你的php_gd2.dll所在目录; 
-		// ******************************************************************************/  
-		  
-		// //上传文件类型列表  
-		// $uptypes=array(  
-		//     'image/jpg',  
-		//     'image/jpeg',  
-		//     'image/png',  
-		//     'image/pjpeg',  
-		//     'image/gif',  
-		//     'image/bmp',  
-		//     'image/x-png'  
-		// );  
-		  
-		// $max_file_size=8000000;     //上传文件大小限制, 单位BYTE  
-		// $destination_folder="moment_img/"; //上传文件路径   
-
-		// $text_box = isset($_POST['text_box'])? htmlspecialchars($_POST['text_box']) : '';	//获取朋友圈文本内容
-		// $image_name='';
-		// $obj=new SixChatApi2016Controller();
-
-		// if(!$text_box && empty($_FILES['upfile']['tmp_name'])){
-		// 	echo $_FILES['upfile']['error'];
-		// 	echo "没有内容";
-		// 	exit;
-		// }
-
-		// if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_FILES['upfile']['tmp_name']) )//已选择图片才执行下面
-		// {  
-		//     if (!is_uploaded_file($_FILES["upfile"]['tmp_name']))  
-		//     //判断指定的文件是否是通过 HTTP POST 上传的 
-		//     {  
-		//          echo "post出错，尝试修改服务器post文件大小限制，默认2M";  
-		//          exit;  
-		//     }  
-		  
-		//     $file = $_FILES["upfile"];  
-		//     if($max_file_size < $file["size"])  
-		//     //检查文件大小  
-		//     {  
-		//         echo "文件太大!";  
-		//         exit;  
-		//     }  
-		  
-		//     if(!in_array($file["type"], $uptypes))  
-		//     //检查文件类型  
-		//     {  
-		//         echo "文件类型不符!".$file["type"];  
-		//         exit;  
-		//     }  
-		  
-		//     if(!file_exists($destination_folder))  
-		//     {  
-		//         mkdir($destination_folder);  
-		//     }  
-		  
-		//     $filename=$file["tmp_name"];  
-		//     $image_size = getimagesize($filename);  
-		//     $pinfo=pathinfo($file["name"]);  
-		//     $ftype=$pinfo['extension'];
-		//     $current_time = time();
-		//     $image_name=$current_time.".".$ftype;
-		//     $destination = $destination_folder.$image_name;  
-		//     if (file_exists($destination) && $overwrite != true)  
-		//     {  
-		//         echo "同名文件已经存在了";  
-		//         exit;  
-		//     }  
-		  
-		// 	$response = array();
-
-		//     if(!move_uploaded_file ($filename, $destination))  
-		//     {  
-		//         echo "移动文件出错";  
-		//         echo $filename;
-		//         echo $destination;
-		//         $response['isSuccess'] = false;
-		//         exit;  
-		//     }  
-
-		// 	//图片压缩并写回原位置替代原文件
-		//     $route=$destination;//图片路径
-		// 	$maxwidth="640";//设置图片的最大宽度
-		// 	$maxheight="1136";//设置图片的最大高度
-		// 	$name=$destination_folder.$current_time;//图片路径加名称，不带后缀
-		// 	$filetype=$ftype;//图片类型
-		// 	$obj->resizeImage($route,$maxwidth,$maxheight,$name,$filetype);//调用函数
-		// }  
-
-		// $user_name=$_SESSION["name"];				
-		// foreach ($obj->getUserId($user_name, $user_name) as $k=>$val){
-		// 	$user_id = $val["reply_id"];
-
-		// 	//插入朋友圈
-		// 	$Moment=M("Moment");
-	 //        $data['user_id']=$user_id;
-	 //        $data['info']=$text_box;
-	 //        $data['img_url']=$image_name;
-	 //        $data['time']=date("Y-m-d H:i:s");
-	 //        $Moment->data($data)->add();
-		// }	
-
-		// //获取自己头像
-		// $map['user_name']=$user_name;
-		// $avatar=M("User")->where($map)->getField('avatar');
-
-		// //获取新增朋友圈的moment_id
-		// $moment_id=M("Moment")->max('moment_id');
-
-	 //    $response['isSuccess'] = true;
-	 //    $response['moment_id'] = $moment_id;
-	 //    $response['user_name'] = $user_name;
-	 //    $response['avatar'] = $avatar;
-	 //    $response['text_box'] = $text_box;
-	 //    $response['photo'] = $image_name;
-	 //    $response['time'] = $obj->tranTime(strtotime(date("Y-m-d H:i:s")));
-	 //    echo json_encode($response);
-  //   }
-
-    public function getRollingWall(){	//选取随机三图做滚动墙纸
+	//选取随机三图做滚动墙纸
+    public function getRollingWall(){	
     	$Model = M();
 		$sql="select img_url,moment_id from think_moment where img_url <>'' and state=1 order by rand() limit 3";//显示朋友圈信息流
 		$list = $Model->query($sql);
@@ -410,17 +281,13 @@ class MomentsController extends CommonController {
 		echo json_encode($list);
     }
 
-
-
 	/*显示赞与评论*/
     public function loadMessages(){
      	$obj=new SixChatApi2016Controller();
-		// session_start();
-		 $user_name=$_SESSION["name"];
+		$user_name=$_SESSION["name"];
 
 		$map['user_name']=$user_name;
 		$user_id=M("User")->where($map)->getField('user_id');
-
 
 		// $sql = "SELECT user_name as reply_name,avatar,moment_id,comment,time FROM think_comment c,think_user u where c.reply_id=u.user_id and state=1 and ((reply_id<>".$user_id." and reply_id=replyed_id and moment_id in(select moment_id from think_moment where user_id=".$user_id." and state=1)) or (replyed_id=".$user_id." and reply_id<>replyed_id)) order by comment_id desc limit 0,20";
 
@@ -446,10 +313,7 @@ class MomentsController extends CommonController {
 			from think_moment m,think_user u
 				where m.moment_id=".$moment_id." and m.state=1 and m.user_id=u.user_id";//显示该条朋友圈内容
 		$list = M()->query($sql);
-
-
 		for($i=0;$i<count($list);$i++){
-
 			$list[$i]['my_name'] = $my_name;
 			$list[$i]['user_name'] = $list[$i]['user_name'];
 			$list[$i]['avatar'] = $list[$i]['avatar'];
@@ -613,120 +477,6 @@ class MomentsController extends CommonController {
 	    echo json_encode($response);
     }
 
-
-
-    /*修改资料*/
-  //   public function modifyProfile()
-  //   {
-		// //上传文件类型列表  
-		// $uptypes=array(  
-		//     'image/jpg',  
-		//     'image/jpeg',  
-		//     'image/png',  
-		//     'image/pjpeg',  
-		//     'image/gif',  
-		//     'image/bmp',  
-		//     'image/x-png'  
-		// );  
-		  
-		// $max_file_size=8000000;     //上传文件大小限制, 单位BYTE  
-		// $destination_folder="avatar_img/"; //上传文件路径   
-
-		// $profile_name_box = isset($_POST['profile_name_box'])? htmlspecialchars($_POST['profile_name_box']) : '';	//获取文本内容
-		// $profile_sex_box = isset($_POST['profile_sex_box'])? htmlspecialchars($_POST['profile_sex_box']) : '';
-		// $profile_region_box = isset($_POST['profile_region_box'])? htmlspecialchars($_POST['profile_region_box']) : '';
-		// $profile_whatsup_box = isset($_POST['profile_whatsup_box'])? htmlspecialchars($_POST['profile_whatsup_box']) : '';
-
-
-		// $image_name='';
-		// $obj=new SixChatApi2016Controller();
-
-		// if(!$profile_name_box && !$profile_sex_box  && !$profile_region_box && !$profile_whatsup_box && empty($_FILES['profile_upfile']['tmp_name'])){
-		// 	echo "没有内容";
-		// 	exit;
-		// }
-
-		// if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_FILES['profile_upfile']['tmp_name']) )//已选择图片才执行下面
-		// {  
-		//     if (!is_uploaded_file($_FILES["profile_upfile"]['tmp_name']))  
-		//     //判断指定的文件是否是通过 HTTP POST 上传的 
-		//     {  
-		//          echo "post出错，尝试修改服务器post文件大小限制，默认2M";  
-		//          exit;  
-		//     }  
-		  
-		//     $file = $_FILES["profile_upfile"];  
-		//     if($max_file_size < $file["size"])  
-		//     //检查文件大小  
-		//     {  
-		//         echo "文件太大!";  
-		//         exit;  
-		//     }  
-		  
-		//     if(!in_array($file["type"], $uptypes))  
-		//     //检查文件类型  
-		//     {  
-		//         echo "文件类型不符!".$file["type"];  
-		//         exit;  
-		//     }  
-		  
-		//     if(!file_exists($destination_folder))  
-		//     {  
-		//         mkdir($destination_folder);  
-		//     }  
-		  
-		//     $filename=$file["tmp_name"];  
-		//     $image_size = getimagesize($filename);  
-		//     $pinfo=pathinfo($file["name"]);  
-		//     $ftype=$pinfo['extension'];  
-		//     $current_time = time();
-		//     $image_name=$current_time.".".$ftype;
-		//     $destination = $destination_folder.$image_name;  
-		//     if (file_exists($destination) && $overwrite != true)  
-		//     {  
-		//         echo "同名文件已经存在了";  
-		//         exit;  
-		//     }  
-		  
-		// 	$response = array();
-
-		//     if(!move_uploaded_file ($filename, $destination))  
-		//     {  
-		//         echo "移动文件出错";  
-		//         echo $filename;
-		//         echo $destination;
-		//         $response['isSuccess'] = false;
-		//         exit;  
-		//     }  
-
-
-		// 	//图片压缩并写回原位置替代原文件
-		//     $route=$destination;	//图片路径
-		// 	$maxwidth="200";//设置图片的最大宽度
-		// 	$maxheight="200";//设置图片的最大高度
-		// 	$name=$destination_folder.$current_time;//图片路径加名称，不带后缀
-		// 	$filetype=$ftype;//图片类型
-		// 	$obj->resizeImage($route,$maxwidth,$maxheight,$name,$filetype);//调用函数
-
-
-		//     //上传成功后进行修改数据库图片路径操作
-		//     $map['user_name']=$_SESSION['name'];
-		//     M("User")->where($map)->setField('avatar',$image_name);
-
-		// }  
-
-		// $user_name=$_SESSION["name"];				
-		// foreach ($obj->getUserId($user_name, $user_name) as $k=>$val){
-		// 	$user_id = $val["reply_id"];
-		// 	$map['user_id'] = $user_id;
-		// 	$data=array('user_name'=>$profile_name_box,'sex'=>$profile_sex_box,'region'=>$profile_region_box,'whatsup'=>$profile_whatsup_box);
-		// 	M("User")->where($map)->setField($data);
-		// }	
-		// $_SESSION["name"] = $profile_name_box;
-	 //    $response['isSuccess'] = true;
-	 //    echo json_encode($response);
-  //   }
-
     /*加载下一页moments*/
     public function loadNextPage()
     {
@@ -764,7 +514,10 @@ class MomentsController extends CommonController {
 		echo json_encode(array("number"=>$num));
     }
 
-
-
+    public function logout()
+    {
+    	session_destroy();
+    	header("Location:index");
+    }
 
 }

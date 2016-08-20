@@ -25,17 +25,20 @@ body {
 	z-index: 2;
 	position: absolute;
 	top:0px;
-	left: -40%;
+/*	left: -40%;*/
+	left:30%;
 	width: 40%;
 }
 #slidebar_profile {
 	z-index: 2;
 	position: fixed;
 	top:0px;
-	right: -100%;
+/*	right: -100%;*/
+	left: 30%;
 	width: 40%;
 	color:gray;
 	line-height: 18px;
 	padding-top: 60px;
 	background: white;
+	display: none;
 }
