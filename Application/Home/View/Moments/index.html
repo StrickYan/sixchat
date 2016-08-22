@@ -25,7 +25,7 @@
 		<div id="top" data-role="header">
 			<img id="back_img" src="__PUBLIC__/Home/img/default/icon_back.png" alt="" >
 			<span id="back">M</span>
-			<span id="current_location">SixChat</span>
+			<span id="current_location" ontouchstart='return false'>SixChat</span>
 			<img id="camera" name="{$my_name}" src="__PUBLIC__/Home/img/default/camera.png" alt="" > 
 		</div>
 		<!--消息侧边栏-->
@@ -50,7 +50,7 @@
 		<div id='free'></div>
 		<!--moments流-->
 		<volist name="list" id="vo">
-			<div class="info_flow" >
+			<div class="info_flow">
 				<div class="info_flow_left"><!--左方头像块-->
 					<img src="__ROOT__/avatar_img/{$vo.avatar}" alt="">
 				</div>

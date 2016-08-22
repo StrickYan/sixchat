@@ -282,7 +282,7 @@ function getCommentsForAjax(moment_id,moment_user_name){
         success:function(data){  
             var html="";  
             for(var i=0;i<data.length;i++){  
-                html+="<div class='one_comment' id="+data[i].comment_id+">";  
+                html+="<div class='one_comment' id="+data[i].comment_id+" ontouchstart='return false'>";  
                 html+="<span class='comment_user_name'>"+data[i].reply_name+"</span>";//回复人名字
                 if(data[i].reply_name!=data[i].replyed_name){
                     html+="<span> @ </span>";
