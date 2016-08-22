@@ -370,8 +370,9 @@ class MomentsController extends CommonController {
 			$map1['requested_id']=$request_id;
 			$map1['state'] = 1;
 
-			$result=M("Friend_request")->where($map OR $map1)->find();
-			if($result){//已存在任意一方的请求则不进行操作
+			$result_1=M("Friend_request")->where($map)->select();
+			$result_2=M("Friend_request")->where($map1)->select();
+			if($result_1 || $result_2){//已存在任意一方的请求则不进行操作
 				
 			}
 			else {
