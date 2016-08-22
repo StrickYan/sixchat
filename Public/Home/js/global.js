@@ -3,6 +3,9 @@ var pc_speed = 1000;//pc动画速度
 var mobile_speed = 200;//移动端动画速度
 $(function() {
 
+    //去除移动端click延迟300ms插件fastclick初始化
+    FastClick.attach(document.body);
+
     /* 点击按钮弹出点赞或评论选项，点击周围则隐藏*/
     $(".info_flow_right_button .button_img").each(function(){
         divPop($(this));
