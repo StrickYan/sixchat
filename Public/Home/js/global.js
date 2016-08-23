@@ -85,7 +85,6 @@ $(function() {
     $(document).on("click","#confirm_modify",function() {
         if( $.trim($("#profile_name_box").val()) && $.trim($("#profile_sex_box").val()) && $.trim($("#profile_region_box").val()) && $.trim($("#profile_whatsup_box").val()) ){   
             modifyProfile();
-            self.location.href="";
         } 
     });
 
@@ -243,7 +242,7 @@ function getLikesForAjax(moment_id,moment_user_name){
         url:"./getLikes", 
 
         error:function(XMLHttpRequest, textStatus, errorThrown) {  
-            alert("加载错误，错误原因：\n"+errorThrown);  
+            //alert("加载错误，错误原因：\n"+errorThrown);  
         },  
         success:function(data){ 
             var html="";  
@@ -277,7 +276,7 @@ function getCommentsForAjax(moment_id,moment_user_name){
         url:"./getComments", 
 
         error:function(XMLHttpRequest, textStatus, errorThrown) {  
-            alert("加载错误，错误原因：\n"+errorThrown);  
+            //alert("加载错误，错误原因：\n"+errorThrown);  
         },  
         success:function(data){  
             var html="";  
@@ -336,7 +335,7 @@ function searchUser(search_name) {
         url:"./searchUser",  
 
         error:function(XMLHttpRequest, textStatus, errorThrown) {  
-            alert("查找用户失败，失败原因：\n"+errorThrown);  
+            //alert("查找用户失败，失败原因：\n"+errorThrown);  
         },  
         success:function(data){ 
             if(data.user_name==undefined){
@@ -384,7 +383,7 @@ function friendRuquest(remark,requested_name) {
         url:"./friendRuquest",  
 
         error:function(XMLHttpRequest, textStatus, errorThrown) {  
-            alert("好友请求发送失败，失败原因：\n"+errorThrown);  
+            //alert("好友请求发送失败，失败原因：\n"+errorThrown);  
         },  
         success:function(data){ 
             alert("好友请求已发送，请等待对方响应");
@@ -404,7 +403,7 @@ function addLike(moment_id,moment_user_name) {
         url:"./addLike",  
 
         error:function(XMLHttpRequest, textStatus, errorThrown) {  
-            alert("加载错误，错误原因：\n"+errorThrown);  
+            //alert("加载错误，错误原因：\n"+errorThrown);  
         },  
         success:function(data){  //当addLike后执行reFresh(),重新加载所有赞,所以下面单条添加可以省略
         } 
@@ -421,7 +420,7 @@ function addComment(){
         url:"./addComment",  
 
         error:function(XMLHttpRequest, textStatus, errorThrown) {  
-            alert("加载错误，错误原因：\n"+errorThrown);  
+            //alert("加载错误，错误原因：\n"+errorThrown);  
         },  
         success:function(data){  //当addComment后执行reFresh(),重新加载所有评论,所以下面单条添加可以省略
             // var html="";  
@@ -510,7 +509,7 @@ function getRollingWall(){
         url:"./getRollingWall",  
 
         error:function(XMLHttpRequest, textStatus, errorThrown) {  
-            alert("加载错误，错误原因：\n"+errorThrown);  
+            //alert("加载错误，错误原因：\n"+errorThrown);  
         },  
         success:function(data){    
             var html_1="<img name="+data[0].moment_id_1+" src=../../moment_img/"+data[0].img_url_1+">";  
@@ -559,7 +558,7 @@ function deleteMoment(obj) {
             url:"./deleteMoment",  
 
             error:function(XMLHttpRequest, textStatus, errorThrown) {  
-                alert("加载错误，错误原因：\n"+errorThrown);  
+                //alert("加载错误，错误原因：\n"+errorThrown);  
             },  
             success:function(data){ 
                 obj.parent().slideUp(500,function() {
@@ -616,7 +615,7 @@ function deleteComment(obj) {
                         url:"./deleteComment",  
 
                         error:function(XMLHttpRequest, textStatus, errorThrown) {  
-                            alert("加载错误，错误原因：\n"+errorThrown);  
+                            //alert("加载错误，错误原因：\n"+errorThrown);  
                         },  
                         success:function(data){ 
                             obj.slideUp(500,function() {
@@ -641,7 +640,7 @@ function deleteComment(obj) {
                             url:"./deleteComment",  
 
                             error:function(XMLHttpRequest, textStatus, errorThrown) {  
-                                alert("加载错误，错误原因：\n"+errorThrown);  
+                                //alert("加载错误，错误原因：\n"+errorThrown);  
                             },  
                             success:function(data){ 
                                 obj.slideUp(500,function() {
@@ -678,7 +677,7 @@ function loadMessages() {
         url:"./loadMessages", 
 
         error:function(XMLHttpRequest, textStatus, errorThrown) {  
-            alert("信息加载错误，错误原因：\n"+errorThrown);  
+            //alert("信息加载错误，错误原因：\n"+errorThrown);  
         },  
         success:function(data){    
             var html="";
@@ -714,7 +713,7 @@ function getOneMoment(moment_id) {
         async:false,  
 
         error:function(XMLHttpRequest, textStatus, errorThrown) {  
-            alert("信息加载错误，错误原因：\n"+errorThrown);  
+            //alert("信息加载错误，错误原因：\n"+errorThrown);  
         },  
         success:function(data){    
             var result = '';
@@ -779,7 +778,7 @@ function loadFriendRequest() {
         url:"./loadFriendRequest", 
 
         error:function(XMLHttpRequest, textStatus, errorThrown) {  
-            alert("好友请求加载错误，错误原因：\n"+errorThrown);  
+            //alert("好友请求加载错误，错误原因：\n"+errorThrown);  
         },  
         success:function(data){    
             var html="";
@@ -812,7 +811,7 @@ function agreeRequest(id,request_name) {
         url:"./agreeRequest", 
 
         error:function(XMLHttpRequest, textStatus, errorThrown) {  
-            alert("好友添加错误，错误原因：\n"+errorThrown);  
+           // alert("好友添加错误，错误原因：\n"+errorThrown);  
         },  
         success:function(data){    
             alert("已添加对方为好友");                 
@@ -834,6 +833,7 @@ function modifyProfile() {
     }).done(function(ret){
         if(ret['isSuccess']){
             alert('修改成功');
+            self.location.href="";
         }else{
             alert('修改失敗');
         }
