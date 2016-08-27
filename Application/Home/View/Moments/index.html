@@ -13,28 +13,24 @@
 		<link rel="icon" href="__PUBLIC__/Home/img/default/my.ico" type="image/x-icon" />
 		<link rel="shortcut icon" href="__PUBLIC__/Home/img/default/my.ico" type="image/x-icon" />
 		<link rel="bookmark" href="__PUBLIC__/Home/img/default/my.ico" type="image/x-icon" />
-		<link rel="stylesheet" href="__PUBLIC__/Home/css/swiper.min.css">
-		<link rel="stylesheet" href="__PUBLIC__/Home/css/lightbox.min.css">
-		<link rel="stylesheet" href="__PUBLIC__/Home/css/moments.css" type="text/css" />
-    	<link rel="stylesheet" href="__PUBLIC__/Home/css/messages.css" type="text/css" />
+		<link rel="stylesheet" href="__PUBLIC__/Home/css/lib/swiper.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Home/css/lib/lightbox.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Home/css/moments.css" />
+    	<link rel="stylesheet" href="__PUBLIC__/Home/css/messages.css" />
     	<link rel="stylesheet" type="text/css" media="screen and (min-device-width: 1100px)" href="__PUBLIC__/Home/css/pc.css" />
-    	<script src="__PUBLIC__/Home/js/formatImg.js"></script>
+    	<script src="__PUBLIC__/Home/js/lib/formatImg.js"></script>
 	</head>
 	<body>
-		<!--导航栏-->
 		<div id="top" data-role="header">
 			<img id="back_img" src="__PUBLIC__/Home/img/default/icon_back.png" alt="" >
 			<span id="back">M</span>
 			<span id="current_location" ontouchstart='return false'>SixChat</span>
 			<img id="camera" name="{$my_name}" src="__PUBLIC__/Home/img/default/camera.png" alt="" > 
 		</div>
-		<!--消息侧边栏-->
 		<div id="slidebar"></div>
 <!-- 		<div id="slidebar_post"></div>
 		<div id="slidebar_friends"></div> -->
-		<!--资料侧边栏-->
 		<div id="slidebar_profile"></div>
-		<!--滚动墙-->
 		<div id="slide_wall">	
 	    	<div class="swiper-container">
 		        <div class="swiper-wrapper">
@@ -48,51 +44,48 @@
 		</div>
 		<!--占位栏-->
 		<div id='free'></div>
-		<!--moments流-->
 		<volist name="list" id="vo">
-			<div class="info_flow">
-				<div class="info_flow_left"><!--左方头像块-->
+			<div class="info-flow">
+				<div class="info-flow-left">
 					<img src="__ROOT__/avatar_img/{$vo.avatar}" alt="">
 				</div>
-				<div class="info_flow_right" id="{$vo.moment_id}"><!--右方内容块-->
-					<div class="info_flow_right_user_name">{$vo.user_name}</div><!--用户名块-->
-					<div class="info_flow_right_text">{$vo.info}</div><!--文本块-->
+				<div class="info-flow-right" id="{$vo.moment_id}">
+					<div class="info-flow-right-user-name">{$vo.user_name}</div>
+					<div class="info-flow-right-text">{$vo.info}</div>
 					<if condition="$vo.img_url neq ''">
-						<div class="info_flow_right_img"><!--配图块-->
+						<div class="info-flow-right-img">
 							<a href="__ROOT__/moment_img/{$vo.img_url}" data-lightbox="{$vo.moment_id}">
 								<img class="lazy" data-original="__ROOT__/moment_img/{$vo.img_url}" onload="formatImg(this)" />
 							</a>
 						</div>
 					</if>
-					<div class="info_flow_right_time">{$vo.time}</div><!--时间块-->
+					<div class="info-flow-right-time">{$vo.time}</div>
 					<if condition="$vo.user_name eq $_SESSION['name']">
-						<div class="delete_moment">Delete</div><!--删除块-->
+						<div class="delete-moment">Delete</div>
 					</if>
-					<div class="info_flow_right_button"><!--弹出事件按钮块-->
-						<img name="button" class="button_img" src="__PUBLIC__/Home/img/default/feed_comment.png" />
-						<!-- 弹出层 -->  
+					<div class="info-flow-right-button">
+						<img name="button" class="button-img" src="__PUBLIC__/Home/img/default/feed_comment.png" />
 					    <div class="divPop">  
-					        <img class="like_png" src="__PUBLIC__/Home/img/default/logout_like.png" />
-					        <img class="comment_png" src="__PUBLIC__/Home/img/default/logout_comment.png" />  
+					        <img class="like-png" src="__PUBLIC__/Home/img/default/logout_like.png" />
+					        <img class="comment-png" src="__PUBLIC__/Home/img/default/logout_comment.png" />  
 					    </div>  
 					</div>
-					<div class="info_flow_right_like"></div><!--赞块-->
-					<div class="info_flow_right_comment" ></div><!--评论块-->
-					<!-- 评论框 -->
-					<div class="info_flow_right_input" name="div_comment">
-						<input type="text" class="comment_box" placeholder="Comment" maxlength="140" required/>
+					<div class="info-flow-right-like"></div>
+					<div class="info-flow-right-comment" ></div>
+					<div class="info-flow-right-input" name="div_comment">
+						<input type="text" class="comment-box" placeholder="Comment" maxlength="140" required/>
 					</div>
 				</div>
 			</div>
 		</volist>
-		<div id="footer" data-role="footer"><!--底部栏-->
-			<div class="info_flow" >
-				<div class="footer_left">
+		<div id="footer" data-role="footer">
+			<div class="info-flow" >
+				<div class="footer-left">
 					<img src="__PUBLIC__/Home/img/default/my.ico" alt="">
 				</div>
-				<div class="footer_right" >
-					<div class="footer_right_user_name">旧街场</div>
-					<div class="footer_right_text">
+				<div class="footer-right" >
+					<div class="footer-right-user-name">旧街场</div>
+					<div class="footer-right-text">
 						About：<br>
 						1. 可以浏览所有人的likes<br>
 						2. 可以浏览好友关系的comments<br>
@@ -101,18 +94,18 @@
 						Copyright © 两十两 SHENZHEN<br>
 						— 削笔工作室 Tel:18503056101 —<br>
 					</div>				
-					<div class="footer_right_img">
+					<div class="footer-right-img">
 						<img src="__PUBLIC__/Home/img/default/my.ico" alt="">
 					</div>				
-					<div class="footer_right_time">2016年8月1日 凌晨 the Begin</div>
+					<div class="footer-right-time">2016年8月1日 凌晨 the Begin</div>
 				</div>
 			</div>
 		</div> 
-		<script src="__PUBLIC__/Home/js/jquery-3.1.0.min.js"></script>	
-		<script src="__PUBLIC__/Home/js/swiper.min.js"></script>
-		<script src="__PUBLIC__/Home/js/lightbox.min.js"></script>
-		<script src="__PUBLIC__/Home/js/jquery.lazyload.min.js"></script>
-		<script type='application/javascript' src="__PUBLIC__/Home/js/fastclick.js"></script>
+		<script src="__PUBLIC__/Home/js/lib/jquery-3.1.0.min.js"></script>	
+		<script src="__PUBLIC__/Home/js/lib/swiper.min.js"></script>
+		<script src="__PUBLIC__/Home/js/lib/lightbox.min.js"></script>
+		<script src="__PUBLIC__/Home/js/lib/jquery.lazyload.min.js"></script>
+		<script type='application/javascript' src="__PUBLIC__/Home/js/lib/fastclick.js"></script>
 		<script src="__PUBLIC__/Home/js/global.js"></script>
 		<script src="__PUBLIC__/Home/js/moments.js"></script>	
 	</body>	

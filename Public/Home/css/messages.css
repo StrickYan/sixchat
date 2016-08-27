@@ -19,7 +19,7 @@
 	background-color: white;
 	margin: 8px;
 }
-.message_flow,.request_flow{
+.message-flow,.request-flow{
 	position: relative;
 	background-color: rgb(245,245,245);
 	-webkit-tap-highlight-color: rgba(0,0,0,0.1);
@@ -27,47 +27,47 @@
 	border: 1px solid #EEE;
 
 }
-.message_flow:hover {
+.message-flow:hover {
 	background-color: rgba(0,0,0,0.1);
 }
-.message_flow_left,.request_flow_left {
+.message-flow-left,.request-flow-left {
 	border:0px solid red;
 	position: absolute;
 	left: 8px;
 	top:8px;
 }
-.message_flow_left img,.request_flow img {
+.message-flow-left img,.request-flow img {
 	width: 40px;
 	height: 40px;
 	border-radius: 3px;
 }
 
-.message_flow_right,.request_flow_right {
+.message-flow-right,.request-flow-right {
 	border:0px solid red;
 	margin-left:48px;
 }
 .line1 {
 
 }
-.message_flow_right_user_name,.request_flow_right_user_name {
+.message-flow-right-user-name,.request-flow-right-user-name {
 	border:0px solid red;
 	color:rgb(41, 128, 185);
 	font-weight: 700;
 	line-height: 20px;
 	display: inline-block;
 }
-.message_flow_right_time,.request_flow_right_time {
+.message-flow-right-time,.request-flow-right-time {
 	float: right;
 	font-size: 12px;
 	line-height: 20px;
 	color:rgb(127, 140, 141);
 }
-.message_flow_right_text,.request_flow_right_text {
+.message-flow-right-text,.request-flow-right-text {
 	border:0px solid red;
 	line-height: 20px;
 	display: inline-block;
 }	
-.request_agree {
+.request-agree {
 	position: absolute;
 	right: 8px;
 	top:28px;

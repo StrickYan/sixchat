@@ -16,10 +16,6 @@ $(function() {
 
 	refresh();	//初始化：刷新评论 给朋友圈元素绑定事件
 
-	//loadMessages();//异步加载消息
-
-	//loadFriendRequest();//加载好友请求
-
 	loadNews();
 	setInterval("loadNews()",1000*60);
 	

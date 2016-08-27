@@ -6,44 +6,44 @@ $(function() {
     //去除移动端click延迟300ms插件fastclick初始化
     FastClick.attach(document.body);
 
-    /* 点击按钮弹出点赞或评论选项，点击周围则隐藏*/
-    $(".info_flow_right_button .button_img").each(function(){
+    // 点击按钮弹出点赞或评论选项，点击周围则隐藏
+    $(".info-flow-right-button .button-img").each(function(){
         divPop($(this));
     });
 
-    /* 点击点赞 执行函数*/
-    $( document ).on( "click", '.like_png', function(){
-        addLike($(this).parent().parent().parent().attr("id"),$(this).parent().parent().siblings(".info_flow_right_user_name").text());
+    // 点击点赞 执行函数
+    $( document ).on( "click", '.like-png', function(){
+        addLike($(this).parent().parent().parent().attr("id"),$(this).parent().parent().siblings(".info-flow-right-user-name").text());
         refresh();
     });
 
-    /* 点击按钮弹出评论框或者隐藏评论框，评论框失去焦点则隐藏*/
-    $( document ).on( "click", '.comment_png', function(){
-        $(this).parent().parent().siblings(".info_flow_right_input").show();
-        $(this).parent().parent().siblings(".info_flow_right_input").children("input")
+    // 点击按钮弹出评论框或者隐藏评论框，评论框失去焦点则隐藏
+    $( document ).on( "click", '.comment-png', function(){
+        $(this).parent().parent().siblings(".info-flow-right-input").show();
+        $(this).parent().parent().siblings(".info-flow-right-input").children("input")
         .attr("placeholder","Comment")
         .attr("id",$("#avatar").attr("name"))
         .focus();//输入框聚焦
     });
-    $( document ).on("blur",'.info_flow_right_input input',function(){  //评论框失去焦点则隐藏
+    $( document ).on("blur",'.info-flow-right-input input',function(){  //评论框失去焦点则隐藏
         $(this).parent().hide();
     });
 
-    /*绑定删除朋友圈事件*///不知为何这里如果用document会造成删除动画失效，所以暂时用bind解决
-    $(".delete_moment").bind("click",function() {
+    // 绑定删除朋友圈事件//不知为何这里如果用document会造成删除动画失效，所以暂时用bind解决
+    $(".delete-moment").bind("click",function() {
         deleteMoment($(this).parent());
     });
 
-    /*绑定点击评论弹出回复框事件*/
-    $(document).on("click",".one_comment",function(){ 
-        $(this).parent().siblings(".info_flow_right_input").show();
-        $(this).parent().siblings(".info_flow_right_input").children("input")
-        .attr("placeholder","@".concat($(this).children(".comment_user_name").first().text()))//改变placeholder值
-        .attr("id",$(this).children(".comment_user_name").first().text())
+    // 绑定点击评论弹出回复框事件
+    $(document).on("click",".one-comment",function(){ 
+        $(this).parent().siblings(".info-flow-right-input").show();
+        $(this).parent().siblings(".info-flow-right-input").children("input")
+        .attr("placeholder","@".concat($(this).children(".comment-user-name").first().text()))//改变placeholder值
+        .attr("id",$(this).children(".comment-user-name").first().text())
         .focus();//输入框聚焦
     });
     
-    /*绑定消息点击事件*/
+    // 绑定消息点击事件
     $(document).on("click",".message_flow",function() {
         getOneMoment($(this).attr("name"));//传送moment_id查看具体该条moment
         $("#back").click();
@@ -51,14 +51,14 @@ $(function() {
         $("#back").text("SixChat"); 
     });
 
-    /*响应好友请求*/
+    // 响应好友请求
     $(document).on("click",".request_agree",function() {
         //传送请求id和请求人名
         agreeRequest($(this).parent().parent(".request_flow").attr("name"),$(this).siblings(".line1").children(".request_flow_right_user_name").children("span").text());
         $(this).parent().parent(".request_flow").slideUp(mobile_speed);
     });
 
-    /*点击修改资料按钮事件*/
+    // 点击修改资料按钮事件
     $(document).on("click","#modify_profile_button",function() {
         $(this).text("confirm").attr("id","confirm_modify");
         var input_2_val = $("#profile_name_val").text();
@@ -88,7 +88,8 @@ $(function() {
         } 
     });
 
-    $(document).on( 'change', "#profile_photo" , function(e){  //若选择了图片则显示图片名 否则显示New Avatar Image
+    //若选择了图片则显示图片名 否则显示New Avatar Image
+    $(document).on( 'change', "#profile_photo" , function(e){  
         try{
             var name = e.currentTarget.files[0].name;
             $("#new_avatar_btn span").text(name);
@@ -110,7 +111,7 @@ $(function() {
         }); 
     };
 
-    /*上拉到底加载更多*/
+    // 上拉到底加载更多
     $(window).scroll(function() {
         //$(document).scrollTop() 获取垂直滚动的距离
         //$(document).scrollLeft() 这是获取水平滚动条的距离
@@ -125,7 +126,7 @@ $(function() {
         }
     });
 
-    /*点击主页头像*/
+    // 点击主页头像
     $("#avatar").bind("click",function() {
         searchUser($("#camera").attr("name"));
     });
@@ -134,15 +135,15 @@ $(function() {
         location.href="./logout";
     });
 
-    /*替换文本内容*/
-    $(".info_flow_right_text").each(function(){
+    // 替换文本内容
+    $(".info-flow-right-text").each(function(){
         var str = $(this).text();
         $(this).html(replace_str(str));
     });
 
 });
 
-/*替换str*/
+// 替换str
 function replace_str(str){
     str = str.replace(/\</g,'&lt;');
     str = str.replace(/\>/g,'&gt;');
@@ -156,7 +157,7 @@ function replace_str(str){
     return str;
 }
 
-/*加载更多moments*/
+// 加载更多moments
 function loadNextPage(page) {
     $.ajax({  
         type:"POST",  
@@ -171,45 +172,45 @@ function loadNextPage(page) {
         success:function(data){  
             var result = '';
             for(var i=0;i<data.length;i++){              
-                result += "<div class='info_flow' >";
-                result += "<div class='info_flow_left'>";
+                result += "<div class='info-flow' >";
+                result += "<div class='info-flow-left'>";
                 result += '<img src='+'../../avatar_img/'+ data[i]['avatar'] +'>';
                 result += "</div>";
-                result += "<div class='info_flow_right' id="+data[i]['moment_id']+">";
-                result += "<div class='info_flow_right_user_name'>"+ data[i]['user_name'] +"</div>";
+                result += "<div class='info-flow-right' id="+data[i]['moment_id']+">";
+                result += "<div class='info-flow-right-user-name'>"+ data[i]['user_name'] +"</div>";
                 if(data[i]['info']){
-                    result += "<div class='info_flow_right_text'>"+ data[i]['info'] +"</div>";
+                    result += "<div class='info-flow-right-text'>"+ data[i]['info'] +"</div>";
                 }          
                 if(data[i]['img_url']){
-                    result += "<div class='info_flow_right_img'>";
+                    result += "<div class='info-flow-right-img'>";
                     result += "<a href=../../moment_img/"+ data[i]['img_url']+" data-lightbox="+data[i]['moment_id']+">";
                     result += '<img src=' +'../../moment_img/'+ data[i]['img_url']  + " onload='formatImg(this)'>";
                     result += "</a></div>";
                 }
-                result += "<div class='info_flow_right_time'>"+ data[i]['time'] +"</div>";
+                result += "<div class='info-flow-right-time'>"+ data[i]['time'] +"</div>";
                 if($("#camera").attr("name")==data[i]['user_name']){
-                    result += "<div class='delete_moment'>Delete</div>";
+                    result += "<div class='delete-moment'>Delete</div>";
                 }        
-                result += "<div class='info_flow_right_button'>";
-                result += "<img name='button' class='button_img' src='../../Public/Home/img/default/feed_comment.png' />";
+                result += "<div class='info-flow-right-button'>";
+                result += "<img name='button' class='button-img' src='../../Public/Home/img/default/feed_comment.png' />";
                 result += "<div class='divPop'>";
-                result += "<img class='like_png' src='../../Public/Home/img/default/logout_like.png' />";
-                result += "<img class='comment_png' src='../../Public/Home/img/default/logout_comment.png' />";
+                result += "<img class='like-png' src='../../Public/Home/img/default/logout_like.png' />";
+                result += "<img class='comment-png' src='../../Public/Home/img/default/logout_comment.png' />";
                 result += "</div>";
                 result += "</div>";
-                result += "<div class='info_flow_right_like'></div>";
-                result += "<div class='info_flow_right_comment' ></div>";
-                result += "<div class='info_flow_right_input' name='div_comment'>";
-                result += "<input type='text' class='comment_box' placeholder='Comment' maxlength=140 required/>";
+                result += "<div class='info-flow-right-like'></div>";
+                result += "<div class='info-flow-right-comment' ></div>";
+                result += "<div class='info-flow-right-input' name='div_comment'>";
+                result += "<input type='text' class='comment-box' placeholder='Comment' maxlength=140 required/>";
                 result += "</div>";
                 result += "</div>";
                 result += "</div>";         
             }   
             $('#footer').before(result).fadeOut().fadeIn(pc_speed);
-            $(".info_flow_right_button .button_img").each(function(){
+            $(".info-flow-right-button .button-img").each(function(){
                 divPop($(this));
             });
-            $(".delete_moment").unbind().bind("click",function() {
+            $(".delete-moment").unbind().bind("click",function() {
                 deleteMoment($(this).parent());
             });
             refresh();
@@ -217,22 +218,22 @@ function loadNextPage(page) {
     });  
 }
 
-/*刷新赞与评论 */
+// 刷新赞与评论 
 function refresh() {	
 	/*异步加载每条朋友圈的赞与评论*/
-	$(".info_flow_right").each(function(){
-        getLikesForAjax($(this).attr("id"),$(this).find(".info_flow_right_user_name").text());
-		getCommentsForAjax($(this).attr("id"),$(this).find(".info_flow_right_user_name").text());
+	$(".info-flow-right").each(function(){
+        getLikesForAjax($(this).attr("id"),$(this).find(".info-flow-right-user-name").text());
+		getCommentsForAjax($(this).attr("id"),$(this).find(".info-flow-right-user-name").text());
 	});
 
     /*绑定删除评论事件*/
-    $(".one_comment").each(function() { 
+    $(".one-comment").each(function() { 
         deleteComment($(this));
     });
 
 }
 
-/*jquery $.ajax() 异步加载每条朋友圈下面的所有赞*/
+// jquery $.ajax() 异步加载每条朋友圈下面的所有赞
 function getLikesForAjax(moment_id,moment_user_name){  
     $.ajax({  
         type:"POST",  
@@ -248,25 +249,25 @@ function getLikesForAjax(moment_id,moment_user_name){
             var html="";  
             var i=0;
             if (data.length){
-                html+="<img class='like_img' src='../../Public/Home/img/default/like.png'/>";              
+                html+="<img class='like-img' src='../../Public/Home/img/default/like.png'/>";              
             }
             for(i=0;i<data.length-1;i++){  
-                html+="<span class='like_user_name'>"+data[i].reply_name+"</span>";//点赞人名字
+                html+="<span class='like-user-name'>"+data[i].reply_name+"</span>";//点赞人名字
                 html+="<span>,</span>";
                 //html+="</div>";  
             }
             if(i==data.length-1){  
-                html+="<span class='like_user_name'>"+data[i].reply_name+"</span>";//点赞人名字
+                html+="<span class='like-user-name'>"+data[i].reply_name+"</span>";//点赞人名字
                 //html+="</div>";                
             }  
-            $("#"+moment_id).children(".info_flow_right_like").empty();
-            $("#"+moment_id).children(".info_flow_right_like").append(html);   
+            $("#"+moment_id).children(".info-flow-right-like").empty();
+            $("#"+moment_id).children(".info-flow-right-like").append(html);   
         }  
     });  
 }  
 
 
-/*jquery $.ajax() 异步加载每条朋友圈下面的所有评论*/
+// jquery $.ajax() 异步加载每条朋友圈下面的所有评论
 function getCommentsForAjax(moment_id,moment_user_name){  
     $.ajax({  
         type:"POST",  
@@ -281,18 +282,18 @@ function getCommentsForAjax(moment_id,moment_user_name){
         success:function(data){  
             var html="";  
             for(var i=0;i<data.length;i++){  
-                html+="<div class='one_comment' id="+data[i].comment_id+" ontouchstart='return false'>";  
-                html+="<span class='comment_user_name'>"+data[i].reply_name+"</span>";//回复人名字
+                html+="<div class='one-comment' id="+data[i].comment_id+" ontouchstart='return false'>";  
+                html+="<span class='comment-user-name'>"+data[i].reply_name+"</span>";//回复人名字
                 if(data[i].reply_name!=data[i].replyed_name){
                     html+="<span> @ </span>";
-               		html+="<span class='comment_user_name'>"+data[i].replyed_name+"</span>";//被回复人名	
+               		html+="<span class='comment-user-name'>"+data[i].replyed_name+"</span>";//被回复人名	
                 }
                 html+="<span>：</span>"
                 html+="<span>"+data[i].comment+"</span>";//评论
                 html+="</div>";  
             }  
-            $("#"+moment_id).children(".info_flow_right_comment").children().remove();
-            $("#"+moment_id).children(".info_flow_right_comment").append(html);     
+            $("#"+moment_id).children(".info-flow-right-comment").children().remove();
+            $("#"+moment_id).children(".info-flow-right-comment").append(html);     
         }  
     });  
 }  
@@ -301,7 +302,7 @@ function getCommentsForAjax(moment_id,moment_user_name){
 document.onkeypress=function EnterPress(e) {
 	var e = e || window.event;   
 	//满足 回车键&&输入框聚焦&&内容不为空
-	if(e.keyCode == 13 && $(".comment_box:focus").length && $.trim($(".comment_box:focus").val())){   
+	if(e.keyCode == 13 && $(".comment-box:focus").length && $.trim($(".comment-box:focus").val())){   
 		addComment();
 		refresh();
 	}   
@@ -325,7 +326,7 @@ document.onkeypress=function EnterPress(e) {
 
 };
 
-/*查看用户资料*/
+// 查看用户资料
 function searchUser(search_name) {
     $.ajax({  
         type:"POST",  
@@ -345,10 +346,10 @@ function searchUser(search_name) {
             var html='';
             html+="<form name='form_profile' id='form_profile'>";
             html+="<div id=profile_avatar><img src="+"../../avatar_img/"+data.avatar+"></div>";
-            html+="<div id='profile_name' ><span class='profile_span'>Name：</span><span id='profile_name_val'>"+data.user_name+"</span></div><hr>";
-            html+="<div id='profile_sex' ><span class='profile_span'>Gender：</span><span id='profile_sex_val'>"+data.sex+"</span></div><hr>";
-            html+="<div id='profile_region' ><span class='profile_span'>Region：</span><span id='profile_region_val'>"+data.region+"</span></div><hr>";
-            html+="<div id='profile_whatsup' ><span class='profile_span'>What's Up：</span><span id='profile_whatsup_val'>"+data.whatsup+"</span></div><hr>";
+            html+="<div id='profile_name' ><span class='profile-span'>Name：</span><span id='profile_name_val'>"+data.user_name+"</span></div><hr>";
+            html+="<div id='profile_sex' ><span class='profile-span'>Gender：</span><span id='profile_sex_val'>"+data.sex+"</span></div><hr>";
+            html+="<div id='profile_region' ><span class='profile-span'>Region：</span><span id='profile_region_val'>"+data.region+"</span></div><hr>";
+            html+="<div id='profile_whatsup' ><span class='profile-span'>What's Up：</span><span id='profile_whatsup_val'>"+data.whatsup+"</span></div><hr>";
             html+="</form>";
             if(data.is_friend==0){//还不是好友关系则显示
                 html+="<div id='add_friend_div' ><input type='text' placeholder='write some remark here to your new friend' maxlength=140 /></div>";
@@ -373,7 +374,7 @@ function searchUser(search_name) {
     });   
 };
 
-/*好友请求*/
+// 好友请求
 function friendRuquest(remark,requested_name) {
     $.ajax({  
         type:"POST",  
@@ -392,8 +393,7 @@ function friendRuquest(remark,requested_name) {
     });    
 };
 
-
-
+// 点赞
 function addLike(moment_id,moment_user_name) {
    $.ajax({  
         type:"POST",  
@@ -410,12 +410,12 @@ function addLike(moment_id,moment_user_name) {
     });   
 }
 
-
+// 评论
 function addComment(){  
     $.ajax({  
         type:"POST",  
         async:false,  
-        data:{"moment_id":$(".comment_box:focus").parent().parent().attr("id") ,"replyed_name":$(".comment_box:focus").attr("id") ,"comment_val":$(".comment_box:focus").val()},  
+        data:{"moment_id":$(".comment-box:focus").parent().parent().attr("id") ,"replyed_name":$(".comment-box:focus").attr("id") ,"comment_val":$(".comment-box:focus").val()},  
         dataType:"json",  
         url:"./addComment",  
 
@@ -425,23 +425,24 @@ function addComment(){
         success:function(data){  //当addComment后执行reFresh(),重新加载所有评论,所以下面单条添加可以省略
             // var html="";  
             // for(var i=0;i<data.length;i++){  
-            //     html+="<div class='one_comment' id="+data[i].comment_id+">";  
-            //     html+="<span class='comment_user_name'>"+data[i].reply_name+"</span>";//回复人名字
+            //     html+="<div class='one-comment' id="+data[i].comment_id+">";  
+            //     html+="<span class='comment-user-name'>"+data[i].reply_name+"</span>";//回复人名字
             //     if(data[i].reply_name!=data[i].replyed_name){
             //         html+=" @ ";
-            //     	html+="<span class='comment_user_name'>"+data[i].replyed_name+"</span>";//被回复人名           	
+            //     	html+="<span class='comment-user-name'>"+data[i].replyed_name+"</span>";//被回复人名           	
             //     }
             //     html+="："
             //     html+="<span>"+data[i].comment_val+"</span>";//评论
             //     html+="</div>";  
             // }   
-            // $(".comment_box:focus").parent().siblings(".info_flow_right_comment").append(html); 
-            $(".comment_box:focus").val("");
-            $(".comment_box:focus").parent().hide();  
+            // $(".comment-box:focus").parent().siblings(".info-flow-right-comment").append(html); 
+            $(".comment-box:focus").val("");
+            $(".comment-box:focus").parent().hide();  
         } 
     });  
 } 
 
+// 发送moment
 function addMoment() {
     var data = new FormData($('#form_moment')[0]);
     $.ajax({
@@ -455,42 +456,42 @@ function addMoment() {
     }).done(function(ret){
         if(ret['isSuccess']){
             var result = '';
-            result += "<div class='info_flow' >";
-            result += "<div class='info_flow_left'>";
+            result += "<div class='info-flow' >";
+            result += "<div class='info-flow-left'>";
             result += '<img src='+'../../avatar_img/'+ ret['avatar'] +'>';
             result += "</div>";
-            result += "<div class='info_flow_right' id="+ret['moment_id']+">";
-            result += "<div class='info_flow_right_user_name'>"+ ret['user_name'] +"</div>";
+            result += "<div class='info-flow-right' id="+ret['moment_id']+">";
+            result += "<div class='info-flow-right-user-name'>"+ ret['user_name'] +"</div>";
             if(ret['text_box']){
-            	result += "<div class='info_flow_right_text'>"+ ret['text_box'] +"</div>";
+            	result += "<div class='info-flow-right-text'>"+ ret['text_box'] +"</div>";
             }          
             if(ret['photo']){
-            	result += "<div class='info_flow_right_img'>";
+            	result += "<div class='info-flow-right-img'>";
                 result += "<a href=../../moment_img/"+ ret['photo']+" data-lightbox="+ret['moment_id']+">";
            		result += '<img src=' +'../../moment_img/'+ ret['photo']  + " onload='formatImg(this)'>";
             	result += "</a></div>";
             }
-            result += "<div class='info_flow_right_time'>"+ ret['time'] +"</div>";
-            result += "<div class='delete_moment'>Delete</div>";
-            result += "<div class='info_flow_right_button'>";
-            result += "<img name='button' class='button_img' src='../../Public/Home/img/default/feed_comment.png' />";
+            result += "<div class='info-flow-right-time'>"+ ret['time'] +"</div>";
+            result += "<div class='delete-moment'>Delete</div>";
+            result += "<div class='info-flow-right-button'>";
+            result += "<img name='button' class='button-img' src='../../Public/Home/img/default/feed_comment.png' />";
             result += "<div class='divPop'>";
-            result += "<img class='like_png' src='../../Public/Home/img/default/logout_like.png' />";
-            result += "<img class='comment_png' src='../../Public/Home/img/default/logout_comment.png' />";
+            result += "<img class='like-png' src='../../Public/Home/img/default/logout_like.png' />";
+            result += "<img class='comment-png' src='../../Public/Home/img/default/logout_comment.png' />";
             result += "</div>";
             result += "</div>";
-            result += "<div class='info_flow_right_like'></div>";
-            result += "<div class='info_flow_right_comment' ></div>";
-            result += "<div class='info_flow_right_input' name='div_comment'>";
-            result += "<input type='text' class='comment_box' placeholder='Comment' maxlength=140 required/>";
+            result += "<div class='info-flow-right-like'></div>";
+            result += "<div class='info-flow-right-comment' ></div>";
+            result += "<div class='info-flow-right-input' name='div_comment'>";
+            result += "<input type='text' class='comment-box' placeholder='Comment' maxlength=140 required/>";
             result += "</div>";
             result += "</div>";
             result += "</div>";
             
             $("#camera").click();
-			$('.info_flow').first().before(result).hide().slideDown(mobile_speed);
-            divPop($(".info_flow_right_button .button_img").first());//给新载入的按钮元素绑定事件
-            $(".delete_moment").first().bind("click",function() {   //给新载入的删除朋友圈元素绑定事件
+			$('.info-flow').first().before(result).hide().slideDown(mobile_speed);
+            divPop($(".info-flow-right-button .button-img").first());//给新载入的按钮元素绑定事件
+            $(".delete-moment").first().bind("click",function() {   //给新载入的删除朋友圈元素绑定事件
                 deleteMoment($(this).parent());
             });
         }else{
@@ -499,7 +500,7 @@ function addMoment() {
     });
 }
 
-/*jquery $.ajax() 异步加载随机3图url*/
+// jquery $.ajax() 异步加载随机3图url
 function getRollingWall(){  
     $.ajax({  
         type:"POST",  
@@ -530,6 +531,7 @@ function getRollingWall(){
     });  
 }
 
+// 点击弹出赞与评论选项
 function divPop(obj) {
     obj.click(function(event){
         //$(".divPop").hide(500);
@@ -542,11 +544,12 @@ function divPop(obj) {
         obj.siblings(".divPop").show(mobile_speed);  
     });
     //单击空白区域隐藏弹出层  
-    $(".info_flow").click(function() { obj.siblings(".divPop").hide(mobile_speed);  });  
+    $(".info-flow").click(function() { obj.siblings(".divPop").hide(mobile_speed);  });  
     //单击弹出层则自身隐藏  
     $(".divPop").click(function() { obj.siblings(".divPop").hide(mobile_speed); });  
 }
 
+// 删除moment
 function deleteMoment(obj) {
     var data = confirm("Confirm deletion?");
     if(data){
@@ -569,7 +572,7 @@ function deleteMoment(obj) {
     }
 }
 
-/*自定义判定设备类型函数*/
+// 自定义判定设备类型函数
 function isPC() {
     var userAgentInfo = navigator.userAgent;
     var Agents = ["Android", "iPhone",
@@ -585,7 +588,7 @@ function isPC() {
     return flag;
 }
 
-/*自定义移动端长按函数*/
+// 自定义移动端长按函数
 $.fn.longPress = function(fn) {
     var timeout = undefined;
     var $this = this;
@@ -599,9 +602,9 @@ $.fn.longPress = function(fn) {
     }
 }
 
-/*删除评论函数*/
+// 删除评论函数
 function deleteComment(obj) {
-    if(obj.children(".comment_user_name").first().text()==$("#avatar").attr("name")){//自己的评论才有权限删除
+    if(obj.children(".comment-user-name").first().text()==$("#avatar").attr("name")){//自己的评论才有权限删除
        // alert("hh");
         if(isPC()==0){   //移动端
             obj.longPress(function(){
@@ -667,7 +670,7 @@ function preventDefault(event) {
     e.returnValue = false;
 };
 
-/*异步加载信息*/
+// 异步加载信息
 function loadMessages() {
     $.ajax({  
         type:"POST",  
@@ -686,16 +689,16 @@ function loadMessages() {
             html+="<input type='text' id='search_box' placeholder='Search New Friends' maxlength=140 required/>"
             html+="</div>";
             for(var i=0;i<data.length;i++){  
-                html+="<div class='message_flow' name="+data[i].moment_id+" onclick=click_message_flow("+data[i].moment_id+")>";
-                html+="<div class='message_flow_left'>";
+                html+="<div class='message-flow' name="+data[i].moment_id+" onclick=click_message_flow("+data[i].moment_id+")>";
+                html+="<div class='message-flow-left'>";
                 html+="<img src=../../avatar_img/"+data[i].avatar+" alt=''>";
                 html+="</div>";
-                html+="<div class='message_flow_right'>";
+                html+="<div class='message-flow-right'>";
                 html+="<div class='line1'>";
-                html+="<div class='message_flow_right_user_name'>"+data[i].reply_name+"</div>";
-                html+="<div class='message_flow_right_time'>"+data[i].time+"</div>";
+                html+="<div class='message-flow-right-user-name'>"+data[i].reply_name+"</div>";
+                html+="<div class='message-flow-right-time'>"+data[i].time+"</div>";
                 html+="</div>";
-                html+="<div class='message_flow_right_text'>"+data[i].comment+"</div>";
+                html+="<div class='message-flow-right-text'>"+data[i].comment+"</div>";
                 html+="</div></div>";
             }  
             $("#slidebar").empty().append(html);                 
@@ -703,7 +706,7 @@ function loadMessages() {
     });  
 };
 
-/*查看一条moment*/
+// 查看一条moment
 function getOneMoment(moment_id) {
     $.ajax({
         url: './getOneMoment',
@@ -717,36 +720,36 @@ function getOneMoment(moment_id) {
         },  
         success:function(data){    
             var result = '';
-            result += "<div class='info_flow' style='padding-top:48px;'>";
-            result += "<div class='info_flow_left'>";
+            result += "<div class='info-flow' style='padding-top:48px;'>";
+            result += "<div class='info-flow-left'>";
             result += '<img src='+'../../avatar_img/'+ data[0]['avatar'] +'>';
             result += "</div>";
-            result += "<div class='info_flow_right' id="+data[0]['moment_id']+">";
-            result += "<div class='info_flow_right_user_name'>"+ data[0]['user_name'] +"</div>";
+            result += "<div class='info-flow-right' id="+data[0]['moment_id']+">";
+            result += "<div class='info-flow-right-user-name'>"+ data[0]['user_name'] +"</div>";
             if(data[0]['text_box']){
-                result += "<div class='info_flow_right_text'>"+ data[0]['text_box'] +"</div>";
+                result += "<div class='info-flow-right-text'>"+ data[0]['text_box'] +"</div>";
             }          
             if(data[0]['photo']){
-                result += "<div class='info_flow_right_img'>";
+                result += "<div class='info-flow-right-img'>";
                 result += "<a href=../../moment_img/"+ data[0]['photo'] + " data-lightbox="+data[0]['moment_id']+">";
                 result += '<img src=' +'../../moment_img/'+ data[0]['photo']  + " onload='formatImg(this)'>";
                 result += "</a></div>";
             }
-            result += "<div class='info_flow_right_time'>"+ data[0]['time'] +"</div>";
+            result += "<div class='info-flow-right-time'>"+ data[0]['time'] +"</div>";
             if(data[0]['user_name']==data[0]['my_name']){
-                result += "<div class='delete_moment'>Delete</div>";
+                result += "<div class='delete-moment'>Delete</div>";
             }
-            result += "<div class='info_flow_right_button'>";
-            result += "<img name='button' class='button_img' src='../../Public/Home/img/default/feed_comment.png' />";
+            result += "<div class='info-flow-right-button'>";
+            result += "<img name='button' class='button-img' src='../../Public/Home/img/default/feed_comment.png' />";
             result += "<div class='divPop'>";
-            result += "<img class='like_png' src='../../Public/Home/img/default/logout_like.png' />";
-            result += "<img class='comment_png' src='../../Public/Home/img/default/logout_comment.png' />";
+            result += "<img class='like-png' src='../../Public/Home/img/default/logout_like.png' />";
+            result += "<img class='comment-png' src='../../Public/Home/img/default/logout_comment.png' />";
             result += "</div>";
             result += "</div>";
-            result += "<div class='info_flow_right_like'></div>";
-            result += "<div class='info_flow_right_comment' ></div>";
-            result += "<div class='info_flow_right_input' name='div_comment'>";
-            result += "<input type='text' class='comment_box' placeholder='Comment' maxlength=140 required/>";
+            result += "<div class='info-flow-right-like'></div>";
+            result += "<div class='info-flow-right-comment' ></div>";
+            result += "<div class='info-flow-right-input' name='div_comment'>";
+            result += "<input type='text' class='comment-box' placeholder='Comment' maxlength=140 required/>";
             result += "</div>";
             result += "</div>";
             result += "</div>";
@@ -756,10 +759,10 @@ function getOneMoment(moment_id) {
             $("#slidebar~div").remove();    
             $("#slidebar").after(result);
 
-            $(".comment_box").attr("id",my_name);//将我的名字赋值给输入框作为id属性
+            $(".comment-box").attr("id",my_name);//将我的名字赋值给输入框作为id属性
   
-            divPop($(".info_flow_right_button .button_img").first());//给新载入的按钮元素绑定事件
-            $(".delete_moment").first().bind("click",function() {   //给新载入的删除朋友圈元素绑定事件
+            divPop($(".info-flow-right-button .button-img").first());//给新载入的按钮元素绑定事件
+            $(".delete-moment").first().bind("click",function() {   //给新载入的删除朋友圈元素绑定事件
                 deleteMoment($(this).parent());
             });              
 
@@ -768,7 +771,7 @@ function getOneMoment(moment_id) {
     });  
 };
 
-
+// 加载好友添加请求
 function loadFriendRequest() {
     $.ajax({  
         type:"POST",  
@@ -783,17 +786,17 @@ function loadFriendRequest() {
         success:function(data){    
             var html="";
             for(var i=0;i<data.length;i++){  
-                html+="<div class='request_flow' name="+data[i].id+">";
-                html+="<div class='request_flow_left'>";
+                html+="<div class='request-flow' name="+data[i].id+">";
+                html+="<div class='request-flow-left'>";
                 html+="<img src=../../avatar_img/"+data[i].avatar+" alt=''>";
                 html+="</div>";
-                html+="<div class='request_flow_right'>";
+                html+="<div class='request-flow-right'>";
                 html+="<div class='line1'>";
-                html+="<div class='request_flow_right_user_name'><span>"+data[i].request_name+"</span> wants to add you.</div>";
-                html+="<div class='request_flow_right_time'>"+data[i].time+"</div>";
+                html+="<div class='request-flow-right-user-name'><span>"+data[i].request_name+"</span> wants to add you.</div>";
+                html+="<div class='request-flow-right-time'>"+data[i].time+"</div>";
                 html+="</div>";
-                html+="<div class='request_flow_right_text'>remark："+data[i].remark+"</div>";
-                html+="<div class='request_agree'>agree</div>";
+                html+="<div class='request-flow-right-text'>remark："+data[i].remark+"</div>";
+                html+="<div class='request-agree'>agree</div>";
                 html+="</div></div>";
             }  
             $("#search").after(html);                 
@@ -801,7 +804,7 @@ function loadFriendRequest() {
     });  
 };
 
-/*处理好友请求*/
+// 处理好友请求
 function agreeRequest(id,request_name) {
     $.ajax({  
         type:"POST",  
@@ -819,7 +822,7 @@ function agreeRequest(id,request_name) {
     });  
 };
 
-/*修改资料*/
+// 修改资料
 function modifyProfile() {
     var data = new FormData($('#form_profile')[0]);
     $.ajax({
@@ -840,6 +843,7 @@ function modifyProfile() {
     });
 }
 
+// 加载未读消息数量
 function loadNews() {
     $.ajax({  
         type:"POST",  
