@@ -2,19 +2,18 @@
 	margin:0;
 	padding:0;
 }
-
 body {
 	font-family:arial, verdana;
 }
 #login {
 	background-color:#fff;
-	text-align:center;				
+	text-align:center;		
 	border: 0 none;
 	border-radius: 3px;
 	padding-top:10%;
 	position:relative;
 }
-#brand_name {
+#header {
 	display:block;
 	color:gray;
 	position:absolute;
@@ -28,7 +27,7 @@ body {
 	margin-top:40px;
 	border-radius: 5px;
 }
-.input_box {
+.input-box {
 	padding: 10px 15px;
 	border: 1px solid #ccc;
 	border-radius: 3px;

@@ -16,56 +16,54 @@
 		<link rel="stylesheet" href="__PUBLIC__/Home/css/login.css" type="text/css" />
 		<script src="__PUBLIC__/Home/js/preventOpenLinksInSafari.js"></script>
 	</head>
-	<body>		
+	<body>	
 		<div id="login" data-role="page">
-			<div id="brand_name" data-role="header">SixChat</div>
-			<div data-role="content">
+			<div id="header">SixChat</div>
+			<div id="content">
 				<img src="__PUBLIC__/Home/img/default/default_head.jpg">
 				<br>
-				<form name="registerForm" action="" method="post" autocomplete="off">
-					<input type="text" name="id" id="id"  class="input_box" placeholder="{$text_placeholder}" onkeypress="EnterPress(event)" onkeydown="EnterPress()" 
-						maxlength="20" required>			
-					<input type="password" name="password"  class="input_box" placeholder="设置密码" onkeypress="EnterPress(event)" onkeydown="EnterPress()"  
-						maxlength="20" onkeyup="this.value=this.value.replace(/^ +| +$/g,'')" required>
-					<input type="password" name="password2" class="input_box" placeholder="确认密码" onkeypress="EnterPress(event)" onkeydown="EnterPress()"  
-						maxlength="20" onkeyup="this.value=this.value.replace(/^ +| +$/g,'')" required>
-					<button id="submit_button" type="button" name="button" onclick="validate()">注 册</button>
+				<form action="" method="post" autocomplete="off">
+					<input type="text" id="id" name="id" class="input-box" placeholder="{$text_placeholder}" maxlength="20" required>			
+					<input type="password" id="password" name="password" class="input-box" placeholder="设置密码" maxlength="20" required>
+					<input type="password" id="password_2" class="input-box" placeholder="确认密码" maxlength="20" onkeyup="this.value=this.value.replace(/^ +| +$/g,'')" required>
+					<button id="submit_button" type="button">注 册</button>
 					<a href="{:U('Login/index')}">现在登录</a>
 				</form>
 			</div>
-			<div data-role="footer"></div>
+			<div id="footer"></div>
 		</div>
+		<script src="__PUBLIC__/Home/js/jquery-3.1.0.min.js"></script>	
 		<script>
-        function validate(){
-           if(registerForm.id.value==""){
-                alert("请输入您的账号");
-                document.registerForm.id.focus();//聚焦
-                return;
-           }
-           else if(registerForm.password.value==""){
-               alert("请输入您的密码");
-               document.registerForm.password.focus();//聚焦
-               return;
-           }
-		   else if(registerForm.password2.value==""){
-               alert("请确认您的密码");
-               document.registerForm.password2.focus();//聚焦
-               return;
-           }
-		    else if(registerForm.password.value!=registerForm.password2.value){
-               alert("您输入的密码不一致，请重新输入");
-               document.registerForm.password2.focus();//聚焦
-               return;
-           }
-		   registerForm.submit();
-		}	
-		function EnterPress(e){ //传入 event   
-		    var e = e || window.event;   
-		    if(e.keyCode == 13){   
-		    document.getElementById("submit_button").click();   
-		    }   
-		    return false;
-		}  
-		</script>
+			//验证用户输入
+		    function validate() {	
+				if(!$.trim($("#id").val())){   
+					$("#id").focus();
+					return;
+				}   
+				else if( !$.trim($("#password").val()) ){   
+					$("#password").focus();
+					return;
+				} 
+				else if(!$.trim($("#password_2").val())  ){   
+					$("#password_2").focus();
+					return;
+				} 
+			    else if( $.trim($("#password").val()) != $.trim($("#password_2").val()) ){   
+			        alert("您输入的密码不一致，请重新输入");
+			        $("#password_2").focus();
+			        return;
+			    }
+			    $("form").submit();
+		    }
+		    document.onkeypress=function EnterPress(e) {
+				var e = e || window.event;   
+				if(e.keyCode == 13){
+					validate();
+				}
+			};	
+			$("#submit_button").bind("click",function() {
+				validate();
+			}); 
+		</script>	
 	</body>	
 </html>

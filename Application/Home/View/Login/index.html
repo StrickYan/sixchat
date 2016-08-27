@@ -18,42 +18,42 @@
 	</head>
 	<body>		
 		<div id="login" data-role="page">
-			<div id="brand_name" data-role="header">SixChat</div>
-			<div data-role="content">
+			<div id="header">SixChat</div>
+			<div id="content">
 				<img src="__ROOT__/avatar_img/{$head_image}">
 				<br>
-				<form name="loginForm" action="" method="post" autocomplete="off">
-					<input type="text" name="id" id="id"  class="input_box" placeholder="{$text_placeholder}" onkeypress="EnterPress(event)" onkeydown="EnterPress()" 
-					value="{$id}" maxlength="20" required>			
-					<input name="password" id="password" class="input_box" placeholder="{$pw_placeholder}" onkeypress="EnterPress(event)" onkeydown="EnterPress()" type="password" 
-					value="{$password}" maxlength="20" onkeyup="this.value=this.value.replace(/^ +| +$/g,'')" required>			
-					<button id="submit_button" type="button" name=button onclick="validate()">
-						log In
-					</button>			
-					<a id="link" href="{:U('Register/index')}">Register Account</a>
+				<form method="post" autocomplete="off">
+					<input type="text" name="id" id="id" class="input-box" placeholder="{$text_placeholder}" value="{$id}" maxlength="20" required>			
+					<input type="password" name="password" id="password" class="input-box" placeholder="{$pw_placeholder}" value="{$password}" maxlength="20" required>			
+					<button id="submit_button" type="button">log In</button>			
+					<a href="{:U('Register/index')}">Register Account</a>
 				</form>
 			</div>
-			<div data-role="footer"></div>
+			<div id="footer"></div>
 		</div>
+		<script src="__PUBLIC__/Home/js/jquery-3.1.0.min.js"></script>	
 		<script>
-        function validate(){
-           if(loginForm.id.value==""){
-                document.loginForm.id.focus();//聚焦
-                return;
-           }
-           else if(loginForm.password.value==""){
-               document.loginForm.password.focus();
-               return;
-           }
-		   loginForm.submit();
-		}		
-		function EnterPress(e){ //传入 event   
-		    var e = e || window.event;   
-		    if(e.keyCode == 13){   
-		    document.getElementById("submit_button").click();   
-		    }   
-		    return false;
-		}  
+			//验证用户输入
+		    function validate() {	
+				if(!$.trim($("#id").val())){   
+					$("#id").focus();
+					return;
+				}   
+				else if( !$.trim($("#password").val()) ){   
+					$("#password").focus();
+					return;
+				} 
+			    $("form").submit();
+		    }
+		    document.onkeypress=function EnterPress(e) {
+				var e = e || window.event;   
+				if(e.keyCode == 13){
+					validate();
+				}
+			};	
+			$("#submit_button").bind("click",function() {
+				validate();
+			}); 
 		</script>
 	</body>	
 </html>
