@@ -90,7 +90,7 @@ $(function() {
 		}
 	});
 
-	$("body").animate({opacity: 1},pc_speed);
+	$("body").animate({opacity: 1},pc_speed/2);
 
 });
 
