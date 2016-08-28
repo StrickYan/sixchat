@@ -44,7 +44,7 @@ $(function() {
     });
     
     // 绑定消息点击事件
-    $(document).on("click",".message_flow",function() {
+    $(document).on("click",".message-flow",function() {
         getOneMoment($(this).attr("name"));//传送moment_id查看具体该条moment
         $("#back").click();
         $("#current_location").text("Details"); 
@@ -52,10 +52,10 @@ $(function() {
     });
 
     // 响应好友请求
-    $(document).on("click",".request_agree",function() {
+    $(document).on("click",".request-agree",function() {
         //传送请求id和请求人名
-        agreeRequest($(this).parent().parent(".request_flow").attr("name"),$(this).siblings(".line1").children(".request_flow_right_user_name").children("span").text());
-        $(this).parent().parent(".request_flow").slideUp(mobile_speed);
+        agreeRequest($(this).parent().parent(".request-flow").attr("name"),$(this).siblings(".line1").children(".request-flow-right-user-name").children("span").text());
+        $(this).parent().parent(".request-flow").slideUp(mobile_speed);
     });
 
     // 点击修改资料按钮事件
@@ -689,7 +689,7 @@ function loadMessages() {
             html+="<input type='text' id='search_box' placeholder='Search New Friends' maxlength=140 required/>"
             html+="</div>";
             for(var i=0;i<data.length;i++){  
-                html+="<div class='message-flow' name="+data[i].moment_id+" onclick=click_message_flow("+data[i].moment_id+")>";
+                html+="<div class='message-flow' name="+data[i].moment_id+">";
                 html+="<div class='message-flow-left'>";
                 html+="<img src=../../avatar_img/"+data[i].avatar+" alt=''>";
                 html+="</div>";
