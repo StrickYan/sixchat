@@ -594,7 +594,7 @@ $.fn.longPress = function(fn) {
     var $this = this;
     for(var i = 0;i<$this.length;i++){
         $this[i].addEventListener('touchstart', function(event) {
-            timeout = setTimeout(fn, 300);
+            timeout = setTimeout(fn, 500);
             }, false);
         $this[i].addEventListener('touchend', function(event) {
             clearTimeout(timeout);
@@ -653,7 +653,7 @@ function deleteComment(obj) {
                         });
                     }
 
-                }, 300);  
+                }, 500);  
             });   
             obj.mouseup(function() {  
                 clearTimeout(timeout);  
