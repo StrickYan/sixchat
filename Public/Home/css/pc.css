@@ -1,7 +1,7 @@
 body {
 	width: 40%;
 	margin:auto;
-	background-image: url("");
+	background-image: url("/sixchat/Public/Home/img/default/24.jpg");
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	background-attachment: fixed; /*background-attachment设置或检索背景图像是随对象内容滚动还是固定的；fixed：固定*/
