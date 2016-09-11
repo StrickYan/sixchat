@@ -720,7 +720,7 @@ function getOneMoment(moment_id) {
         },  
         success:function(data){    
             var result = '';
-            result += "<div class='info-flow' style='padding-top:48px;'>";
+            result += "<div class='info-flow' id='the_one_moment'>";
             result += "<div class='info-flow-left'>";
             result += '<img src='+'../../avatar_img/'+ data[0]['avatar'] +'>';
             result += "</div>";

@@ -305,32 +305,33 @@ a
 {
     position: relative;
 
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding: 10px 10px 5px 10px;
 
     border-bottom: 1px solid #eee;
     background-color: white;
 
     -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
+#the_one_moment {
+    padding-top:48px
+}
 .info-flow-left
 {
     position: absolute;
-    left: 8px;
+    left: 10px;
 
     border: 0 solid red;
 }
 .info-flow-left img
 {
-    width: 54px;
-    height: 54px;
+    width: 50px;
+    height: 50px;
 
     border-radius: 3px;
 }
 .info-flow-right
 {
-    margin-right: 8px;
-    margin-left: 70px;
+    margin-left: 60px;
 
     border: 0 solid red;
 }
@@ -534,7 +535,7 @@ hr
 .footer-right
 {
     margin-right: 8px;
-    margin-left: 70px;
+    margin-left: 60px;
 
     border: 0 solid red;
 }

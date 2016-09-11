@@ -9,11 +9,13 @@ body {
 /*	background-color: rgb(238,238,238);		*/
 	background-color: rgb(43,43,43);		
 }
+
 #top {
 	width: 40%;
 	position: fixed;
 	top:0;
 	left:30%;
+	border-radius: 5px;
 }
 #edit_box {
 	position:fixed;
@@ -25,16 +27,17 @@ body {
 #slidebar {
 	z-index: 2;
 	position: absolute;
-	top:0px;
-/*	left: -40%;*/
 	left:30%;
 	width: 40%;
+
+}
+#slidebar>div {
+	border-radius: 5px;
 }
 #slidebar_profile {
 	z-index: 2;
 	position: fixed;
-	top:0px;
-/*	right: -100%;*/
+	top:50px;
 	left: 30%;
 	width: 40%;
 	color:gray;
@@ -42,4 +45,65 @@ body {
 	padding-top: 60px;
 	background: white;
 	display: none;
+	border-radius: 5px;
+}
+#slide_wall
+{
+    width: 100%;
+    height: 33%;
+    margin-top: 50px;
+}
+.swiper-container {
+   	border-radius: 5px;
+}
+#avatar
+{
+    position: fixed;
+    z-index: 1;
+    right: 100px;
+    top: 50px;
+}
+#avatar img
+{
+    width: 100px;
+    height: 100px;
+    border-radius: 5px;
+}
+#free {
+	display: none;
+}
+.info-flow {
+	margin: 10px 0;
+	padding: 20px 20px 15px 20px;
+	border-radius: 5px;
+	box-shadow: 0 0 15px 5px rgba(0,0,0,0.4);
+
+}
+#the_one_moment {
+    margin-top: 50px;
+    padding-top: 20px;
+}
+.info-flow-left
+{
+    left: 20px;
+}
+.info-flow-right
+{
+    margin-left: 65px;
+}
+#footer{
+	border-radius: 5px;
+	padding-bottom: 0;
+}
+.footer-left
+{
+    left: 20px;
+}
+.footer-right {
+	margin-left: 65px;
+}
+
+
+#location {
+	height: 50px;
 }
