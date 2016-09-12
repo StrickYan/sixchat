@@ -3,6 +3,7 @@
 ![](https://raw.githubusercontent.com/sk1275330626/sixchat/master/md_img/pc.png)  
 * Mobile端：  
 ![](https://raw.githubusercontent.com/sk1275330626/sixchat/master/md_img/mobile.png)  
+
 #代码规范
 * id关键词用下划线（_）连接，class关键词用中划线（-）连接
 
