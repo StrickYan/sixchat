@@ -16,7 +16,7 @@ class SixChatApi2016Controller extends Controller{
 			$condition1['password'] = md5($password);
 			$user_name_1 = M('User')->where($condition1)->getfield('user_name');
 			if($user_name_1){		//登录成功
-				//setcookie("password", "$password", time()+60*60*1 );//登录成功再保存密码cookie
+				setcookie("password", "$password", time()+60*60*24,"/sixchat", "localhost");//登录成功再保存密码cookie
 				session_start();
 				$_SESSION["name"]=$user_name_1;
 				return 0;
@@ -24,6 +24,13 @@ class SixChatApi2016Controller extends Controller{
 			else	//密码错误
 				return -2;
 		}		
+    }
+
+    //注销 有效：Firefox	无效：chrome
+    public function logout()
+    {
+    	session_destroy();
+    	setcookie("password","", time()-3600,"/sixchat","localhost");
     }
 
     /*注册API*/

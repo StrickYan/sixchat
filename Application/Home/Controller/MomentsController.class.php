@@ -515,9 +515,11 @@ class MomentsController extends CommonController {
 		echo json_encode(array("number"=>$num));
     }
 
+    //注销
     public function logout()
     {
-    	session_destroy();
+    	$obj=new SixChatApi2016Controller();
+    	$obj->logout();
     	header("Location:index");
     }
 

@@ -3,6 +3,12 @@ namespace Home\Controller;
 use Think\Controller;
 class LoginController extends Controller {
 	public function index(){
+
+		if(isset($_SESSION['name']) && !empty($_SESSION['name'])){//判断是否已经登录
+			$this->redirect('Moments/index');
+			return;
+		}
+
 		$id=null;
 		$temp_id=null;	//存放cookie获取的id
 		$temp_password=null;	//存放cookie获取的password
