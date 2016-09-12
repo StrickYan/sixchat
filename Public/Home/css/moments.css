@@ -1,5 +1,5 @@
 /*
-*	moments页样式
+*   moments页样式
 */
 
 *
@@ -7,15 +7,18 @@
     margin: 0;
     padding: 0;
 }
-html,
-body
+html
 {
+    font-size: 10px;
+
     height: 100%;
 }
 body
 {
     font-family: Arial,'Microsoft YaHei',Verdana,Geneva,sans-serif;
     font-size: 14px;
+
+    height: 100%;
 
     opacity: 0;
     background-color: white;
@@ -47,7 +50,7 @@ a
 /*个人资料*/
 #slidebar_profile
 {
-    line-height: 18px;
+    line-height: 1.8rem;
 
     position: fixed;
     z-index: 2;
@@ -84,7 +87,7 @@ a
 #confirm_modify,
 #logout
 {
-    line-height: 38px;
+    line-height: 3.8rem;
 
     box-sizing: border-box;
 
@@ -97,7 +100,7 @@ a
 }
 #slidebar_profile input
 {
-    line-height: 18px;
+    line-height: 1.8rem;
 
     box-sizing: border-box;
     width: 100%;
@@ -150,7 +153,7 @@ a
 #current_location
 {
     font-weight: bold;
-    line-height: 24px;
+    line-height: 2.4rem;
 
     position: absolute;
     top: 8px;
@@ -184,7 +187,7 @@ a
 }
 #text_box
 {
-    line-height: 18px;
+    line-height: 1.8rem;
 
     box-sizing: border-box;
     width: 100%;
@@ -198,7 +201,7 @@ a
 #btn,
 #new_avatar_btn
 {
-    line-height: 18px;
+    line-height: 1.8rem;
 
     position: relative;
 
@@ -247,7 +250,7 @@ a
 }
 .swiper-slide
 {
-    font-size: 18px;
+    font-size: 1.8rem;
     /* Center slide text vertically */
 
     display: -webkit-box;
@@ -312,8 +315,9 @@ a
 
     -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
-#the_one_moment {
-    padding-top:48px
+#the_one_moment
+{
+    padding-top: 48px;
 }
 .info-flow-left
 {
@@ -324,30 +328,29 @@ a
 }
 .info-flow-left img
 {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
 
     border-radius: 3px;
 }
 .info-flow-right
 {
-    margin-left: 60px;
+    margin-left: 50px;
 
     border: 0 solid red;
 }
 .info-flow-right-user-name
 {
     font-weight: 700;
-    line-height: 18px;
+    line-height: 20px;
+    height: 20px;
 
     color: rgb(41, 128, 185);
     border: 0 solid red;
 }
 .info-flow-right-text
 {
-    line-height: 18px;
-
-    margin: 1px 0 3px 0;
+    line-height: 20px;
 
     border: 0 solid red;
 }
@@ -361,24 +364,22 @@ a
 }
 .info-flow-right-time
 {
-    font-size: 12px;
-    line-height: 14px;
+    font-size: 1.2rem;
+    line-height: 20px;
 
     float: left;
 
-    height: 14px;
     margin: 0 0;
 
     color: rgb(127, 140, 141);
 }
 .delete-moment
 {
-    font-size: 12px;
-    line-height: 14px;
+    font-size: 1.2rem;
+    line-height: 20px;
 
     float: left;
 
-    height: 14px;
     margin: 0 0 0 10px;
 
     color: rgb(41, 128, 185);
@@ -388,16 +389,17 @@ a
 }
 .info-flow-right-button
 {
-    line-height: 14px;
+    line-height: 20px;
 
     position: relative;
 
     float: right;
-
-    height: 14px;
 }
 .info-flow-right-button img
 {
+    position: relative;
+    top: 3px;
+
     height: 14px;
 }
 .divPop
@@ -420,17 +422,17 @@ a
 }
 .info-flow-right-like
 {
-    line-height: 18px;
+    line-height: 20px;
 
-    margin-top: 25px;
-    margin-bottom: -1px;
+    margin-top: 24px;
+    margin-bottom: 1px;
     padding: 0 5px;
 
     background-color: #f0f0f0;
 }
 .like-img
 {
-    line-height: 12px;
+    line-height: 1.2rem;
 
     display: inline-block;
 
@@ -461,11 +463,9 @@ a
 }
 .one-comment
 {
-    line-height: 18px;
+    line-height: 20px;
 
     display: block;
-
-    margin: 2px 0;
 
     word-break: break-all;
 
@@ -483,22 +483,22 @@ a
 }
 .info-flow-right-input
 {
-    line-height: 22px;
+    line-height: 2.2rem;
 
     display: none;
 
-    height: 22px;
+    height: 2.2rem;
     margin: 0 0;
 }
 .comment-box
 {
-    line-height: 22px;
+    line-height: 2.2rem;
 
     float: left;
 
     box-sizing: border-box;
     width: 100%;
-    height: 22px;
+    height: 2.2rem;
     padding: 0 5px;
 
     color: #999;
@@ -549,11 +549,7 @@ hr
 }
 .footer-right-text
 {
-    line-height: 18px;
-
-    margin: 3px 0;
-
-    border: 0 solid red;
+    line-height: 1.8rem;
 }
 .footer-right-img
 {
@@ -567,12 +563,12 @@ hr
 }
 .footer-right-time
 {
-    font-size: 12px;
-    line-height: 14px;
+    font-size: 1.2rem;
+    line-height: 1.4rem;
 
     float: left;
 
-    height: 14px;
+    height: 1.4rem;
     margin: 0 0;
 
     color: rgb(127, 140, 141);

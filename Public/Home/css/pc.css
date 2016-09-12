@@ -74,7 +74,7 @@ body {
 }
 .info-flow {
 	margin: 10px 0;
-	padding: 20px 20px 15px 20px;
+	padding: 20px 20px 10px 20px;
 	border-radius: 5px;
 	box-shadow: 0 0 15px 5px rgba(0,0,0,0.4);
 
@@ -89,7 +89,7 @@ body {
 }
 .info-flow-right
 {
-    margin-left: 65px;
+    margin-left: 55px;
 }
 #footer{
 	border-radius: 5px;
