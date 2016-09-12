@@ -27,7 +27,7 @@ class SixChatApi2016Controller extends Controller{
 		}		
     }
 
-    //注销 有效：Firefox	无效：chrome
+    //注销
     public function logout()
     {
     	session_destroy();
