@@ -7,6 +7,15 @@
 <img src="https://raw.githubusercontent.com/sk1275330626/sixchat/master/md_img/mobile.png"/>
  </div>
 
+#目录说明
+* Application/ 存放后台PHP代码
+* avatar_img/ 存放头像文件
+* md_img/ 存放README.md中引用的图片文件
+* moment_img/ 存放内容图片
+* Public/ 存放相关JS，CSS文件和默认的图片资源
+* ThinkPHP/ ThinkPHP框架核心文件，无须改动
+* sixchat.sql 应用的数据库与数据表结构，导入即可
+
 #代码规范
 * id关键词用下划线（_）连接，class关键词用中划线（-）连接
 
