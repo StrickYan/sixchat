@@ -1,3 +1,7 @@
+原文：https://github.com/sk1275330626/sixchat
+作者：strick
+转载请标明出处，谢谢
+
 #效果图
 * PC端：  
 ![](https://raw.githubusercontent.com/sk1275330626/sixchat/master/md_img/pc.png)  
