@@ -10,22 +10,20 @@ class MomentsController extends CommonController {
 		$user_name=$_SESSION["name"];
 		
 		//获取自己头像
-		$map['user_name']=$user_name;
-		$avatar=M("User")->where($map)->getField('avatar');
+		// $map['user_name']=$user_name;
+		// $avatar=M("User")->where($map)->getField('avatar');
+		$avatar = '';
+		$list_1 = D("User")->getAvatar($user_name);
+		$avatar = htmlspecialchars($list_1[0]['avatar']);
 
-		$Model = M();
-		$sql="
-		select u.user_name,u.avatar,m.info,m.img_url,m.time,m.moment_id
-			from think_moment m,think_user u
-				where m.state=1 and m.user_id=u.user_id
-					order by m.time 
-						desc limit 0,20";//显示朋友圈信息流
-		$list = $Model->query($sql);
+		//获取朋友圈信息流
+		$list = D("Moment")->getMoments();
 		for($i=0;$i<count($list);$i++){
 			$list[$i]['user_name'] = htmlspecialchars($list[$i]['user_name']);
 			$list[$i]['time']=$obj->tranTime(strtotime($list[$i]['time']));
 			$list[$i]['info'] = htmlspecialchars($list[$i]['info']);
 		}	
+
 		$this->assign('list',$list);
       	$this->assign('avatar',$avatar);
       	$this->assign('my_name',$user_name);
@@ -56,12 +54,9 @@ class MomentsController extends CommonController {
 					}
 	         	}
 	         	***********************************************************************/
-        
-	         	$sql = "SELECT u.user_name as reply_name FROM think_comment c,think_user u where c.reply_id = u.user_id and c.moment_id=".$id." and c.state=1 and c.type=1 order by c.comment_id asc";
 
-		        $Model = M(); 	//实例化对象  
-		        $list = $Model->query($sql); 
-
+	         	//获取likes
+	         	$list = D("Comment")->getLikes($id);
 		        for($i=0;$i<count($list);$i++){  
 		            $list[$i]=array(
 		            	"reply_name"=>htmlspecialchars($list[$i]['reply_name']));
@@ -78,36 +73,21 @@ class MomentsController extends CommonController {
 		    $id = htmlspecialchars($_REQUEST['id']);  
 		    $moment_user_name = htmlspecialchars($_REQUEST['moment_user_name']);	//获取该条朋友圈的用户名
 		    $user_name = $_SESSION["name"];	//当前用户
+		    
 		    if(is_numeric($id) ){//是数字  
 		    	$id = intval($id);  
-		        $sql = "";  
-		    	if(!strcmp($user_name,$moment_user_name)){	
-		    	//相等，浏览自己的帖子可以看到所有评论包括好友与非好友
-		    			$sql = "
-				        select u1.user_name as reply_name,u2.user_name as replyed_name,c.comment_id,c.comment,c.time 
-				        	from think_comment c,think_user u1,think_user u2 
-				        		where c.reply_id=u1.user_id and c.replyed_id=u2.user_id and c.state=1 and c.type=2 and c.moment_id=".$id." order by c.time asc;";  //三表联合查询	
+		        $list = '';
+		    	if(!strcmp($user_name,$moment_user_name)){	//相等，浏览自己的帖子可以看到所有评论包括好友与非好友
+				    $list = D("Comment")->getComments1($id); 
 		    	}
 	         	else {//浏览他人的帖子时只能看到互为好友的评论或者 自己与该用户的对话
 					$obj=new SixChatApi2016Controller();
 		 			foreach ($obj->getUserId($user_name, $moment_user_name) as $k=>$val){
 						$user_id = $val["reply_id"];
 						$moment_user_id = $val["replyed_id"];
-						$sql="
-	         			select u1.user_name as reply_name,u2.user_name as replyed_name,c.comment_id,c.comment,c.time 
-	         				from think_comment c,think_user u1,think_user u2
-	         					where c.moment_id=".$id." 
-	         					and c.state=1 and c.type=2 
-	         					and c.reply_id=u1.user_id and c.replyed_id=u2.user_id 
-								and 
-								((c.reply_id in (select friend_id from think_friend where user_id=".$user_id.") and c.replyed_id in (select friend_id from think_friend where user_id=".$user_id.")) 
-	         						or (c.reply_id in (".$user_id.",".$moment_user_id.") and c.replyed_id in (".$moment_user_id.",".$user_id.")) 
-	         					) order by c.time asc";
+	         			$list = D("Comment")->getComments2($id,$user_id,$moment_user_id); 
 					}
 	         	}
-        
-		        $Model = M(); 	//实例化对象  
-		        $list = $Model->query($sql); //默认$list如下面数据模式，所以可以不用重新赋值直接return
 		        for($i=0;$i<count($list);$i++){  
 		            $list[$i]=array(
 		            	"reply_name"=>htmlspecialchars($list[$i]['reply_name']),
@@ -116,6 +96,7 @@ class MomentsController extends CommonController {
 		            	"comment"=>htmlspecialchars($list[$i]['comment']),
 		            	"time"=>$list[$i]['time']);
 		        }  
+		        
 		        echo json_encode($list);  
 		    }  
 		}  
