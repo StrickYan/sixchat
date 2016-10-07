@@ -10,11 +10,8 @@ class MomentsController extends CommonController {
 		$user_name=$_SESSION["name"];
 		
 		//获取自己头像
-		// $map['user_name']=$user_name;
-		// $avatar=M("User")->where($map)->getField('avatar');
-		$avatar = '';
-		$list_1 = D("User")->getAvatar($user_name);
-		$avatar = htmlspecialchars($list_1[0]['avatar']);
+		$map['user_name']=$user_name;
+		$avatar=M("User")->where($map)->getField('avatar');
 
 		//获取朋友圈信息流
 		$list = D("Moment")->getMoments();
@@ -120,6 +117,7 @@ class MomentsController extends CommonController {
 				$condition['state'] = 1;
 				$condition['type'] = 1;
 				$result = M("Comment")->where($condition)->getField('comment_id');
+
 				if($result){	//已点赞 则删除赞记录
 					M("Comment")->where("comment_id=$result and type=1")->setField('state',0);
 				}
@@ -464,14 +462,17 @@ class MomentsController extends CommonController {
     {
     	$page = htmlspecialchars($_REQUEST['page']);
     	$obj=new SixChatApi2016Controller();
-		$Model = M();
-		$sql="
-		select u.user_name,u.avatar,m.info,m.img_url,m.time,m.moment_id
-			from think_moment m,think_user u
-				where m.state=1 and m.user_id=u.user_id
-					order by m.time 
-						desc limit ".($page*20).",10";//显示朋友圈信息流
-		$list = $Model->query($sql);
+
+		// $Model = M();
+		// $sql="
+		// select u.user_name,u.avatar,m.info,m.img_url,m.time,m.moment_id
+		// 	from think_moment m,think_user u
+		// 		where m.state=1 and m.user_id=u.user_id
+		// 			order by m.time 
+		// 				desc limit ".($page*20).",10";//显示朋友圈信息流
+		// $list = $Model->query($sql);
+		$list = D("Moment")->getNextPage($page);
+
 		for($i=0;$i<count($list);$i++){
 			$list[$i]['user_name'] = htmlspecialchars($list[$i]['user_name']);
 			$list[$i]['time']=$obj->tranTime(strtotime($list[$i]['time']));

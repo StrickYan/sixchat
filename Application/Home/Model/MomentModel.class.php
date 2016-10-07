@@ -11,5 +11,12 @@ class MomentModel extends Model{
         return $result;
     }
 
+    //加载更多
+    public function getNextPage($page)
+    {
+		$sql="CALL proc_MomentGetNextPage($page)";
+        $result = M()->query($sql);
+        return $result;
+    }
 
 }
