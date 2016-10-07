@@ -4,7 +4,7 @@
 
 #效果图
 * PC端：  
-![](https://raw.githubusercontent.com/sk1275330626/sixchat/master/md_img/pc.png)  
+  ![](https://raw.githubusercontent.com/sk1275330626/sixchat/master/md_img/pc.png)  
 * Mobile端：  
 
 <div align="center">
@@ -29,7 +29,13 @@
 1. 个人主页
 2. 好友列表
 
+## 2016/10/07
+
+1. 转移部分SQL为存储过程
+2. 改进部分css为cursor:point
+
 ##2016/08/19
+
 1. 稍微适配下PC端
 
 ##2016/08/14
@@ -78,11 +84,11 @@
 
 ##2016/08/04
 1. 实现发moment功能（同时或单独发文字与图片）
-2. swiper插件（http://www.idangero.us/swiper/)实现滚动墙功能
-		随机从数据库选取3个朋友圈图片展示,点击可跳转详细该条
+2. swiper插件（http://www.idangero.us/swiper/) 实现滚动墙功能
+   	随机从数据库选取3个朋友圈图片展示,点击可跳转详细该条
 3. 评论权限：
-		浏览自己的帖子可以看到所有评论包括好友与非好友
-		浏览他人的帖子时只能看到互为好友的comment或者 自己与该用户的对话
+   	浏览自己的帖子可以看到所有评论包括好友与非好友
+   	浏览他人的帖子时只能看到互为好友的comment或者 自己与该用户的对话
 
 ##2016/08/03 ago
 1. 基于thinkphp3.2.3的webapp设计
