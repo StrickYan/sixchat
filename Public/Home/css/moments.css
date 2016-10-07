@@ -97,6 +97,7 @@ a
     border: 0;
     border-radius: 5px;
     background-color: rgb(91,197,190);
+    cursor:pointer;
 }
 #slidebar_profile input
 {
@@ -149,6 +150,7 @@ a
     margin-left: 3px;
 
     color: white;
+    cursor:pointer;
 }
 #current_location
 {
@@ -164,6 +166,7 @@ a
     text-align: center;
 
     color: white;
+    cursor:pointer;
 }
 #camera
 {
@@ -172,6 +175,7 @@ a
     width: 50px;
     margin-top: -5px;
     margin-right: 0;
+    cursor:pointer;
 }
 
 /*moment发送栏*/
@@ -274,6 +278,7 @@ a
 .swiper-slide img
 {
     width: 100%;
+    cursor:pointer;
 }
 
 /*个人头像*/
@@ -287,6 +292,7 @@ a
     opacity: 1;
 
     filter: alpha(opacity=1);
+    cursor:pointer;
 }
 #avatar img
 {
@@ -361,6 +367,7 @@ a
 .info-flow-right-img img
 {
     border: 0 solid red;
+    cursor: zoom-in;
 }
 .info-flow-right-time
 {
@@ -386,6 +393,7 @@ a
     color: rgb(127, 140, 141);
 
     -webkit-tap-highlight-color: rgba(0,0,0,.2);
+    cursor:pointer;
 }
 .info-flow-right-button
 {
@@ -394,6 +402,7 @@ a
     position: relative;
 
     float: right;
+    cursor:pointer;
 }
 .info-flow-right-button img
 {
@@ -470,6 +479,7 @@ a
     word-break: break-all;
 
     -webkit-tap-highlight-color: rgba(0,0,0,.2);
+    cursor:pointer;
 }
 .one-comment:hover
 {

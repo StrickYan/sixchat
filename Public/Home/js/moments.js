@@ -38,7 +38,7 @@ $(function() {
         }
         else if($("#current_location").text()=="Messages") {//关闭消息侧边栏
             $("#current_location").text("SixChat");
-            $("#back").text("M"); 
+            $("#back").text("News"); 
             if(isPC()){//PC
 				$("#slidebar,#message_top").fadeOut(pc_speed);
             }
