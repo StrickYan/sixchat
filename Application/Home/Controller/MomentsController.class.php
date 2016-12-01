@@ -82,7 +82,10 @@ class MomentsController extends CommonController {
 		 			foreach ($obj->getUserId($user_name, $moment_user_name) as $k=>$val){
 						$user_id = $val["reply_id"];
 						$moment_user_id = $val["replyed_id"];
-	         			$list = D("Comment")->getComments2($id,$user_id,$moment_user_id); 
+
+	         			// $list = D("Comment")->getComments2($id,$user_id,$moment_user_id); //好友关系可见
+	         			$list = D("Comment")->getComments1($id); //可见所有人评论
+
 					}
 	         	}
 		        for($i=0;$i<count($list);$i++){  
