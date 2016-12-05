@@ -20,6 +20,17 @@
 * ThinkPHP/ ThinkPHP框架核心文件，无须改动
 * sixchat.sql 应用的数据库与数据表结构，导入即可
 
+#配置nginx.conf
+```
+#ThnkPHP URL_MODEL=>2 rewrite
+location /sixchat/ {
+    if (!-e $request_filename) {
+        rewrite ^/sixchat/(.*)$ /sixchat/index.php?s=$1 last;
+        break;
+    }
+}
+```
+
 #代码规范
 * id关键词用下划线（_）连接，class关键词用中划线（-）连接
 
