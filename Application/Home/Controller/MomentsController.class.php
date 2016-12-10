@@ -2,13 +2,13 @@
 namespace Home\Controller;
 use Think\Controller;
 class MomentsController extends CommonController {
-   
-	/*显示朋友圈信息流*/
+
+	// 显示朋友圈信息流
     public function index(){
     	$obj=new SixChatApi2016Controller();
 		session_start();
 		$user_name=$_SESSION["name"];
-		
+
 		//获取自己头像
 		$map['user_name']=$user_name;
 		$avatar=M("User")->where($map)->getField('avatar');
@@ -19,7 +19,7 @@ class MomentsController extends CommonController {
 			$list[$i]['user_name'] = htmlspecialchars($list[$i]['user_name']);
 			$list[$i]['time']=$obj->tranTime(strtotime($list[$i]['time']));
 			$list[$i]['info'] = htmlspecialchars($list[$i]['info']);
-		}	
+		}
 
 		$this->assign('list',$list);
       	$this->assign('avatar',$avatar);
@@ -27,87 +27,108 @@ class MomentsController extends CommonController {
         $this->display();
     }
 
-  /*jquery异步加载每条朋友圈下面的赞用到的后台获取赞函数*/
+    // 获取所有赞
     public function getLikes(){
-	    if(isset($_REQUEST['id'])){  
+	    if(isset($_REQUEST['id'])){
 		    $id = htmlspecialchars($_REQUEST['id']);  //moment_id
-		    $moment_user_name = htmlspecialchars($_REQUEST['moment_user_name']);	//获取该条朋友圈的用户名
-		    $user_name = $_SESSION["name"];	//当前用户
-		    if(is_numeric($id) ){//是数字  
-		    	$id = intval($id);  
-		        $sql = "";  
 
-		        /************************************************************权限版本
-		    	if(!strcmp($user_name,$moment_user_name)){	
-		    	//相等，浏览自己的帖子可以看到所有赞包括好友与非好友
-				    $sql = "SELECT u.user_name as like_name FROM think_like l,think_user u where l.like_user_id = u.user_id and l.moment_id=".$id." and l.state=1 order by l.like_id asc";
-		    	}
-	         	else {//浏览他人的帖子时只能看到互为好友的赞或者 自己与该用户的赞
-					$obj=new SixChatApi2016Controller();
-		 			foreach ($obj->getUserId($user_name, $moment_user_name) as $k=>$val){
-						$user_id = $val["reply_id"];
-						$moment_user_id = $val["replyed_id"];
-	         			$sql = "SELECT distinct(u.user_name) as like_name FROM think_like l,think_friend f,think_user u where l.like_user_id = u.user_id and l.moment_id=".$id." and l.state=1 and ((f.user_id=".$user_id." and f.friend_id=l.like_user_id) OR (l.like_user_id=".$moment_user_id.")) order by l.like_id asc";//？？？？？查询结果三个重复待排查
-					}
-	         	}
-	         	***********************************************************************/
-
-	         	//获取likes
+            if(is_numeric($id) ){
+		    	$id = intval($id);
 	         	$list = D("Comment")->getLikes($id);
-		        for($i=0;$i<count($list);$i++){  
+		        for($i=0;$i<count($list);$i++){
 		            $list[$i]=array(
 		            	"reply_name"=>htmlspecialchars($list[$i]['reply_name']));
-		        }  
+		        }
 
-		        echo json_encode($list);  
-		    }  
-		}  
+		        echo json_encode($list);
+		    }
+		}
     }
 
-    /*jquery异步加载每条朋友圈下面的评论用到的后台获取评论函数*/
+    //获取权限内可以看到的赞
+    public function getLikesInAuth(){
+        if(isset($_REQUEST['id'])){
+            $id = htmlspecialchars($_REQUEST['id']);  //moment_id
+            $moment_user_name = htmlspecialchars($_REQUEST['moment_user_name']);	//获取该条朋友圈的用户名
+            $user_name = $_SESSION["name"];	//当前用户
+
+            if(is_numeric($id) ){
+                $id = intval($id);
+                $list = D("Comment")->getLikesInAuth($id, $user_name, $moment_user_name);
+                for($i=0;$i<count($list);$i++){
+                    $list[$i]=array(
+                        "reply_name"=>htmlspecialchars($list[$i]['reply_name']));
+                }
+
+                echo json_encode($list);
+            }
+        }
+    }
+
+    // 加载每条朋友圈下面所有的评论
     public function getComments(){
-	    if(isset($_REQUEST['id'])){  
-		    $id = htmlspecialchars($_REQUEST['id']);  
-		    $moment_user_name = htmlspecialchars($_REQUEST['moment_user_name']);	//获取该条朋友圈的用户名
-		    $user_name = $_SESSION["name"];	//当前用户
-		    
-		    if(is_numeric($id) ){//是数字  
-		    	$id = intval($id);  
-		        $list = '';
-		    	if(!strcmp($user_name,$moment_user_name)){	//相等，浏览自己的帖子可以看到所有评论包括好友与非好友
-				    $list = D("Comment")->getComments1($id); 
-		    	}
-	         	else {//浏览他人的帖子时只能看到互为好友的评论或者 自己与该用户的对话
-					$obj=new SixChatApi2016Controller();
-		 			foreach ($obj->getUserId($user_name, $moment_user_name) as $k=>$val){
-						$user_id = $val["reply_id"];
-						$moment_user_id = $val["replyed_id"];
-
-	         			// $list = D("Comment")->getComments2($id,$user_id,$moment_user_id); //好友关系可见
-	         			$list = D("Comment")->getComments1($id); //可见所有人评论
-
-					}
-	         	}
-		        for($i=0;$i<count($list);$i++){  
+	    if(isset($_REQUEST['id'])){
+		    $id = htmlspecialchars($_REQUEST['id']);
+		    if(is_numeric($id) ){//是数字
+		    	$id = intval($id);
+                $list = D("Comment")->getComments1($id);
+		        for($i=0;$i<count($list);$i++){
 		            $list[$i]=array(
 		            	"reply_name"=>htmlspecialchars($list[$i]['reply_name']),
 		            	"replyed_name"=>htmlspecialchars($list[$i]['replyed_name']),
 		            	"comment_id"=>$list[$i]['comment_id'],
 		            	"comment"=>htmlspecialchars($list[$i]['comment']),
 		            	"time"=>$list[$i]['time']);
-		        }  
-		        
-		        echo json_encode($list);  
-		    }  
-		}  
+		        }
+
+		        echo json_encode($list);
+		    }
+		}
     }
 
-  /*jquery异步加载增加点赞函数*/
+    // 获取每条朋友圈下面权限内可阅的评论
+    public function getCommentsInAuth(){
+        if(isset($_REQUEST['id'])){
+            $id = htmlspecialchars($_REQUEST['id']);
+            $moment_user_name = htmlspecialchars($_REQUEST['moment_user_name']);	//获取该条朋友圈的用户名
+            $user_name = $_SESSION["name"];	//当前用户
+
+            if(is_numeric($id) ){//是数字
+                $id = intval($id);
+                $list = '';
+                if(!strcmp($user_name,$moment_user_name)){	//相等，浏览自己的帖子可以看到所有评论包括好友与非好友
+                    $list = D("Comment")->getComments1($id);
+                }
+                else {//浏览他人的帖子时只能看到互为好友的评论或者 自己与该用户的对话
+                    $obj=new SixChatApi2016Controller();
+                    foreach ($obj->getUserId($user_name, $moment_user_name) as $k=>$val){
+                        $user_id = $val["reply_id"];
+                        $moment_user_id = $val["replyed_id"];
+
+                        $list = D("Comment")->getComments2($id,$user_id,$moment_user_id); //好友关系可见
+
+                    }
+                }
+                for($i=0;$i<count($list);$i++){
+                    $list[$i]=array(
+                        "reply_name"=>htmlspecialchars($list[$i]['reply_name']),
+                        "replyed_name"=>htmlspecialchars($list[$i]['replyed_name']),
+                        "comment_id"=>$list[$i]['comment_id'],
+                        "comment"=>htmlspecialchars($list[$i]['comment']),
+                        "time"=>$list[$i]['time']);
+                }
+
+                echo json_encode($list);
+            }
+        }
+    }
+
+    // 点赞
     public function addLike(){
-	    if( isset($_REQUEST['moment_id'])  && isset($_REQUEST['moment_user_name']) ){ 
+	    if( isset($_REQUEST['moment_id'])  && isset($_REQUEST['moment_user_name']) ){
 	    	$moment_id = htmlspecialchars($_REQUEST['moment_id']);
-		    $reply_name = $_SESSION["name"];  
-		    $replyed_name = htmlspecialchars($_REQUEST['moment_user_name']);  
+		    $reply_name = $_SESSION["name"];
+		    $replyed_name = htmlspecialchars($_REQUEST['moment_user_name']);
 
 			$obj=new SixChatApi2016Controller();
  			foreach ($obj->getUserId($reply_name, $replyed_name) as $k=>$val){
@@ -133,22 +154,22 @@ class MomentsController extends CommonController {
 			        $data['time']=date("Y-m-d H:i:s");
 			        $data['type']=1;
 			        $data['comment']="赞了你";
-			        $Comment->data($data)->add();				
+			        $Comment->data($data)->add();
 				}
-			}	
+			}
 			$list[0]="点赞成功";
-			echo json_encode($list);   
-		}  
+			echo json_encode($list);
+		}
     }
 
 
-   /*jquery异步加载增加评论函数*/
+    // 发布评论
     public function addComment(){
-	    if( isset($_REQUEST['moment_id'])  && isset($_REQUEST['replyed_name']) && isset($_REQUEST['comment_val']) ){ 
+	    if( isset($_REQUEST['moment_id'])  && isset($_REQUEST['replyed_name']) && isset($_REQUEST['comment_val']) ){
 	    	$moment_id = htmlspecialchars($_REQUEST['moment_id']);
-		    $reply_name = $_SESSION["name"];  
-		    $replyed_name = htmlspecialchars($_REQUEST['replyed_name']);  
-		    $comment_val = htmlspecialchars(trim($_REQUEST['comment_val'])); 
+		    $reply_name = $_SESSION["name"];
+		    $replyed_name = htmlspecialchars($_REQUEST['replyed_name']);
+		    $comment_val = htmlspecialchars(trim($_REQUEST['comment_val']));
 
 			$obj=new SixChatApi2016Controller();
  			foreach ($obj->getUserId($reply_name, $replyed_name) as $k=>$val){
@@ -164,8 +185,8 @@ class MomentsController extends CommonController {
 		        $data['time']=date("Y-m-d H:i:s");
 		        $data['type']=2;
 		        $Comment->data($data)->add();
-			}	
-			
+			}
+
 			//获取新增评论的comment_id
 			$comment_id=M("Comment")->max('Comment_id');
 
@@ -175,13 +196,13 @@ class MomentsController extends CommonController {
             	"moment_id"=>$moment_id,
             	"reply_name"=>$reply_name,
             	"replyed_name"=> $replyed_name,
-            	"comment_val"=>$comment_val); 
-	        echo json_encode($list);     
-		}  
+            	"comment_val"=>$comment_val);
+	        echo json_encode($list);
+		}
     }
 
 
-    //发送朋友圈功能函数
+    //发送朋友圈
     public function addMoment() {
 		$text_box = trim(isset($_POST['text_box']))? htmlspecialchars(trim($_POST['text_box'])) : '';	//获取朋友圈文本内容
 		$image_name='';
@@ -192,7 +213,7 @@ class MomentsController extends CommonController {
 			echo "没有内容";
 			exit;
 		}
-		$destination_folder="moment_img/"; //上传文件路径   
+		$destination_folder="moment_img/"; //上传文件路径
 		$input_file_name = "upfile";
 		$maxwidth = 640;
 		$maxheight = 1136;
@@ -200,7 +221,7 @@ class MomentsController extends CommonController {
 		if($upload_result){	//有图片上传且上传成功返回图片名
 			$image_name = $upload_result;
 		}
-		$user_name=$_SESSION["name"];				
+		$user_name=$_SESSION["name"];
 		foreach ($obj->getUserId($user_name, $user_name) as $k=>$val){
 			$user_id = $val["reply_id"];
 
@@ -211,7 +232,7 @@ class MomentsController extends CommonController {
 	        $data['img_url']=$image_name;
 	        $data['time']=date("Y-m-d H:i:s");
 	        $Moment->data($data)->add();
-		}	
+		}
 
 		//获取自己头像
 		$map['user_name']=$user_name;
@@ -231,7 +252,7 @@ class MomentsController extends CommonController {
     }
 
 	//选取随机三图做滚动墙纸
-    public function getRollingWall(){	
+    public function getRollingWall(){
     	$Model = M();
 		$sql="select img_url,moment_id from think_moment where img_url <>'' and state=1 order by rand() limit 3";//显示朋友圈信息流
 		$list = $Model->query($sql);
@@ -244,8 +265,8 @@ class MomentsController extends CommonController {
         	"moment_id_2"=>$list[1]['moment_id'],
         	"img_url_3"=>$list[2]['img_url'],
         	"moment_id_3"=>$list[2]['moment_id'],
-        ); 
-        echo json_encode($response);   
+        );
+        echo json_encode($response);
     }
 
     public function deleteMoment(){
@@ -263,7 +284,7 @@ class MomentsController extends CommonController {
 		echo json_encode($list);
     }
 
-	/*显示赞与评论*/
+	// 显示赞与评论
     public function loadMessages(){
      	$obj=new SixChatApi2016Controller();
 		$user_name=$_SESSION["name"];
@@ -277,7 +298,7 @@ class MomentsController extends CommonController {
 		$list = M()->query($sql);
 		for($i=0;$i<count($list);$i++){
 			$list[$i]['time']=$obj->tranTime(strtotime($list[$i]['time']));
-		}	
+		}
 
 		$sql1 = "UPDATE think_comment SET news=0 WHERE state=1 and news=1 and ((reply_id<>".$user_id." and reply_id=replyed_id and moment_id in(select moment_id from think_moment where user_id=".$user_id.")) or (replyed_id=".$user_id." and reply_id<>replyed_id)) ";
 		M()->execute($sql1);
@@ -285,10 +306,10 @@ class MomentsController extends CommonController {
 		echo json_encode($list);
     }
 
-    /*查看一条朋友圈*/
+    // 查看一条朋友圈
     public function getOneMoment(){
     	$moment_id = htmlspecialchars($_POST['moment_id']);
-		$my_name = $_SESSION["name"]; 
+		$my_name = $_SESSION["name"];
 
 		$sql="
 		SELECT u.user_name,u.avatar,m.info,m.img_url,m.time
@@ -304,10 +325,10 @@ class MomentsController extends CommonController {
 			$list[$i]['moment_id'] = $moment_id;
 			$list[$i]['time'] = date("M j, Y H:i",strtotime($list[$i]['time']));
 			echo json_encode($list);
-		}	
+		}
     }
 
-    /*查找用户资料*/
+    // 查找用户资料
     public function searchUser()
     {
     	$search_name=htmlspecialchars($_REQUEST['search_name']);
@@ -320,19 +341,19 @@ class MomentsController extends CommonController {
 		foreach ($obj->getUserId($user_name, $search_name) as $k=>$val){
 			$user_id = $val["reply_id"];
 			$friend_id = $val["replyed_id"];
-			
+
 			$map1['user_id']=$user_id;
 			$map1['friend_id']=$friend_id;
 			$result=M("Friend")->where($map1)->find();
 			if($result){
 				$list['is_friend'] = 1;//是好友关系
 			}
-		}	
+		}
 		echo json_encode($list);
     }
 
 
-    /*好友请求*/
+    // 好友请求
     public function friendRuquest()
     {
     	$requested_name = htmlspecialchars($_REQUEST['requested_name']);
@@ -355,7 +376,7 @@ class MomentsController extends CommonController {
 			$result_1=M("Friend_request")->where($map)->select();
 			$result_2=M("Friend_request")->where($map1)->select();
 			if($result_1 || $result_2){//已存在任意一方的请求则不进行操作
-				
+
 			}
 			else {
 				//插入好友请求
@@ -364,9 +385,9 @@ class MomentsController extends CommonController {
 		        $data['requested_id']=$requested_id;
 		        $data['remark']=$remark;
 		        $data['request_time']=date("Y-m-d H:i:s");
-		        $Friend_request->data($data)->add();	
+		        $Friend_request->data($data)->add();
 			}
-		} 	
+		}
 		echo json_encode(array("result"=>"ok"));
     }
 
@@ -376,7 +397,7 @@ class MomentsController extends CommonController {
      	$obj=new SixChatApi2016Controller();
 		$user_name=$_SESSION["name"];
 		$map['user_name']=$user_name;
-		$user_id=M("User")->where($map)->getField('user_id');    	
+		$user_id=M("User")->where($map)->getField('user_id');
     	$map1['requested_id']=$user_id;
     	$map1['state']=1;
 		$result=M("Friend_request")->where($map1)->select();
@@ -393,7 +414,7 @@ class MomentsController extends CommonController {
 		echo json_encode($result);
     }
 
-    /*处理好友请求*/
+    // 处理好友请求
     public function agreeRequest()
     {
     	$id = htmlspecialchars($_REQUEST['id']);//该好友请求id
@@ -412,7 +433,7 @@ class MomentsController extends CommonController {
 			$data['friend_id'] = $requested_id;
 			$data['time'] = date("Y-m-d H:i:s");
 			M("Friend")->data($data)->add();	//好友表添加记录
-			
+
 			$data1['user_id'] = $requested_id;
 			$data1['friend_id'] = $request_id;
 			$data1['time'] = date("Y-m-d H:i:s");
@@ -422,14 +443,14 @@ class MomentsController extends CommonController {
 		echo json_encode(array("result"=>"ok"));
     }
 
-	/*修改资料*/
+	// 修改资料
     public function modifyProfile()
     {
 		$profile_name_box = isset($_POST['profile_name_box'])? htmlspecialchars($_POST['profile_name_box']) : '';	//获取文本内容
 		$profile_sex_box = isset($_POST['profile_sex_box'])? htmlspecialchars($_POST['profile_sex_box']) : '';
 		$profile_region_box = isset($_POST['profile_region_box'])? htmlspecialchars($_POST['profile_region_box']) : '';
 		$profile_whatsup_box = isset($_POST['profile_whatsup_box'])? htmlspecialchars($_POST['profile_whatsup_box']) : '';
-	
+
 		$obj=new SixChatApi2016Controller();
 		if(!$profile_name_box && !$profile_sex_box  && !$profile_region_box && !$profile_whatsup_box && empty($_FILES['profile_upfile']['tmp_name'])){
 			echo "没有内容";
@@ -437,7 +458,7 @@ class MomentsController extends CommonController {
 		}
 		$response = array();
 		$image_name='';
-		$destination_folder="avatar_img/"; //上传文件路径   
+		$destination_folder="avatar_img/"; //上传文件路径
 		$input_file_name = "profile_upfile";
 		$maxwidth = 200;
 		$maxheight = 200;
@@ -448,19 +469,19 @@ class MomentsController extends CommonController {
 			$map['user_name']=$_SESSION['name'];
 			M("User")->where($map)->setField('avatar',$image_name);
 		}
-		$user_name=$_SESSION["name"];				
+		$user_name=$_SESSION["name"];
 		foreach ($obj->getUserId($user_name, $user_name) as $k=>$val){
 			$user_id = $val["reply_id"];
 			$map['user_id'] = $user_id;
 			$data=array('user_name'=>$profile_name_box,'sex'=>$profile_sex_box,'region'=>$profile_region_box,'whatsup'=>$profile_whatsup_box);
 			M("User")->where($map)->setField($data);
-		}	
+		}
 		$_SESSION["name"] = $profile_name_box;
 	    $response['isSuccess'] = true;
 	    echo json_encode($response);
     }
 
-    /*加载下一页moments*/
+    // 加载下一页moments
     public function loadNextPage()
     {
     	$page = htmlspecialchars($_REQUEST['page']);
@@ -471,7 +492,7 @@ class MomentsController extends CommonController {
 		// select u.user_name,u.avatar,m.info,m.img_url,m.time,m.moment_id
 		// 	from think_moment m,think_user u
 		// 		where m.state=1 and m.user_id=u.user_id
-		// 			order by m.time 
+		// 			order by m.time
 		// 				desc limit ".($page*20).",10";//显示朋友圈信息流
 		// $list = $Model->query($sql);
 		$list = D("Moment")->getNextPage($page);
@@ -484,7 +505,7 @@ class MomentsController extends CommonController {
 		echo json_encode($list);
     }
 
-    /*加载未读消息数量*/
+    // 加载未读消息数量
     public function loadNews()
     {
      	$obj=new SixChatApi2016Controller();
@@ -492,7 +513,7 @@ class MomentsController extends CommonController {
 		$map['user_name']=$user_name;
 		$user_id=M("User")->where($map)->getField('user_id');
 		$sql = "SELECT moment_id FROM think_comment c,think_user u where c.reply_id=u.user_id and state=1 and news=1 and ((reply_id<>".$user_id." and reply_id=replyed_id and moment_id in(select moment_id from think_moment where user_id=".$user_id.")) or (replyed_id=".$user_id." and reply_id<>replyed_id)) order by comment_id desc limit 0,100";
-		$list = M()->query($sql);	
+		$list = M()->query($sql);
     	$map1['requested_id']=$user_id;
     	$map1['state']=1;
 		$result=M("Friend_request")->where($map1)->select();
