@@ -7,14 +7,13 @@ $(function() {
     FastClick.attach(document.body);
 
     // 点击按钮弹出点赞或评论选项，点击周围则隐藏
-    $(".info-flow-right-button .button-img").each(function(){
+    $(".info-flow-right-button .button-img").each(function () {
         divPop($(this));
     });
 
     // 点击点赞 执行函数
-    $( document ).on( "click", '.like-png', function(){
+    $( document ).on( "click", '.like-png', function () {
         addLike($(this).parent().parent().parent().attr("id"),$(this).parent().parent().siblings(".info-flow-right-user-name").text());
-        refresh();
     });
 
     // 点击按钮弹出评论框或者隐藏评论框，评论框失去焦点则隐藏
@@ -25,12 +24,12 @@ $(function() {
         .attr("id",$("#avatar").attr("name"))
         .focus();//输入框聚焦
     });
-    $( document ).on("blur",'.info-flow-right-input input',function(){  //评论框失去焦点则隐藏
+    $( document ).on("blur", '.info-flow-right-input input', function(){  //评论框失去焦点则隐藏
         $(this).parent().hide();
     });
 
     // 绑定删除朋友圈事件//不知为何这里如果用document会造成删除动画失效，所以暂时用bind解决
-    $(".delete-moment").bind("click",function() {
+    $(".delete-moment").bind("click", function () {
         deleteMoment($(this).parent());
     });
 
@@ -127,7 +126,7 @@ $(function() {
     });
 
     // 点击主页头像
-    $("#avatar").bind("click",function() {
+    $("#avatar").bind("click", function () {
         searchUser($("#camera").attr("name"));
     });
 
@@ -406,6 +405,7 @@ function addLike(moment_id,moment_user_name) {
             //alert("加载错误，错误原因：\n"+errorThrown);  
         },  
         success:function(data){  //当addLike后执行reFresh(),重新加载所有赞,所以下面单条添加可以省略
+            refresh();
         } 
     });   
 }
