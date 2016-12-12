@@ -13,8 +13,6 @@ var mobile_speed = 200;//移动端动画速度
 
 $(function() {
 
-    $("body").animate({opacity: 1}, pc_speed/8);
-
     //去除移动端click延迟300ms插件fastclick初始化
     FastClick.attach(document.body);
 
@@ -170,6 +168,7 @@ $(function() {
         clickCamera();
     });
 
+    $("body").animate({opacity: 1}, pc_speed/8);
 });
 
 // 替换str
@@ -554,9 +553,7 @@ function getRollingWall(){
                 getOneMoment($(this).attr("name"));
                 $("#current_location").text("Details");
                 $("#back").text("SixChat");
-                $("#top~div").hide().show(mobile_speed);
             });
-
         }
     });
 }
@@ -961,7 +958,6 @@ function clickToBack() {
         $("#lightboxOverlay,#lightbox").hide();
     }
     else if($("#current_location").text()=="Details" || $("#current_location").text()=="Profile"){//返回主页面
-        $("body").hide();
         self.location.href="";
     }
 }

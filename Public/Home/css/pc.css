@@ -80,7 +80,11 @@ body {
 
 }
 #the_one_moment {
-    margin-top: 50px;
+    position: absolute;
+    top: 40px;
+    left: 30%;
+    width: 40%;
+    box-sizing: border-box;
     padding-top: 20px;
 }
 .info-flow-left
