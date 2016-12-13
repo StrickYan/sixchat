@@ -159,7 +159,7 @@ $(function() {
 
     $("img.lazy").lazyload({effect: "fadeIn",threshold: mobile_speed});//图片延迟加载
 
-    $("#back").bind("click", function () {
+    $("#return").bind("click", function () {
         clickToBack();
     }); //点击左上角导航返回
 

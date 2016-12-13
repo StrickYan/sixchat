@@ -130,6 +130,9 @@ a
 
     filter: alpha(opacity=.97);
 }
+#return {
+    cursor:pointer;
+}
 #back_img
 {
     float: left;
@@ -150,7 +153,6 @@ a
     margin-left: 3px;
 
     color: white;
-    cursor:pointer;
 }
 #current_location
 {
