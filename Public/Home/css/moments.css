@@ -52,7 +52,7 @@ a
 {
     line-height: 1.8rem;
 
-    position: fixed;
+    position: absolute;
     z-index: 2;
     top: 0;
     right: -100%;
@@ -289,19 +289,16 @@ a
     position: absolute;
     z-index: 1;
     right: 8px;
-    bottom: -10px;
+    bottom: 8px;
 
-    opacity: 1;
-
-    filter: alpha(opacity=1);
     cursor:pointer;
 }
 #avatar img
 {
-    width: 80px;
-    height: 80px;
+    width: 50px;
+    height: 50px;
 
-    border-radius: 3px;
+    border-radius: 25px;
 }
 
 #free
