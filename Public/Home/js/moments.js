@@ -393,7 +393,7 @@ function searchUser(search_name) {
                 $("#slidebar_profile").fadeIn(pc_speed);
             }
             else{
-                $("#slidebar_profile").animate({right:0},mobile_speed);
+                $("#slidebar_profile").animate({left:0},mobile_speed);
             }
             $("#slidebar_profile~div").animate({opacity:0},100);
             $("#back").text("SixChat");
