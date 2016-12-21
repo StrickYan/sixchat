@@ -1,61 +1,68 @@
 * {
-	margin:0;
-	padding:0;
+    margin: 0;
+    padding: 0;
 }
+
 body {
-	font-family:arial, verdana;
+    font-family: arial, verdana;
 }
+
 #login {
-	background-color:#fff;
-	text-align:center;		
-	border: 0 none;
-	border-radius: 3px;
-	padding-top:10%;
-	position:relative;
+    background-color: #fff;
+    text-align: center;
+    border: 0 none;
+    border-radius: 3px;
+    padding-top: 10%;
+    position: relative;
 }
+
 #header {
-	display:block;
-	color:gray;
-	position:absolute;
-	left:10%;
-	font-weight: bold;
+    display: block;
+    color: gray;
+    position: absolute;
+    left: 10%;
+    font-weight: bold;
 }
+
 #login img {
-	width:90px; 
-	height:90px;
-	margin-bottom: 30px;
-	margin-top:40px;
-	border-radius: 5px;
+    width: 90px;
+    height: 90px;
+    margin-bottom: 30px;
+    margin-top: 40px;
+    border-radius: 5px;
 }
+
 .input-box {
-	padding: 10px 15px;
-	border: 1px solid #ccc;
-	border-radius: 3px;
-	margin-bottom: 15px;
-	width: 80%;
-	box-sizing: border-box;
-	color: #2C3E50;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-bottom: 15px;
+    width: 80%;
+    box-sizing: border-box;
+    color: #2C3E50;
 }
+
 #submit_button {
-	width:80%;
-	box-sizing: border-box;
-	border: 1px solid #3ECD3E;
-	background:#3ECD3E;
-	color:white;
-	cursor:pointer;					
-	font-weight: bold;
-	border-radius: 3px;
-	padding: 10px 15px;
-	margin-bottom: 10px;
-	line-height: 1em;
-	font-size: 1em;
+    width: 80%;
+    box-sizing: border-box;
+    border: 1px solid #3ECD3E;
+    background: #3ECD3E;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 3px;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    line-height: 1em;
+    font-size: 1em;
 }
+
 #login a {
-	display:block;
-	font-weight: bold;
-	color:gray;		
-	text-decoration : none;
-	margin-top:20px;
-	margin-bottom:10px;
-	font-size:0.8125em;
+    display: block;
+    font-weight: bold;
+    color: gray;
+    text-decoration: none;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 0.8125em;
 }
