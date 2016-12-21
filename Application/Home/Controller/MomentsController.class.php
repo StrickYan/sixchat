@@ -5,24 +5,28 @@ use Think\Controller;
 
 class MomentsController extends CommonController
 {
+    public function __construct()
+    {
+        parent::__construct();
+        $this->obj = new SixChatApi2016Controller();
+    }
 
     // 显示朋友圈信息流
     public function index()
     {
-        $obj = new SixChatApi2016Controller();
         session_start();
         $user_name = $_SESSION["name"];
 
         //获取自己头像
         $map['user_name'] = $user_name;
-        $avatar           = M("User")->where($map)->getField('avatar');
+        $avatar           = D("user")->getUserAvatar($map);
 
         //获取朋友圈信息流
         $list = D("Moment")->getMoments();
-        for ($i = 0; $i < count($list); $i++) {
-            $list[$i]['user_name'] = htmlspecialchars($list[$i]['user_name']);
-            $list[$i]['time']      = $obj->tranTime(strtotime($list[$i]['time']));
-            $list[$i]['info']      = htmlspecialchars($list[$i]['info']);
+        foreach ($list as $key => $value) {
+            $list[$key]['user_name'] = htmlspecialchars($value['user_name']);
+            $list[$key]['time']      = $this->obj->tranTime(strtotime($value['time']));
+            $list[$key]['info']      = htmlspecialchars($value['info']);
         }
 
         $this->assign('list', $list);
@@ -111,8 +115,7 @@ class MomentsController extends CommonController
                     $list = D("Comment")->getComments1($id);
                 } else {
                     //浏览他人的帖子时只能看到互为好友的评论或者 自己与该用户的对话
-                    $obj = new SixChatApi2016Controller();
-                    foreach ($obj->getUserId($user_name, $moment_user_name) as $k => $val) {
+                    foreach ($this->obj->getUserId($user_name, $moment_user_name) as $k => $val) {
                         $user_id        = $val["reply_id"];
                         $moment_user_id = $val["replyed_id"];
 
@@ -142,8 +145,7 @@ class MomentsController extends CommonController
             $reply_name   = $_SESSION["name"];
             $replyed_name = htmlspecialchars($_REQUEST['moment_user_name']);
 
-            $obj = new SixChatApi2016Controller();
-            foreach ($obj->getUserId($reply_name, $replyed_name) as $k => $val) {
+            foreach ($this->obj->getUserId($reply_name, $replyed_name) as $k => $val) {
                 $reply_id   = $val["reply_id"];
                 $replyed_id = $val["replyed_id"];
 
@@ -184,8 +186,7 @@ class MomentsController extends CommonController
             $replyed_name = htmlspecialchars($_REQUEST['replyed_name']);
             $comment_val  = htmlspecialchars(trim($_REQUEST['comment_val']));
 
-            $obj = new SixChatApi2016Controller();
-            foreach ($obj->getUserId($reply_name, $replyed_name) as $k => $val) {
+            foreach ($this->obj->getUserId($reply_name, $replyed_name) as $k => $val) {
                 $reply_id   = $val["reply_id"];
                 $replyed_id = $val["replyed_id"];
 
@@ -220,7 +221,7 @@ class MomentsController extends CommonController
         $text_box   = trim(isset($_POST['text_box'])) ? htmlspecialchars(trim($_POST['text_box'])) : ''; //获取朋友圈文本内容
         $image_name = '';
         $response   = array();
-        $obj        = new SixChatApi2016Controller();
+
         if (!$text_box && empty($_FILES['upfile']['tmp_name'])) {
             echo $_FILES['upfile']['error'];
             echo "没有内容";
@@ -230,13 +231,13 @@ class MomentsController extends CommonController
         $input_file_name    = "upfile";
         $maxwidth           = 640;
         $maxheight          = 1136;
-        $upload_result      = $obj->uploadImg($destination_folder, $input_file_name, $maxwidth, $maxheight); //调用上传函数
+        $upload_result      = $this->obj->uploadImg($destination_folder, $input_file_name, $maxwidth, $maxheight); //调用上传函数
         if ($upload_result) {
             //有图片上传且上传成功返回图片名
             $image_name = $upload_result;
         }
         $user_name = $_SESSION["name"];
-        foreach ($obj->getUserId($user_name, $user_name) as $k => $val) {
+        foreach ($this->obj->getUserId($user_name, $user_name) as $k => $val) {
             $user_id = $val["reply_id"];
 
             //插入朋友圈
@@ -261,7 +262,7 @@ class MomentsController extends CommonController
         $response['avatar']    = $avatar;
         $response['text_box']  = $text_box;
         $response['photo']     = $image_name;
-        $response['time']      = $obj->tranTime(strtotime(date("Y-m-d H:i:s")));
+        $response['time']      = $this->obj->tranTime(strtotime(date("Y-m-d H:i:s")));
         echo json_encode($response);
     }
 
@@ -304,7 +305,6 @@ class MomentsController extends CommonController
     // 显示赞与评论
     public function loadMessages()
     {
-        $obj       = new SixChatApi2016Controller();
         $user_name = $_SESSION["name"];
 
         $map['user_name'] = $user_name;
@@ -315,7 +315,7 @@ class MomentsController extends CommonController
         $sql  = "SELECT user_name as reply_name,avatar,moment_id,comment,time FROM think_comment c,think_user u where c.reply_id=u.user_id and state=1 and ((reply_id<>" . $user_id . " and reply_id=replyed_id and moment_id in(select moment_id from think_moment where user_id=" . $user_id . ")) or (replyed_id=" . $user_id . " and reply_id<>replyed_id)) order by comment_id desc limit 0,100";
         $list = M()->query($sql);
         for ($i = 0; $i < count($list); $i++) {
-            $list[$i]['time'] = $obj->tranTime(strtotime($list[$i]['time']));
+            $list[$i]['time'] = $this->obj->tranTime(strtotime($list[$i]['time']));
         }
 
         $sql1 = "UPDATE think_comment SET news=0 WHERE state=1 and news=1 and ((reply_id<>" . $user_id . " and reply_id=replyed_id and moment_id in(select moment_id from think_moment where user_id=" . $user_id . ")) or (replyed_id=" . $user_id . " and reply_id<>replyed_id)) ";
@@ -331,9 +331,9 @@ class MomentsController extends CommonController
         $my_name   = $_SESSION["name"];
 
         $sql = "
-		SELECT u.user_name,u.avatar,m.info,m.img_url,m.time
-			from think_moment m,think_user u
-				where m.moment_id=" . $moment_id . " and m.state=1 and m.user_id=u.user_id"; //显示该条朋友圈内容
+        SELECT u.user_name,u.avatar,m.info,m.img_url,m.time
+            from think_moment m,think_user u
+                where m.moment_id=" . $moment_id . " and m.state=1 and m.user_id=u.user_id"; //显示该条朋友圈内容
         $list = M()->query($sql);
         for ($i = 0; $i < count($list); $i++) {
             $list[$i]['my_name']   = $my_name;
@@ -356,8 +356,7 @@ class MomentsController extends CommonController
         $list             = M("User")->where($map)->find();
 
         $list['is_friend'] = 0; //0代表不是好友关系
-        $obj               = new SixChatApi2016Controller();
-        foreach ($obj->getUserId($user_name, $search_name) as $k => $val) {
+        foreach ($this->obj->getUserId($user_name, $search_name) as $k => $val) {
             $user_id   = $val["reply_id"];
             $friend_id = $val["replyed_id"];
 
@@ -378,8 +377,7 @@ class MomentsController extends CommonController
         $request_name   = $_SESSION['name'];
         $remark         = htmlspecialchars($_REQUEST['remark']);
 
-        $obj = new SixChatApi2016Controller();
-        foreach ($obj->getUserId($request_name, $requested_name) as $k => $val) {
+        foreach ($this->obj->getUserId($request_name, $requested_name) as $k => $val) {
             $request_id   = $val["reply_id"];
             $requested_id = $val["replyed_id"];
 
@@ -411,7 +409,6 @@ class MomentsController extends CommonController
 
     public function loadFriendRequest()
     {
-        $obj                  = new SixChatApi2016Controller();
         $user_name            = $_SESSION["name"];
         $map['user_name']     = $user_name;
         $user_id              = M("User")->where($map)->getField('user_id');
@@ -426,7 +423,7 @@ class MomentsController extends CommonController
             $result[$i]['avatar']       = $avatar;
             $result[$i]['id']           = $result[$i]['id'];
             $result[$i]['remark']       = $result[$i]['remark'];
-            $result[$i]['time']         = $obj->tranTime(strtotime($result[$i]['request_time']));
+            $result[$i]['time']         = $this->obj->tranTime(strtotime($result[$i]['request_time']));
         }
         echo json_encode($result);
     }
@@ -441,8 +438,7 @@ class MomentsController extends CommonController
         $map['id'] = $id;
         M("Friend_request")->where($map)->setField('state', 0);
 
-        $obj = new SixChatApi2016Controller();
-        foreach ($obj->getUserId($request_name, $requested_name) as $k => $val) {
+        foreach ($this->obj->getUserId($request_name, $requested_name) as $k => $val) {
             $request_id   = $val["reply_id"];
             $requested_id = $val["replyed_id"];
 
@@ -468,7 +464,6 @@ class MomentsController extends CommonController
         $profile_region_box  = isset($_POST['profile_region_box']) ? htmlspecialchars($_POST['profile_region_box']) : '';
         $profile_whatsup_box = isset($_POST['profile_whatsup_box']) ? htmlspecialchars($_POST['profile_whatsup_box']) : '';
 
-        $obj = new SixChatApi2016Controller();
         if (!$profile_name_box && !$profile_sex_box && !$profile_region_box && !$profile_whatsup_box && empty($_FILES['profile_upfile']['tmp_name'])) {
             echo "没有内容";
             exit;
@@ -479,7 +474,7 @@ class MomentsController extends CommonController
         $input_file_name    = "profile_upfile";
         $maxwidth           = 200;
         $maxheight          = 200;
-        $upload_result      = $obj->uploadImg($destination_folder, $input_file_name, $maxwidth, $maxheight); //上传头像
+        $upload_result      = $this->obj->uploadImg($destination_folder, $input_file_name, $maxwidth, $maxheight); //上传头像
         if ($upload_result) {
             //有图片上传且上传成功返回图片名
             $image_name = $upload_result;
@@ -488,7 +483,7 @@ class MomentsController extends CommonController
             M("User")->where($map)->setField('avatar', $image_name);
         }
         $user_name = $_SESSION["name"];
-        foreach ($obj->getUserId($user_name, $user_name) as $k => $val) {
+        foreach ($this->obj->getUserId($user_name, $user_name) as $k => $val) {
             $user_id        = $val["reply_id"];
             $map['user_id'] = $user_id;
             $data           = array('user_name' => $profile_name_box, 'sex' => $profile_sex_box, 'region' => $profile_region_box, 'whatsup' => $profile_whatsup_box);
@@ -503,7 +498,6 @@ class MomentsController extends CommonController
     public function loadNextPage()
     {
         $page = htmlspecialchars($_REQUEST['page']);
-        $obj  = new SixChatApi2016Controller();
 
         // $Model = M();
         // $sql="
@@ -517,7 +511,7 @@ class MomentsController extends CommonController
 
         for ($i = 0; $i < count($list); $i++) {
             $list[$i]['user_name'] = htmlspecialchars($list[$i]['user_name']);
-            $list[$i]['time']      = $obj->tranTime(strtotime($list[$i]['time']));
+            $list[$i]['time']      = $this->obj->tranTime(strtotime($list[$i]['time']));
             $list[$i]['info']      = htmlspecialchars($list[$i]['info']);
         }
         echo json_encode($list);
@@ -526,7 +520,6 @@ class MomentsController extends CommonController
     // 加载未读消息数量
     public function loadNews()
     {
-        $obj                  = new SixChatApi2016Controller();
         $user_name            = $_SESSION["name"];
         $map['user_name']     = $user_name;
         $user_id              = M("User")->where($map)->getField('user_id');
@@ -542,8 +535,8 @@ class MomentsController extends CommonController
     //注销
     public function logout()
     {
-        $obj = new SixChatApi2016Controller();
-        $obj->logout();
+
+        $this->obj->logout();
         header("Location:index");
     }
 
