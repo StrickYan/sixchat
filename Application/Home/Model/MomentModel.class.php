@@ -22,4 +22,26 @@ class MomentModel extends Model
         return $result;
     }
 
+    public function addMoment($data)
+    {
+        $this->data($data)->add();
+    }
+
+    public function getMaxMomentId()
+    {
+        return $this->max('moment_id');
+    }
+
+    public function getRollingWall()
+    {
+        $sql  = "select img_url,moment_id from think_moment where img_url <>'' and state=1 order by rand() limit 3"; //显示朋友圈信息流
+        $list = M()->query($sql);
+        return $list;
+    }
+
+    public function updateMomentState($condition)
+    {
+        $this->where($condition)->setField('state', 0);
+    }
+
 }

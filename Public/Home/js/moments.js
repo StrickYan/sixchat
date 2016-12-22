@@ -138,9 +138,9 @@ $(function() {
     $("#camera").bind("click", function() {
         clickCamera();
     });
-    $("body").animate({
-        opacity: 1
-    }, pc_speed / 8);
+    // $("body").animate({
+    //     opacity: 1
+    // }, mobile_speed / 4);
 });
 // 替换str
 function replace_str(str) {

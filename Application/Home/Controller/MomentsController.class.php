@@ -28,18 +28,15 @@ class MomentsController extends CommonController
     public function index()
     {
         session_start();
-        $user_name = $_SESSION["name"];
-
-        //获取自己头像
-        $map['user_name'] = $user_name;
+        $user_name        = $_SESSION["name"];
+        $map['user_name'] = $user_name; //获取自己头像
         $avatar           = $this->userModel->getUserAvatar($map);
+        $list             = $this->momentModel->getMoments(); //获取朋友圈信息流
 
-        //获取朋友圈信息流
-        $list = $this->momentModel->getMoments();
-        foreach ($list as $key => $value) {
-            $list[$key]['user_name'] = htmlspecialchars($value['user_name']);
-            $list[$key]['time']      = $this->obj->tranTime(strtotime($value['time']));
-            $list[$key]['info']      = htmlspecialchars($value['info']);
+        foreach ($list as $key => &$value) {
+            $value['user_name'] = htmlspecialchars($value['user_name']);
+            $value['time']      = $this->obj->tranTime(strtotime($value['time']));
+            $value['info']      = htmlspecialchars($value['info']);
         }
 
         $this->assign('list', $list);
@@ -53,15 +50,11 @@ class MomentsController extends CommonController
     {
         if (isset($_REQUEST['id'])) {
             $id = htmlspecialchars($_REQUEST['id']); //moment_id
-
             if (is_numeric($id)) {
-                $id   = intval($id);
                 $list = $this->commentModel->getLikes($id);
-                for ($i = 0; $i < count($list); $i++) {
-                    $list[$i] = array(
-                        "reply_name" => htmlspecialchars($list[$i]['reply_name']));
+                foreach ($list as $key => &$value) {
+                    $value['reply_name'] = htmlspecialchars($value['reply_name']);
                 }
-
                 echo json_encode($list);
             }
         }
@@ -76,13 +69,10 @@ class MomentsController extends CommonController
             $user_name        = $_SESSION["name"]; //当前用户
 
             if (is_numeric($id)) {
-                $id   = intval($id);
                 $list = $this->commentModel->getLikesInAuth($id, $user_name, $moment_user_name);
-                for ($i = 0; $i < count($list); $i++) {
-                    $list[$i] = array(
-                        "reply_name" => htmlspecialchars($list[$i]['reply_name']));
+                foreach ($list as $key => &$value) {
+                    $value['reply_name'] = htmlspecialchars($value['reply_name']);
                 }
-
                 echo json_encode($list);
             }
         }
@@ -94,18 +84,15 @@ class MomentsController extends CommonController
         if (isset($_REQUEST['id'])) {
             $id = htmlspecialchars($_REQUEST['id']);
             if (is_numeric($id)) {
-                //是数字
-                $id   = intval($id);
                 $list = $this->commentModel->getComments1($id);
-                for ($i = 0; $i < count($list); $i++) {
-                    $list[$i] = array(
-                        "reply_name"   => htmlspecialchars($list[$i]['reply_name']),
-                        "replyed_name" => htmlspecialchars($list[$i]['replyed_name']),
-                        "comment_id"   => $list[$i]['comment_id'],
-                        "comment"      => htmlspecialchars($list[$i]['comment']),
-                        "time"         => $list[$i]['time']);
+                foreach ($list as $key => &$value) {
+                    $value = array(
+                        "reply_name"   => htmlspecialchars($value['reply_name']),
+                        "replyed_name" => htmlspecialchars($value['replyed_name']),
+                        "comment_id"   => $value['comment_id'],
+                        "comment"      => htmlspecialchars($value['comment']),
+                        "time"         => $value['time']);
                 }
-
                 echo json_encode($list);
             }
         }
@@ -120,8 +107,6 @@ class MomentsController extends CommonController
             $user_name        = $_SESSION["name"]; //当前用户
 
             if (is_numeric($id)) {
-                //是数字
-                $id   = intval($id);
                 $list = '';
                 if (!strcmp($user_name, $moment_user_name)) {
                     //相等，浏览自己的帖子可以看到所有评论包括好友与非好友
@@ -136,15 +121,14 @@ class MomentsController extends CommonController
 
                     }
                 }
-                for ($i = 0; $i < count($list); $i++) {
-                    $list[$i] = array(
-                        "reply_name"   => htmlspecialchars($list[$i]['reply_name']),
-                        "replyed_name" => htmlspecialchars($list[$i]['replyed_name']),
-                        "comment_id"   => $list[$i]['comment_id'],
-                        "comment"      => htmlspecialchars($list[$i]['comment']),
-                        "time"         => $list[$i]['time']);
+                foreach ($list as $key => &$value) {
+                    $value = array(
+                        "reply_name"   => htmlspecialchars($value['reply_name']),
+                        "replyed_name" => htmlspecialchars($value['replyed_name']),
+                        "comment_id"   => $value['comment_id'],
+                        "comment"      => htmlspecialchars($value['comment']),
+                        "time"         => $value['time']);
                 }
-
                 echo json_encode($list);
             }
         }
@@ -167,11 +151,12 @@ class MomentsController extends CommonController
                 $condition['replyed_id'] = $replyed_id;
                 $condition['state']      = 1;
                 $condition['type']       = 1;
-                $result                  = $this->commentModel->where($condition)->getField('comment_id');
+                $result                  = $this->commentModel->getCommentId($condition);
 
                 if ($result) {
                     //已点赞 则删除赞记录
-                    $this->commentModel->where("comment_id=$result and type=1")->setField('state', 0);
+                    $data['comment_id'] = $result;
+                    $this->commentModel->updateCommentState($data);
                 } else {
                     //没有点赞记录 则增加点赞
                     //插入赞
@@ -181,7 +166,7 @@ class MomentsController extends CommonController
                     $data['time']       = date("Y-m-d H:i:s");
                     $data['type']       = 1;
                     $data['comment']    = "赞了你";
-                    $this->commentModel->data($data)->add();
+                    $this->commentModel->addComment($data);
                 }
             }
             $list[0] = "点赞成功";
@@ -203,18 +188,17 @@ class MomentsController extends CommonController
                 $replyed_id = $val["replyed_id"];
 
                 //插入评论
-                $Comment            = $this->commentModel;
                 $data['moment_id']  = $moment_id;
                 $data['reply_id']   = $reply_id;
                 $data['replyed_id'] = $replyed_id;
                 $data['comment']    = $comment_val;
                 $data['time']       = date("Y-m-d H:i:s");
                 $data['type']       = 2;
-                $Comment->data($data)->add();
+                $this->commentModel->addComment($data);
             }
 
             //获取新增评论的comment_id
-            $comment_id = $this->commentModel->max('Comment_id');
+            $comment_id = $this->commentModel->getMaxCommentId();
 
             //返回json数据
             $list[] = array(
@@ -257,15 +241,15 @@ class MomentsController extends CommonController
             $data['info']    = $text_box;
             $data['img_url'] = $image_name;
             $data['time']    = date("Y-m-d H:i:s");
-            $this->momentModel->data($data)->add();
+            $this->momentModel->addMoment($data);
         }
 
         //获取自己头像
         $map['user_name'] = $user_name;
-        $avatar           = $this->userModel->where($map)->getField('avatar');
+        $avatar           = $this->userModel->getUserAvatar($map);
 
         //获取新增朋友圈的moment_id
-        $moment_id = $this->momentModel->max('moment_id');
+        $moment_id = $this->momentModel->getMaxMomentId();
 
         $response['isSuccess'] = true;
         $response['moment_id'] = $moment_id;
@@ -280,9 +264,7 @@ class MomentsController extends CommonController
     //选取随机三图做滚动墙纸
     public function getRollingWall()
     {
-        $Model = M();
-        $sql   = "select img_url,moment_id from think_moment where img_url <>'' and state=1 order by rand() limit 3"; //显示朋友圈信息流
-        $list  = $Model->query($sql);
+        $list = $this->momentModel->getRollingWall();
 
         //返回json数据
         $response[] = array(
@@ -298,17 +280,19 @@ class MomentsController extends CommonController
 
     public function deleteMoment()
     {
-        $moment_id = htmlspecialchars($_REQUEST['moment_id']);
-        $this->momentModel->where("moment_id=$moment_id")->setField('state', 0);
-        $this->commentModel->where("moment_id=$moment_id")->setField('state', 0); //删除moment的时候连带删除其下所有评论
+        $moment_id              = htmlspecialchars($_REQUEST['moment_id']);
+        $condition['moment_id'] = $moment_id;
+        $this->momentModel->updateMomentState($condition);
+        $this->commentModel->updateCommentState($condition); //删除moment的时候连带删除其下所有评论
         $list[0] = "Delete moment is success.";
         echo json_encode($list);
     }
 
     public function deleteComment()
     {
-        $comment_id = htmlspecialchars($_REQUEST['comment_id']);
-        $this->commentModel->where("Comment_id=$comment_id")->setField('state', 0);
+        $comment_id              = htmlspecialchars($_REQUEST['comment_id']);
+        $condition['comment_id'] = $comment_id;
+        $this->commentModel->updateCommentState($condition);
         $list[0] = "Delete comment is success.";
         echo json_encode($list);
     }

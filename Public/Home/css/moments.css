@@ -16,7 +16,7 @@ body {
     font-family: 'Open Sans', Arial, 'Microsoft YaHei', Verdana, Geneva, sans-serif;
     font-size: 14px;
     height: 100%;
-    opacity: 0;
+    /*opacity: 0;*/
     background-color: white;
     overflow-x: hidden;
 }

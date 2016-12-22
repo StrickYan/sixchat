@@ -50,4 +50,24 @@ class CommentModel extends Model
         return $result;
     }
 
+    public function getCommentId($condition)
+    {
+        return $this->where($condition)->getField('comment_id');
+    }
+
+    public function updateCommentState($condition)
+    {
+        $this->where($condition)->setField('state', 0);
+    }
+
+    public function addComment($data)
+    {
+        $this->data($data)->add();
+    }
+
+    public function getMaxCommentId()
+    {
+        return $this->max('comment_id');
+    }
+
 }
