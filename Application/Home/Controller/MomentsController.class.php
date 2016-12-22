@@ -300,22 +300,14 @@ class MomentsController extends CommonController
     // 显示赞与评论
     public function loadMessages()
     {
-        $user_name = $_SESSION["name"];
-
+        $user_name        = $_SESSION["name"];
         $map['user_name'] = $user_name;
-        $user_id          = $this->userModel->where($map)->getField('user_id');
-
-        // $sql = "SELECT user_name as reply_name,avatar,moment_id,comment,time FROM think_comment c,think_user u where c.reply_id=u.user_id and state=1 and ((reply_id<>".$user_id." and reply_id=replyed_id and moment_id in(select moment_id from think_moment where user_id=".$user_id." and state=1)) or (replyed_id=".$user_id." and reply_id<>replyed_id)) order by comment_id desc limit 0,20";
-
-        $sql  = "SELECT user_name as reply_name,avatar,moment_id,comment,time FROM think_comment c,think_user u where c.reply_id=u.user_id and state=1 and ((reply_id<>" . $user_id . " and reply_id=replyed_id and moment_id in(select moment_id from think_moment where user_id=" . $user_id . ")) or (replyed_id=" . $user_id . " and reply_id<>replyed_id)) order by comment_id desc limit 0,100";
-        $list = M()->query($sql);
-        for ($i = 0; $i < count($list); $i++) {
-            $list[$i]['time'] = $this->obj->tranTime(strtotime($list[$i]['time']));
+        $user_id          = $this->userModel->getUserId($map);
+        $list             = $this->commentModel->getUnreadMessagesViaUserId($user_id);
+        foreach ($list as $key => &$value) {
+            $value['time'] = $this->obj->tranTime(strtotime($value['time']));
         }
-
-        $sql1 = "UPDATE think_comment SET news=0 WHERE state=1 and news=1 and ((reply_id<>" . $user_id . " and reply_id=replyed_id and moment_id in(select moment_id from think_moment where user_id=" . $user_id . ")) or (replyed_id=" . $user_id . " and reply_id<>replyed_id)) ";
-        M()->execute($sql1);
-
+        $this->commentModel->updateNewsViaUserId($user_id);
         echo json_encode($list);
     }
 

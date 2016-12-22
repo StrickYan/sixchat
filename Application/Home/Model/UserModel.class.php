@@ -9,4 +9,9 @@ class UserModel extends Model
     {
         return $this->where($map)->getField('avatar');
     }
+
+    public function getUserId($map)
+    {
+        return $this->where($map)->getField('user_id');
+    }
 }
