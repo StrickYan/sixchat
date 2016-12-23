@@ -6,24 +6,6 @@ use Think\Controller;
 class MomentsController extends CommonController
 {
 
-    private $obj;
-    private $momentModel;
-    private $userModel;
-    private $commentModel;
-    private $friendRuquestModel;
-    private $friendModel;
-
-    public function __construct()
-    {
-        parent::__construct();
-        $this->obj                = new SixChatApi2016Controller();
-        $this->momentModel        = D('Moment');
-        $this->userModel          = D('User');
-        $this->commentModel       = D('comment');
-        $this->friendRuquestModel = D("Friend_request");
-        $this->friendModel        = D("Friend");
-    }
-
     // 显示朋友圈信息流
     public function index()
     {

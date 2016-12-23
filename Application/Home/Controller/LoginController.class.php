@@ -60,7 +60,8 @@ class LoginController extends Controller
         if ($id != null) {
             //加载用户头像
             $condition2['user_name'] = $id;
-            $avatar                  = M('User')->where($condition2)->getfield('avatar');
+            // $avatar                  = M('User')->where($condition2)->getfield('avatar');
+            $avatar = D('User')->getUserAvatar($condition2);
             if ($avatar) {
                 $head_image = $avatar;
             }

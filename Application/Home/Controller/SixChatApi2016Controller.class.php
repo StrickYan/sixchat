@@ -6,11 +6,28 @@ use Think\Controller;
 class SixChatApi2016Controller extends Controller
 {
 
+    protected $momentModel;
+    protected $userModel;
+    protected $commentModel;
+    protected $friendRuquestModel;
+    protected $friendModel;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->momentModel        = D('Moment');
+        $this->userModel          = D('User');
+        $this->commentModel       = D('comment');
+        $this->friendRuquestModel = D("Friend_request");
+        $this->friendModel        = D("Friend");
+    }
+
     /*登录API*/
     public function login($id, $password)
     {
         $condition['user_name'] = $id;
-        $user_name              = M('User')->where($condition)->getfield('user_name');
+        // $user_name              = M('User')->where($condition)->getfield('user_name');
+        $user_name = $this->userModel->getUserName($condition);
         if (!$user_name) {
             //该用户不存在
             return -1;
@@ -18,7 +35,8 @@ class SixChatApi2016Controller extends Controller
             setcookie("user", "$id", time() + 60 * 60 * 24 * 7); //用户名存在，保存用户名cookie
             $condition1['user_name'] = $id;
             $condition1['password']  = md5($password);
-            $user_name_1             = M('User')->where($condition1)->getfield('user_name');
+            // $user_name_1             = M('User')->where($condition1)->getfield('user_name');
+            $user_name_1 = $this->userModel->getUserName($condition1);
             if ($user_name_1) {
                 //登录成功
                 setcookie("password", "$password", time() + 60 * 60 * 24, "/sixchat/Home/Login/", "119.29.24.253"); //登录成功再保存密码cookie
@@ -46,7 +64,8 @@ class SixChatApi2016Controller extends Controller
     public function register($id, $password)
     {
         $condition['user_name'] = $id;
-        $user_name              = M('User')->where($condition)->getfield('user_name');
+        // $user_name              = M('User')->where($condition)->getfield('user_name');
+        $user_name = $this->userModel->getUserName($condition);
         if ($user_name) {
             //该账号已存在
             return -1;
@@ -55,17 +74,20 @@ class SixChatApi2016Controller extends Controller
             $data['user_name']     = $id;
             $data['password']      = MD5($password);
             $data['register_time'] = date("Y-m-d H:i:s");
-            M('User')->data($data)->filter('htmlspecialchars')->add();
+            // M('User')->data($data)->filter('htmlspecialchars')->add();
+            $this->userModel->addUser($data);
 
             //查询该新用户的user_id
             $condition1['user_name'] = $id;
-            $user_id                 = M('User')->where($condition1)->getfield('user_id');
+            // $user_id                 = M('User')->where($condition1)->getfield('user_id');
+            $user_id = $this->userModel->getUserId($condition1);
 
             //注册时自动添加自己为好友
             $data1['user_id']   = $user_id;
             $data1['friend_id'] = $user_id;
             $data1['time']      = date("Y-m-d H:i:s");
-            M('Friend')->data($data1)->filter('htmlspecialchars')->add();
+            // M('Friend')->data($data1)->filter('htmlspecialchars')->add();
+            $this->friendModel->addFriend($data1);
             return 0;
         }
     }
@@ -105,37 +127,26 @@ class SixChatApi2016Controller extends Controller
     //以user_name匹配用户user_id
     public function getUserId($reply_name, $replyed_name)
     {
-        //原生SQL查询版本
-        //     $sql = "";
-        //     $sql = "
-        //     select u1.user_id as reply_id,u2.user_id as replyed_id
-        //         from think_user u1,think_user u2
-        // where u1.user_name=".$reply_name." and u2.user_name=".$replyed_name.";";  //三表联合查询
-        //     //实例化对象
-        //     $Model = M();
-        //     $result = $Model->query($sql);
-
-        //thinkphp多表查询版本
-        $Model                     = M();
         $condition['u1.user_name'] = $reply_name;
         $condition['u2.user_name'] = $replyed_name;
-        $result                    = $Model->table('think_user u1,think_user u2')
-            ->field('u1.user_id as reply_id,u2.user_id as replyed_id')
-            ->where($condition)
-            ->select();
+        // $result                    = M()->table('think_user u1,think_user u2')
+        //     ->field('u1.user_id as reply_id,u2.user_id as replyed_id')
+        //     ->where($condition)
+        //     ->select();
+        $result = $this->userModel->getUserIdViaUserName($condition);
         return $result;
     }
 
     //以user_id匹配用户user_name
     public function getUserName($reply_id, $replyed_id)
     {
-        $Model                   = M();
         $condition['u1.user_id'] = $reply_id;
         $condition['u2.user_id'] = $replyed_id;
-        $result                  = $Model->table('think_user u1,think_user u2')
-            ->field('u1.user_nname as reply_name,u2.user_name as replyed_name')
-            ->where($condition)
-            ->select();
+        // $result                  = M()->table('think_user u1,think_user u2')
+        //     ->field('u1.user_nname as reply_name,u2.user_name as replyed_name')
+        //     ->where($condition)
+        //     ->select();
+        $result = $this->userModel->getUserNameViaUserId($condition);
         return $result;
     }
 

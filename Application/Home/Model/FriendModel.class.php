@@ -7,6 +7,6 @@ class FriendModel extends Model
 {
     public function addFriend($data)
     {
-        return $this->data($data)->add();
+        return $this->data($data)->filter('htmlspecialchars')->add();
     }
 }
