@@ -50,4 +50,39 @@ class CommentModel extends Model
         return $result;
     }
 
+    public function getCommentId($condition)
+    {
+        return $this->where($condition)->getField('comment_id');
+    }
+
+    public function updateCommentState($condition)
+    {
+        $this->where($condition)->setField('state', 0);
+    }
+
+    public function addComment($data)
+    {
+        $this->data($data)->add();
+    }
+
+    public function getMaxCommentId()
+    {
+        return $this->max('comment_id');
+    }
+
+    public function getUnreadMessagesViaUserId($user_id)
+    {
+        // $sql = "SELECT user_name as reply_name,avatar,moment_id,comment,time FROM think_comment c,think_user u where c.reply_id=u.user_id and state=1 and ((reply_id<>".$user_id." and reply_id=replyed_id and moment_id in(select moment_id from think_moment where user_id=".$user_id." and state=1)) or (replyed_id=".$user_id." and reply_id<>replyed_id)) order by comment_id desc limit 0,20";
+
+        $sql  = "SELECT user_name as reply_name,avatar,moment_id,comment,time FROM think_comment c,think_user u where c.reply_id=u.user_id and state=1 and ((reply_id<>" . $user_id . " and reply_id=replyed_id and moment_id in(select moment_id from think_moment where user_id=" . $user_id . ")) or (replyed_id=" . $user_id . " and reply_id<>replyed_id)) order by comment_id desc limit 0,100";
+        $list = M()->query($sql);
+        return $list;
+    }
+
+    public function updateNewsViaUserId($user_id)
+    {
+        $sql = "UPDATE think_comment SET news=0 WHERE state=1 and news=1 and ((reply_id<>" . $user_id . " and reply_id=replyed_id and moment_id in(select moment_id from think_moment where user_id=" . $user_id . ")) or (replyed_id=" . $user_id . " and reply_id<>replyed_id)) ";
+        M()->execute($sql);
+    }
+
 }
