@@ -740,8 +740,8 @@ function getOneMoment(moment_id) {
             result += "</div>";
             result += "</div>";
             var my_name = $("#avatar").attr("name"); //临时存储我的名字
-            $("#slidebar~div").remove();
-            $("#slidebar").after(result);
+            $("#top~div").remove();
+            $("#top").after(result);
             $(".comment-box").attr("id", my_name); //将我的名字赋值给输入框作为id属性
             divPop($(".info-flow-right-button .button-img").first()); //给新载入的按钮元素绑定事件
             $(".delete-moment").first().bind("click", function() { //给新载入的删除朋友圈元素绑定事件
