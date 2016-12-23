@@ -14,4 +14,20 @@ class UserModel extends Model
     {
         return $this->where($map)->getField('user_id');
     }
+
+    public function searchUser($map)
+    {
+        return $this->where($map)->find();
+    }
+
+    public function getUserName($map)
+    {
+        return $this->where($map)->getField('user_name');
+    }
+
+    public function updateUser($map, $data)
+    {
+        return $this->where($map)->setField($data);
+    }
+
 }

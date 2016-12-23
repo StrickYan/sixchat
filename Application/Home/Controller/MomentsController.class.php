@@ -316,20 +316,15 @@ class MomentsController extends CommonController
     {
         $moment_id = htmlspecialchars($_POST['moment_id']);
         $my_name   = $_SESSION["name"];
-
-        $sql = "
-        SELECT u.user_name,u.avatar,m.info,m.img_url,m.time
-            from think_moment m,think_user u
-                where m.moment_id=" . $moment_id . " and m.state=1 and m.user_id=u.user_id"; //显示该条朋友圈内容
-        $list = M()->query($sql);
-        for ($i = 0; $i < count($list); $i++) {
-            $list[$i]['my_name']   = $my_name;
-            $list[$i]['user_name'] = $list[$i]['user_name'];
-            $list[$i]['avatar']    = $list[$i]['avatar'];
-            $list[$i]['text_box']  = $list[$i]['info'];
-            $list[$i]['photo']     = $list[$i]['img_url'];
-            $list[$i]['moment_id'] = $moment_id;
-            $list[$i]['time']      = date("M j, Y H:i", strtotime($list[$i]['time']));
+        $list      = $this->momentModel->getOneMoment($moment_id);
+        foreach ($list as $key => &$value) {
+            $value['my_name']   = $my_name;
+            $value['user_name'] = $value['user_name'];
+            $value['avatar']    = $value['avatar'];
+            $value['text_box']  = $value['info'];
+            $value['photo']     = $value['img_url'];
+            $value['moment_id'] = $moment_id;
+            $value['time']      = date("M j, Y H:i", strtotime($value['time']));
             echo json_encode($list);
         }
     }
@@ -340,7 +335,7 @@ class MomentsController extends CommonController
         $search_name      = htmlspecialchars($_REQUEST['search_name']);
         $user_name        = $_SESSION['name'];
         $map['user_name'] = $search_name;
-        $list             = $this->userModel->where($map)->find();
+        $list             = $this->userModel->searchUser($map);
 
         $list['is_friend'] = 0; //0代表不是好友关系
         foreach ($this->obj->getUserId($user_name, $search_name) as $k => $val) {
@@ -376,19 +371,17 @@ class MomentsController extends CommonController
             $map1['requested_id'] = $request_id;
             $map1['state']        = 1;
 
-            $result_1 = $this->friendRuquestModel->where($map)->select();
-            $result_2 = $this->friendRuquestModel->where($map1)->select();
+            $result_1 = $this->friendRuquestModel->getFriendRequest($map);
+            $result_2 = $this->friendRuquestModel->getFriendRequest($map1);
             if ($result_1 || $result_2) {
-//已存在任意一方的请求则不进行操作
-
+                //已存在任意一方的请求则不进行操作
             } else {
                 //插入好友请求
-                $Friend_request       = $this->friendRuquestModel;
                 $data['request_id']   = $request_id;
                 $data['requested_id'] = $requested_id;
                 $data['remark']       = $remark;
                 $data['request_time'] = date("Y-m-d H:i:s");
-                $Friend_request->data($data)->add();
+                $this->friendRuquestModel->addFriendRequest($data);
             }
         }
         echo json_encode(array("result" => "ok"));
@@ -398,19 +391,19 @@ class MomentsController extends CommonController
     {
         $user_name            = $_SESSION["name"];
         $map['user_name']     = $user_name;
-        $user_id              = $this->userModel->where($map)->getField('user_id');
+        $user_id              = $this->userModel->getUserId($map);
         $map1['requested_id'] = $user_id;
         $map1['state']        = 1;
-        $result               = $this->friendRuquestModel->where($map1)->select();
-        for ($i = 0; $i < count($result); $i++) {
-            $map2['user_id']            = $result[$i]['request_id'];
-            $request_name               = $this->userModel->where($map2)->getField('user_name');
-            $avatar                     = $this->userModel->where($map2)->getField('avatar');
-            $result[$i]['request_name'] = $request_name;
-            $result[$i]['avatar']       = $avatar;
-            $result[$i]['id']           = $result[$i]['id'];
-            $result[$i]['remark']       = $result[$i]['remark'];
-            $result[$i]['time']         = $this->obj->tranTime(strtotime($result[$i]['request_time']));
+        $result               = $this->friendRuquestModel->getFriendRequest($map1);
+        foreach ($result as $key => &$value) {
+            $map2['user_id']       = $value['request_id'];
+            $request_name          = $this->userModel->getUserName($map2);
+            $avatar                = $this->userModel->getUserAvatar($map2);
+            $value['request_name'] = $request_name;
+            $value['avatar']       = $avatar;
+            $value['id']           = $value['id'];
+            $value['remark']       = $value['remark'];
+            $value['time']         = $this->obj->tranTime(strtotime($value['request_time']));
         }
         echo json_encode($result);
     }
@@ -423,7 +416,7 @@ class MomentsController extends CommonController
         $requested_name = $_SESSION['name']; //被请求人
 
         $map['id'] = $id;
-        $this->friendRuquestModel->where($map)->setField('state', 0);
+        $this->friendRuquestModel->setFriendRequestState($map);
 
         foreach ($this->obj->getUserId($request_name, $requested_name) as $k => $val) {
             $request_id   = $val["reply_id"];
@@ -432,12 +425,12 @@ class MomentsController extends CommonController
             $data['user_id']   = $request_id;
             $data['friend_id'] = $requested_id;
             $data['time']      = date("Y-m-d H:i:s");
-            $this->friendModel->data($data)->add(); //好友表添加记录
+            $this->friendModel->addFriend($data); //好友表添加记录
 
             $data1['user_id']   = $requested_id;
             $data1['friend_id'] = $request_id;
             $data1['time']      = date("Y-m-d H:i:s");
-            $this->friendModel->data($data1)->add(); //双向好友
+            $this->friendModel->addFriend($data1); //双向好友
 
         }
         echo json_encode(array("result" => "ok"));
@@ -467,14 +460,23 @@ class MomentsController extends CommonController
             $image_name = $upload_result;
             //上传成功后进行修改数据库图片路径操作
             $map['user_name'] = $_SESSION['name'];
-            $this->userModel->where($map)->setField('avatar', $image_name);
+            $data             = array(
+                'avatar' => $image_name,
+            );
+            $this->userModel->updateUser($map, $data);
+            unset($map);
         }
         $user_name = $_SESSION["name"];
         foreach ($this->obj->getUserId($user_name, $user_name) as $k => $val) {
             $user_id        = $val["reply_id"];
             $map['user_id'] = $user_id;
-            $data           = array('user_name' => $profile_name_box, 'sex' => $profile_sex_box, 'region' => $profile_region_box, 'whatsup' => $profile_whatsup_box);
-            $this->userModel->where($map)->setField($data);
+            $data           = array(
+                'user_name' => $profile_name_box,
+                'sex'       => $profile_sex_box,
+                'region'    => $profile_region_box,
+                'whatsup'   => $profile_whatsup_box,
+            );
+            $this->userModel->updateUser($map, $data);
         }
         $_SESSION["name"]      = $profile_name_box;
         $response['isSuccess'] = true;
@@ -485,21 +487,12 @@ class MomentsController extends CommonController
     public function loadNextPage()
     {
         $page = htmlspecialchars($_REQUEST['page']);
-
-        // $Model = M();
-        // $sql="
-        // select u.user_name,u.avatar,m.info,m.img_url,m.time,m.moment_id
-        //     from think_moment m,think_user u
-        //         where m.state=1 and m.user_id=u.user_id
-        //             order by m.time
-        //                 desc limit ".($page*20).",10";//显示朋友圈信息流
-        // $list = $Model->query($sql);
         $list = $this->momentModel->getNextPage($page);
 
-        for ($i = 0; $i < count($list); $i++) {
-            $list[$i]['user_name'] = htmlspecialchars($list[$i]['user_name']);
-            $list[$i]['time']      = $this->obj->tranTime(strtotime($list[$i]['time']));
-            $list[$i]['info']      = htmlspecialchars($list[$i]['info']);
+        foreach ($list as $key => &$value) {
+            $value['user_name'] = htmlspecialchars($value['user_name']);
+            $value['time']      = $this->obj->tranTime(strtotime($value['time']));
+            $value['info']      = htmlspecialchars($value['info']);
         }
         echo json_encode($list);
     }
@@ -509,12 +502,11 @@ class MomentsController extends CommonController
     {
         $user_name            = $_SESSION["name"];
         $map['user_name']     = $user_name;
-        $user_id              = $this->userModel->where($map)->getField('user_id');
-        $sql                  = "SELECT moment_id FROM think_comment c,think_user u where c.reply_id=u.user_id and state=1 and news=1 and ((reply_id<>" . $user_id . " and reply_id=replyed_id and moment_id in(select moment_id from think_moment where user_id=" . $user_id . ")) or (replyed_id=" . $user_id . " and reply_id<>replyed_id)) order by comment_id desc limit 0,100";
-        $list                 = M()->query($sql);
+        $user_id              = $this->userModel->getUserId($map);
+        $list                 = $this->momentModel->getNews($user_id);
         $map1['requested_id'] = $user_id;
         $map1['state']        = 1;
-        $result               = $this->friendRuquestModel->where($map1)->select();
+        $result               = $this->friendRuquestModel->getFriendRequest($map1);
         $num                  = count($list) + count($result);
         echo json_encode(array("number" => $num));
     }
@@ -522,7 +514,6 @@ class MomentsController extends CommonController
     //注销
     public function logout()
     {
-
         $this->obj->logout();
         header("Location:index");
     }

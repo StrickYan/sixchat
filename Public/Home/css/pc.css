@@ -5,9 +5,8 @@ body {
     background-repeat: no-repeat;
     background-size: 100% 100%;
     background-attachment: fixed;
-    /*background-attachment设置或检索背景图像是随对象内容滚动还是固定的；fixed：固定*/
     background-position: 50% 50%;
-    /*	background-color: rgb(238,238,238);		*/
+    /*  background-color: rgb(238,238,238);     */
     background-color: rgb(43, 43, 43);
 }
 
