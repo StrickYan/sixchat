@@ -16,38 +16,14 @@ $(function() {
     refresh(); //初始化：刷新评论 给朋友圈元素绑定事件
     loadNews(); //加载未读提示
     setInterval("loadNews()", 1000 * 60);
-    // 点击按钮弹出点赞或评论选项，点击周围则隐藏
-    $(".info-flow-right-button .button-img").each(function() {
-        divPop($(this));
-    });
-    // 点击点赞 执行函数
-    $(document).on("click", '.like-png', function() {
-        addLike($(this).parent().parent().parent().attr("id"), $(this).parent().parent().siblings(".info-flow-right-user-name").text());
-    });
-    // 点击按钮弹出评论框或者隐藏评论框，评论框失去焦点则隐藏
-    $(document).on("click", '.comment-png', function() {
-        $(this).parent().parent().siblings(".info-flow-right-input").show();
-        $(this).parent().parent().siblings(".info-flow-right-input").children("input").attr("placeholder", "Comment").attr("id", $("#avatar").attr("name")).focus(); //输入框聚焦
-    });
-    $(document).on("blur", '.info-flow-right-input input', function() { //评论框失去焦点则隐藏
-        $(this).parent().hide();
-    });
-    // 绑定删除朋友圈事件//不知为何这里如果用document会造成删除动画失效，所以暂时用bind解决
-    $(".delete-moment").bind("click", function() {
-        deleteMoment($(this).parent());
-    });
-    // 绑定点击评论弹出回复框事件
-    $(document).on("click", ".one-comment", function() {
-        $(this).parent().siblings(".info-flow-right-input").show();
-        $(this).parent().siblings(".info-flow-right-input").children("input").attr("placeholder", "@".concat($(this).children(".comment-user-name").first().text())) //改变placeholder值
-            .attr("id", $(this).children(".comment-user-name").first().text()).focus(); //输入框聚焦
-    });
+    initCommentEvent();
     // 绑定消息点击事件
     $(document).on("click", ".message-flow", function() {
-        getOneMoment($(this).attr("name")); //传送moment_id查看具体该条moment
-        $("#back").click();
-        $("#current_location").text("Details");
-        $("#back").text("SixChat");
+        // getOneMoment($(this).attr("name")); //传送moment_id查看具体该条moment
+        // $("#back").click();
+        // $("#current_location").text("Details");
+        // $("#back").text("SixChat");
+        location.href = "./details/id/" + $(this).attr("name");
     });
     // 响应好友请求
     $(document).on("click", ".request-agree", function() {
@@ -138,21 +114,7 @@ $(function() {
     $("#camera").bind("click", function() {
         clickCamera();
     });
-    // $("body").animate({
-    //     opacity: 1
-    // }, mobile_speed / 4);
 });
-// 替换str
-function replace_str(str) {
-    str = str.replace(/\</g, '&lt;');
-    str = str.replace(/\>/g, '&gt;');
-    str = str.replace(/\n/g, '<br />');
-    //str = str.replace(/\[em_([0-9]*)\]/g,'<img src="face/$1.gif" border="0" />');
-    //文本中url替换成可点击的链接 target='_blank'指明打开新窗口
-    var regexp = /((http|ftp|https|file):[^'"\s]+)/ig;
-    str = str.replace(regexp, "<a target='_blank' href='$1'>$1</a>");
-    return str;
-}
 // 加载更多moments
 function loadNextPage(page) {
     $.ajax({
@@ -212,18 +174,6 @@ function loadNextPage(page) {
             });
             refresh();
         }
-    });
-}
-// 刷新赞与评论
-function refresh() {
-    /*异步加载每条朋友圈的赞与评论*/
-    $(".info-flow-right").each(function() {
-        getLikesForAjax($(this).attr("id"), $(this).find(".info-flow-right-user-name").text());
-        getCommentsForAjax($(this).attr("id"), $(this).find(".info-flow-right-user-name").text());
-    });
-    /*绑定删除评论事件*/
-    $(".one-comment").each(function() {
-        deleteComment($(this));
     });
 }
 // jquery $.ajax() 异步加载每条朋友圈下面的所有赞
@@ -292,27 +242,6 @@ function getCommentsForAjax(moment_id, moment_user_name) {
         }
     });
 }
-//回车发送评论或朋友圈
-document.onkeypress = function EnterPress(e) {
-    var e = e || window.event;
-    //满足 回车键&&输入框聚焦&&内容不为空
-    if (e.keyCode == 13 && $(".comment-box:focus").length && $.trim($(".comment-box:focus").val())) {
-        addComment();
-        refresh();
-    } else if (e.keyCode == 13 && $("#text_box:focus").length && ($.trim($("#text_box:focus").val()) || $("#photo").val())) {
-        addMoment();
-        refresh();
-    }
-    //输入名字查找用户资料
-    else if (e.keyCode == 13 && $("#search_box:focus").length && $.trim($("#search_box:focus").val())) {
-        $("#back").click();
-        searchUser($("#search_box:focus").val());
-    }
-    //好友请求 发送加好友备注信息
-    else if (e.keyCode == 13 && $("#add_friend_div input:focus").length) {
-        friendRuquest($("#add_friend_div input:focus").val(), $("#profile_name").children().last().text());
-    }
-};
 // 查看用户资料
 function searchUser(search_name) {
     $.ajax({
@@ -440,6 +369,7 @@ function addComment() {
 // 发送moment
 function addMoment() {
     var data = new FormData($('#form_moment')[0]);
+    $("#camera").click();
     $.ajax({
         url: './addMoment',
         type: 'POST',
@@ -482,7 +412,7 @@ function addMoment() {
             result += "</div>";
             result += "</div>";
             result += "</div>";
-            $("#camera").click();
+            // $("#camera").click();
             $('.info-flow').first().before(result).hide().slideDown(mobile_speed);
             divPop($(".info-flow-right-button .button-img").first()); //给新载入的按钮元素绑定事件
             $(".delete-moment").first().bind("click", function() { //给新载入的删除朋友圈元素绑定事件
@@ -505,42 +435,21 @@ function getRollingWall() {
             //alert("加载错误，错误原因：\n"+errorThrown);
         },
         success: function(data) {
-            var html_1 = "<img name=" + data[0].moment_id_1 + " src=../../moment_img/" + data[0].img_url_1 + ">";
-            var html_2 = "<img name=" + data[0].moment_id_2 + " src=../../moment_img/" + data[0].img_url_2 + ">";
-            var html_3 = "<img name=" + data[0].moment_id_3 + " src=../../moment_img/" + data[0].img_url_3 + ">";
+            // var html_1 = "<img name=" + data[0].moment_id_1 + " src=../../moment_img/" + data[0].img_url_1 + ">";
+            // var html_2 = "<img name=" + data[0].moment_id_2 + " src=../../moment_img/" + data[0].img_url_2 + ">";
+            // var html_3 = "<img name=" + data[0].moment_id_3 + " src=../../moment_img/" + data[0].img_url_3 + ">";
+            var html_1 = "<a href=./details/id/" + data[0].moment_id_1 + "><img name=" + data[0].moment_id_1 + " src=../../moment_img/" + data[0].img_url_1 + "></a>";
+            var html_2 = "<a href=./details/id/" + data[0].moment_id_2 + "><img name=" + data[0].moment_id_2 + " src=../../moment_img/" + data[0].img_url_2 + "></a>";
+            var html_3 = "<a href=./details/id/" + data[0].moment_id_3 + "><img name=" + data[0].moment_id_3 + " src=../../moment_img/" + data[0].img_url_3 + "></a>";
             $(".swiper-slide").first().append(html_1);
             $(".swiper-slide").first().next().append(html_2);
             $(".swiper-slide").last().append(html_3);
-            $(".swiper-slide img").bind("click", function() { //跳转该图片所属moment详情
-                getOneMoment($(this).attr("name"));
-                $("#current_location").text("Details");
-                $("#back").text("SixChat");
-            });
+            // $(".swiper-slide img").bind("click", function() { //跳转该图片所属moment详情
+            //     getOneMoment($(this).attr("name"));
+            //     $("#current_location").text("Details");
+            //     $("#back").text("SixChat");
+            // });
         }
-    });
-}
-// 点击弹出赞与评论选项
-function divPop(obj) {
-    obj.click(function(event) {
-        //$(".divPop").hide(500);
-        //取消事件冒泡
-        event.stopPropagation();
-        //设置弹出层位置
-        var offset = obj.offset();
-        obj.siblings(".divPop").css({
-            top: -10,
-            right: 30
-        });
-        //动画显示
-        obj.siblings(".divPop").show(mobile_speed);
-    });
-    //单击空白区域隐藏弹出层
-    $(".info-flow").click(function() {
-        obj.siblings(".divPop").hide(mobile_speed);
-    });
-    //单击弹出层则自身隐藏
-    $(".divPop").click(function() {
-        obj.siblings(".divPop").hide(mobile_speed);
     });
 }
 // 删除moment
@@ -566,33 +475,7 @@ function deleteMoment(obj) {
         });
     }
 }
-// 自定义判定设备类型函数
-function isPC() {
-    var userAgentInfo = navigator.userAgent;
-    var Agents = ["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"];
-    var flag = true;
-    for (var v = 0; v < Agents.length; v++) {
-        if (userAgentInfo.indexOf(Agents[v]) > 0) {
-            flag = false;
-            break;
-        }
-    }
-    return flag;
-}
-// 自定义移动端长按函数
-$.fn.longPress = function(fn) {
-        var timeout = undefined;
-        var $this = this;
-        for (var i = 0; i < $this.length; i++) {
-            $this[i].addEventListener('touchstart', function(event) {
-                timeout = setTimeout(fn, 500);
-            }, false);
-            $this[i].addEventListener('touchend', function(event) {
-                clearTimeout(timeout);
-            }, false);
-        }
-    }
-    // 删除评论函数
+// 删除评论函数
 function deleteComment(obj) {
     if (obj.children(".comment-user-name").first().text() == $("#avatar").attr("name")) { //自己的评论才有权限删除
         // alert("hh");

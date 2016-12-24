@@ -500,4 +500,22 @@ class MomentsController extends CommonController
         header("Location:index");
     }
 
+    public function details()
+    {
+        session_start();
+        $user_name = $_SESSION["name"];
+        $momentId  = $_REQUEST['id'];
+        $result    = $this->momentModel->getOneMoment($momentId);
+
+        foreach ($result as $key => &$value) {
+            $value['user_name'] = htmlspecialchars($value['user_name']);
+            $value['time']      = $this->obj->tranTime(strtotime($value['time']));
+            $value['info']      = htmlspecialchars($value['info']);
+        }
+
+        $this->assign('details', $result[0]);
+        $this->assign('my_name', $user_name);
+        $this->display();
+    }
+
 }
