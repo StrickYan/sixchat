@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+	<head>
+		<title>SixChat</title>
+		<meta charset="utf-8">
+
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes" />    
+		<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+		<meta name="format-detection" content="telephone=no"/>
+		<meta name="msapplication-tap-highlight" content="no" />
+
+		<link rel="icon" href="__PUBLIC__/Home/img/default/my.ico" type="image/x-icon" />
+		<link rel="shortcut icon" href="__PUBLIC__/Home/img/default/my.ico" type="image/x-icon" />
+		<link rel="bookmark" href="__PUBLIC__/Home/img/default/my.ico" type="image/x-icon" />
+
+		<link rel="stylesheet" href="__PUBLIC__/Home/css/lib/lightbox.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Home/css/moments.css" />
+    	<link rel="stylesheet" type="text/css" media="screen and (min-device-width: 1200px)" href="__PUBLIC__/Home/css/pc.css" />
+    	<script src="__PUBLIC__/Home/js/lib/formatImg.js"></script>
+	</head>
+	<body>
+		<div id="top" data-role="header" name="{$my_name}">
+			<div id="return">
+				<img id="back_img" src="__PUBLIC__/Home/img/default/icon_back.png" alt="" >
+				<span id="back">SixChat</span>
+			</div>
+			<span id="current_location" ontouchstart='return false'>Details</span>
+		</div>
+		<div class="info-flow" id='the_one_moment'>
+			<div class="info-flow-left">
+				<img src="__ROOT__/avatar_img/{$details.avatar}" alt="">
+			</div>
+			<div class="info-flow-right" id="{$details.moment_id}">
+				<div class="info-flow-right-user-name">{$details.user_name}</div>
+				<div class="info-flow-right-text">{$details.info}</div>
+				<if condition="$details.img_url neq ''">
+					<div class="info-flow-right-img">
+						<a href="__ROOT__/moment_img/{$details.img_url}" data-lightbox="{$details.moment_id}">
+							<img class="lazy" data-original="__ROOT__/moment_img/{$details.img_url}" onload="formatImg(this)" />
+						</a>
+					</div>
+				</if>
+				<div class="info-flow-right-time">{$details.time}</div>
+				<if condition="$details.user_name eq $_SESSION['name']">
+					<div class="delete-moment">Delete</div>
+				</if>
+				<div class="info-flow-right-button">
+					<img name="button" class="button-img" src="__PUBLIC__/Home/img/default/feed_comment.png" />
+				    <div class="divPop">  
+				        <img class="like-png" src="__PUBLIC__/Home/img/default/logout_like.png" />
+				        <img class="comment-png" src="__PUBLIC__/Home/img/default/logout_comment.png" />  
+				    </div>  
+				</div>
+				<div class="info-flow-right-like"></div>
+				<div class="info-flow-right-comment" ></div>
+				<div class="info-flow-right-input" name="div_comment">
+					<input type="text" class="comment-box" placeholder="Comment" maxlength="140" required/>
+				</div>
+			</div>
+		</div>
+		<script src="__PUBLIC__/Home/js/lib/jquery-3.1.0.min.js"></script>	
+		<script src="__PUBLIC__/Home/js/lib/lightbox.min.js"></script>
+		<script src="__PUBLIC__/Home/js/lib/jquery.lazyload.min.js"></script>
+		<script type='application/javascript' src="__PUBLIC__/Home/js/lib/fastclick.js"></script>
+		<script src="__PUBLIC__/Home/js/global.js"></script>
+		<script src="__PUBLIC__/Home/js/details.js"></script>
+	</body>	
+</html>

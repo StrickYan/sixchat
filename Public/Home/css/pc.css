@@ -39,7 +39,7 @@ body {
 
 #slidebar_profile {
     z-index: 2;
-    position: fixed;
+    position: absolute;
     top: 50px;
     left: 30%;
     width: 40%;

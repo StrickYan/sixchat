@@ -55,7 +55,7 @@ class MomentModel extends Model
     public function getOneMoment($moment_id)
     {
         $sql = "
-        SELECT u.user_name,u.avatar,m.info,m.img_url,m.time
+        SELECT u.user_name,u.avatar,m.info,m.img_url,m.time,m.moment_id
             from think_moment m,think_user u
                 where m.moment_id=" . $moment_id . " and m.state=1 and m.user_id=u.user_id"; //显示该条朋友圈内容
         $list = M()->query($sql);
