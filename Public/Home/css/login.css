@@ -57,12 +57,12 @@ body {
     font-size: 1em;
 }
 
-#login a {
+#login a, #notice {
     display: block;
     font-weight: bold;
     color: gray;
     text-decoration: none;
-    margin-top: 20px;
-    margin-bottom: 10px;
+    margin-top: 16px;
     font-size: 0.8125em;
+    cursor: pointer;
 }
