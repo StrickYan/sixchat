@@ -39,7 +39,7 @@ class SixChatApi2016Controller extends Controller
             $user_name_1 = $this->userModel->getUserName($condition1);
             if ($user_name_1) {
                 //登录成功
-                setcookie("password", "$password", time() + 60 * 60 * 24, "/sixchat/Home/Login/", "119.29.24.253"); //登录成功再保存密码cookie
+                setcookie("password", "$password", time() + 60 * 60 * 24 * 7, "/sixchat/Home/Login/", "119.29.24.253"); //登录成功再保存密码cookie
                 // setcookie("password", "$password", time()+60*60*24,"/sixchat/Home/Login/", "localhost");//本地环境
                 session_start();
                 $_SESSION["name"] = $user_name_1;
