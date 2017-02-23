@@ -103,16 +103,24 @@ $(function() {
         var str = $(this).text();
         $(this).html(replace_str(str));
     });
+    //图片延迟加载
     $("img.lazy").lazyload({
         effect: "fadeIn",
         threshold: mobile_speed
-    }); //图片延迟加载
+    });
+    //点击左上角导航返回
     $("#return").bind("click", function() {
-        clickToBack();
-    }); //点击左上角导航返回
+        // 不处于动画状态则响应
+        if (!$("#slidebar").is(":animated")) {
+            clickToBack();
+        }
+    });
     //点击camera图标触发发送编辑页面
     $("#camera").bind("click", function() {
-        clickCamera();
+        // 不处于动画状态则响应
+        if (!$("#edit_box").is(":animated")) {
+            clickCamera();
+        }
     });
 });
 // 加载更多moments
