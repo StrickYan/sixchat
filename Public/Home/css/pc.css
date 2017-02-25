@@ -1,11 +1,11 @@
 body {
     width: 40%;
     margin: auto;
-    background-image: url("/sixchat/Public/Home/img/default/24.jpg");
+/*    background-image: url("/sixchat/Public/Home/img/default/24.jpg");
     background-repeat: no-repeat;
     background-size: 100% 100%;
     background-attachment: fixed;
-    background-position: 50% 50%;
+    background-position: 50% 50%;*/
     /*  background-color: rgb(238,238,238);     */
     background-color: rgb(43, 43, 43);
 }
