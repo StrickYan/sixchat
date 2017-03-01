@@ -56,7 +56,7 @@ class SixChatApi2016Controller extends Controller
     public function logout()
     {
         session_destroy();
-        setcookie("password", "", time() - 3600, "/sixchat/Home/Login/", "119.29.24.253");
+        setcookie("password", "", time() - 3600, "/Home/Login/", "sixchat.classmateer.com");
         // setcookie("password","", time()-3600,"/sixchat/Home/Login/","localhost");//本地环境
     }
 
