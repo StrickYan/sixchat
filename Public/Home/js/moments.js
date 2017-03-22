@@ -188,7 +188,7 @@ function loadNextPage(page) {
 function getLikesForAjax(moment_id, moment_user_name) {
     $.ajax({
         type: "POST",
-        async: false,
+        // async: false,
         data: {
             "id": moment_id,
             "moment_user_name": moment_user_name
@@ -254,7 +254,7 @@ function getCommentsForAjax(moment_id, moment_user_name) {
 function searchUser(search_name) {
     $.ajax({
         type: "POST",
-        async: false,
+        // async: false,
         data: {
             "search_name": search_name
         },
@@ -305,7 +305,7 @@ function searchUser(search_name) {
 function friendRuquest(remark, requested_name) {
     $.ajax({
         type: "POST",
-        async: false,
+        // async: false,
         data: {
             "remark": remark,
             "requested_name": requested_name
@@ -325,7 +325,7 @@ function friendRuquest(remark, requested_name) {
 function addLike(moment_id, moment_user_name) {
     $.ajax({
         type: "POST",
-        async: false,
+        // async: false,
         data: {
             "moment_id": moment_id,
             "moment_user_name": moment_user_name
@@ -344,7 +344,7 @@ function addLike(moment_id, moment_user_name) {
 function addComment() {
     $.ajax({
         type: "POST",
-        async: false,
+        // async: false,
         data: {
             "moment_id": $(".comment-box:focus").parent().parent().attr("id"),
             "replyed_name": $(".comment-box:focus").attr("id"),
@@ -435,7 +435,7 @@ function addMoment() {
 function getRollingWall() {
     $.ajax({
         type: "POST",
-        async: false,
+        // async: false,
         data: {},
         dataType: "json",
         url: "./getRollingWall",
@@ -466,7 +466,7 @@ function deleteMoment(obj) {
     if (data) {
         $.ajax({
             type: "POST",
-            async: false,
+            // async: false,
             data: {
                 "moment_id": obj.attr("id")
             },
@@ -493,7 +493,7 @@ function deleteComment(obj) {
                 if (data) {
                     $.ajax({
                         type: "POST",
-                        async: false,
+                        // async: false,
                         data: {
                             "comment_id": obj.attr("id")
                         },
@@ -518,7 +518,7 @@ function deleteComment(obj) {
                     if (data) {
                         $.ajax({
                             type: "POST",
-                            async: false,
+                            // async: false,
                             data: {
                                 "comment_id": obj.attr("id")
                             },
@@ -552,7 +552,7 @@ function preventDefault(event) {
 function loadMessages() {
     $.ajax({
         type: "POST",
-        async: false,
+        // async: false,
         data: {},
         dataType: "json",
         url: "./loadMessages",
@@ -591,7 +591,7 @@ function getOneMoment(moment_id) {
             "moment_id": moment_id
         },
         dataType: 'JSON',
-        async: false,
+        // async: false,
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             //alert("信息加载错误，错误原因：\n"+errorThrown);
         },
@@ -646,7 +646,7 @@ function getOneMoment(moment_id) {
 function loadFriendRequest() {
     $.ajax({
         type: "POST",
-        async: false,
+        // async: false,
         data: {},
         dataType: "json",
         url: "./loadFriendRequest",
@@ -677,7 +677,7 @@ function loadFriendRequest() {
 function agreeRequest(id, request_name) {
     $.ajax({
         type: "POST",
-        async: false,
+        // async: false,
         data: {
             "id": id,
             "request_name": request_name
@@ -716,7 +716,7 @@ function modifyProfile() {
 function loadNews() {
     $.ajax({
         type: "POST",
-        async: false,
+        // async: false,
         data: {},
         dataType: "json",
         url: "./loadNews",
