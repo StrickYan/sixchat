@@ -435,6 +435,15 @@ hr {
 }
 
 
+#loading {
+    text-align: center;
+    position: relative;
+    padding: 10px 10px 5px 10px;
+    border-bottom: 1px solid #eee;
+    background-color: white;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
 /*底部栏*/
 
 #footer {

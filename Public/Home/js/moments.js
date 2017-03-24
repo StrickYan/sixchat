@@ -173,7 +173,7 @@ function loadNextPage(page) {
                 result += "</div>";
                 result += "</div>";
             }
-            $('#footer').before(result).fadeOut().fadeIn(pc_speed);
+            $('#loading').before(result).fadeOut().fadeIn(pc_speed);
             $(".info-flow-right-button .button-img").each(function() {
                 divPop($(this));
             });
