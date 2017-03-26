@@ -17,13 +17,14 @@ $(function() {
     loadNews(); //加载未读提示
     setInterval("loadNews()", 1000 * 60);
     initCommentEvent();
+    var isCommitted = false;//表单是否已经提交标识，默认为false
     $(document).on("click", "#share", function() {
-        if($("#text_box").length && $("#photo").val()) {
-            document.getElementById("share").disabled= "disabled";
+        if( isCommitted==false && $("#text_box").length && $("#photo").val()) {
+            isCommitted = true;
             addMoment();
             refresh();
         }
-        else{
+        else if(!$("#photo").val()){
             alert("Please add a photo :D");
         }
     });
