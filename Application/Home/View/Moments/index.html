@@ -53,16 +53,26 @@
 		<div id='free'></div>
 		<volist name="list" id="vo">
 			<div class="info-flow">
-				<div class="info-flow-left">
+<!-- 				<div class="info-flow-left">
 					<img src="__ROOT__/avatar_img/{$vo.avatar}" alt="">
-				</div>
+				</div> -->
 				<div class="info-flow-right" id="{$vo.moment_id}">
+					<div class="info-flow-right-avatar">
+						<img src="__ROOT__/avatar_img/{$vo.avatar}" alt="">
+					</div>
 					<div class="info-flow-right-user-name">{$vo.user_name}</div>
-					<div class="info-flow-right-text">{$vo.info}</div>
+					<!-- <div class="info-flow-right-text">{$vo.info}</div> -->
+					<if condition="$vo.img_url eq ''">
+						<div class="info-flow-right-img">
+							<a href="__PUBLIC__/Home/img/default/24.jpg" data-lightbox="{$vo.moment_id}">
+								<img class="lazy" data-original="__PUBLIC__/Home/img/default/24.jpg" onload="formatImg_2(this)" />
+							</a>
+						</div>
+					</if>				
 					<if condition="$vo.img_url neq ''">
 						<div class="info-flow-right-img">
 							<a href="__ROOT__/moment_img/{$vo.img_url}" data-lightbox="{$vo.moment_id}">
-								<img class="lazy" data-original="__ROOT__/moment_img/{$vo.img_url}" onload="formatImg(this)" />
+								<img class="lazy" data-original="__ROOT__/moment_img/{$vo.img_url}" onload="formatImg_2(this)" />
 							</a>
 						</div>
 					</if>
@@ -78,6 +88,12 @@
 					    </div>  
 					</div>
 					<div class="info-flow-right-like"></div>
+					<if condition="$vo.info neq ''">
+					    <div class="info-flow-right-text">
+					        Some : {$vo.info}
+					    </div>
+					</if>
+					
 					<div class="info-flow-right-comment" ></div>
 					<div class="info-flow-right-input" name="div_comment">
 						<input type="text" class="comment-box" placeholder="Comment" maxlength="140" required/>
