@@ -17,6 +17,15 @@ $(function() {
     loadNews(); //加载未读提示
     setInterval("loadNews()", 1000 * 60);
     initCommentEvent();
+    $(document).on("click", "#share", function() {
+        if($("#text_box").length && $("#photo").val()) {
+            addMoment();
+            refresh();
+        }
+        else{
+            alert("Please add a photo :D");
+        }
+    });
     // 绑定消息点击事件
     $(document).on("click", ".message-flow", function() {
         // getOneMoment($(this).attr("name")); //传送moment_id查看具体该条moment
@@ -38,7 +47,7 @@ $(function() {
         var input_3_val = $("#profile_sex_val").text();
         var input_4_val = $("#profile_region_val").text();
         var input_5_val = $("#profile_whatsup_val").text();
-        var input_1 = "<div id='new_avatar_btn'><span>New Avatar Image</span><input type='file' name='profile_upfile' id='profile_photo'></div>";
+        var input_1 = "<div id='new_avatar_btn'><span>+</span><input type='file' name='profile_upfile' id='profile_photo'></div>";
         var input_2 = "<input id='profile_name_box' name='profile_name_box' type='text' placeholder='Name' value='' maxlength=140>";
         var input_3 = "<input id='profile_sex_box' name='profile_sex_box' type='text' placeholder='Gender' value='' maxlength=140>";
         var input_4 = "<input id='profile_region_box' name='profile_region_box' type='text' placeholder='Region' value='' maxlength=140>";
@@ -62,9 +71,9 @@ $(function() {
     $(document).on('change', "#profile_photo", function(e) {
         try {
             var name = e.currentTarget.files[0].name;
-            $("#new_avatar_btn span").text(name);
+            $("#new_avatar_btn span").text('-');
         } catch (err) {
-            $("#new_avatar_btn span").text("New Avatar Image");
+            $("#new_avatar_btn span").text("+");
         }
     });
     //双击或长按顶部中间栏刷新
@@ -116,7 +125,7 @@ $(function() {
         }
     });
     //点击camera图标触发发送编辑页面
-    $("#camera").bind("click", function() {
+    $("#camera").on("click", function() {
         // 不处于动画状态则响应
         if (!$("#edit_box").is(":animated")) {
             clickCamera();
@@ -140,19 +149,25 @@ function loadNextPage(page) {
             var result = '';
             for (var i = 0; i < data.length; i++) {
                 result += "<div class='info-flow' >";
-                result += "<div class='info-flow-left'>";
+                // result += "<div class='info-flow-left'>";
+                // result += '<img src=' + '../../avatar_img/' + data[i]['avatar'] + '>';
+                // result += "</div>";
+                result += "<div class='info-flow-right' id=" + data[i]['moment_id'] + ">";
+                result += "<div class='info-flow-right-avatar'>";
                 result += '<img src=' + '../../avatar_img/' + data[i]['avatar'] + '>';
                 result += "</div>";
-                result += "<div class='info-flow-right' id=" + data[i]['moment_id'] + ">";
                 result += "<div class='info-flow-right-user-name'>" + data[i]['user_name'] + "</div>";
-                if (data[i]['info']) {
-                    result += "<div class='info-flow-right-text'>" + data[i]['info'] + "</div>";
-                }
                 if (data[i]['img_url']) {
                     result += "<div class='info-flow-right-img'>";
                     result += "<a href=../../moment_img/" + data[i]['img_url'] + " data-lightbox=" + data[i]['moment_id'] + ">";
-                    result += '<img src=' + '../../moment_img/' + data[i]['img_url'] + " onload='formatImg(this)'>";
+                    result += '<img src=' + '../../moment_img/' + data[i]['img_url'] + " onload='formatImg_2(this)'>";
                     result += "</a></div>";
+                }
+                else{
+                    result += "<div class='info-flow-right-img'>";
+                    result += "<a href=../../Public/Home/img/default/24.jpg data-lightbox=" + data[i]['moment_id'] + ">";
+                    result += "<img src=../../Public/Home/img/default/24.jpg onload='formatImg_2(this)'>";
+                    result += "</a></div>";                    
                 }
                 result += "<div class='info-flow-right-time'>" + data[i]['time'] + "</div>";
                 if ($("#camera").attr("name") == data[i]['user_name']) {
@@ -166,6 +181,9 @@ function loadNextPage(page) {
                 result += "</div>";
                 result += "</div>";
                 result += "<div class='info-flow-right-like'></div>";
+                if (data[i]['info']) {
+                    result += "<div class='info-flow-right-text'>Some : " + data[i]['info'] + "</div>";
+                }
                 result += "<div class='info-flow-right-comment' ></div>";
                 result += "<div class='info-flow-right-input' name='div_comment'>";
                 result += "<input type='text' class='comment-box' placeholder='Comment' maxlength=140 required/>";
@@ -390,18 +408,18 @@ function addMoment() {
         if (ret['isSuccess']) {
             var result = '';
             result += "<div class='info-flow' >";
-            result += "<div class='info-flow-left'>";
+            // result += "<div class='info-flow-left'>";
+            // result += '<img src=' + '../../avatar_img/' + ret['avatar'] + '>';
+            // result += "</div>";
+            result += "<div class='info-flow-right' id=" + ret['moment_id'] + ">";
+            result += "<div class='info-flow-right-avatar'>";
             result += '<img src=' + '../../avatar_img/' + ret['avatar'] + '>';
             result += "</div>";
-            result += "<div class='info-flow-right' id=" + ret['moment_id'] + ">";
             result += "<div class='info-flow-right-user-name'>" + ret['user_name'] + "</div>";
-            if (ret['text_box']) {
-                result += "<div class='info-flow-right-text'>" + ret['text_box'] + "</div>";
-            }
             if (ret['photo']) {
                 result += "<div class='info-flow-right-img'>";
                 result += "<a href=../../moment_img/" + ret['photo'] + " data-lightbox=" + ret['moment_id'] + ">";
-                result += '<img src=' + '../../moment_img/' + ret['photo'] + " onload='formatImg(this)'>";
+                result += '<img src=' + '../../moment_img/' + ret['photo'] + " onload='formatImg_2(this)'>";
                 result += "</a></div>";
             }
             result += "<div class='info-flow-right-time'>" + ret['time'] + "</div>";
@@ -414,6 +432,9 @@ function addMoment() {
             result += "</div>";
             result += "</div>";
             result += "<div class='info-flow-right-like'></div>";
+            if (ret['text_box']) {
+                result += "<div class='info-flow-right-text'>Some : " + ret['text_box'] + "</div>";
+            }
             result += "<div class='info-flow-right-comment' ></div>";
             result += "<div class='info-flow-right-input' name='div_comment'>";
             result += "<input type='text' class='comment-box' placeholder='Comment' maxlength=140 required/>";
@@ -742,24 +763,27 @@ function clickCamera() {
         var html = "";
         html += "<div id='edit_box'>";
         html += "<form name='form_moment' id='form_moment'>";
-        html += "<textarea id='text_box' name='text_box' placeholder='Please press Enter to send the moment :D' maxlength=280></textarea>";
-        html += "<div id='btn'><span>Add Image</span>"
+        html += "<textarea id='text_box' name='text_box' placeholder='Say something ?' maxlength=280></textarea>";
+        html += "<div id='btn'><span>+</span>"
         html += "<input type='file' name='upfile' id='photo'>";
         html += "</div>";
+        html += "<div id='share'>Share</div>";
         html += "</form>";
         html += "</div>";
         $("#top").after(html);
         $("#edit_box").hide().slideDown(mobile_speed, function() {
             $("#text_box").focus();
         });
-        $("#photo").on('change', function(e) { //若选择了图片则显示图片名 否则显示Add Image
+        $("#photo").on('change', function(e) { //若选择了图片则显示图片名 否则显示+
             try {
                 var name = e.currentTarget.files[0].name;
-                $("#btn span").text(name);
+                $("#btn span").text('-');
             } catch (err) {
-                $("#btn span").text("Add Image");
+                $("#btn span").text("+");
             }
         });
+        $("#photo").click();
+        //document.getElementById("photo").click();
     }
 }
 //处理各种页面返回

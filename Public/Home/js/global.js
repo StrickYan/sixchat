@@ -54,7 +54,7 @@ function divPop(obj) {
 function replace_str(str) {
     str = str.replace(/\</g, '&lt;');
     str = str.replace(/\>/g, '&gt;');
-    str = str.replace(/\n/g, '<br />');
+    // str = str.replace(/\n/g, '<br />');
     //str = str.replace(/\[em_([0-9]*)\]/g,'<img src="face/$1.gif" border="0" />');
     //文本中url替换成可点击的链接 target='_blank'指明打开新窗口
     var regexp = /((http|ftp|https|file):[^'"\s]+)/ig;
@@ -80,10 +80,11 @@ document.onkeypress = function EnterPress(e) {
     if (e.keyCode == 13 && $(".comment-box:focus").length && $.trim($(".comment-box:focus").val())) {
         addComment();
         refresh();
-    } else if (e.keyCode == 13 && $("#text_box:focus").length && ($.trim($("#text_box:focus").val()) || $("#photo").val())) {
-        addMoment();
-        refresh();
-    }
+    } 
+    // else if (e.keyCode == 13 && $("#text_box:focus").length && ($.trim($("#text_box:focus").val()) || $("#photo").val())) {
+    //     addMoment();
+    //     refresh();
+    // }
     //输入名字查找用户资料
     else if (e.keyCode == 13 && $("#search_box:focus").length && $.trim($("#search_box:focus").val())) {
         $("#back").click();
