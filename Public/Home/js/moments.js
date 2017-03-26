@@ -19,7 +19,7 @@ $(function() {
     initCommentEvent();
     $(document).on("click", "#share", function() {
         if($("#text_box").length && $("#photo").val()) {
-            document.myform("form_moment").disabled='true';
+            document.getElementById("share").disabled= "disabled";
             addMoment();
             refresh();
         }
