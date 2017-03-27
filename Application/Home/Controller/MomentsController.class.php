@@ -259,7 +259,8 @@ class MomentsController extends CommonController
         );
         echo json_encode($response);
     }
-
+    
+    // 删除 moment
     public function deleteMoment()
     {
         $moment_id              = htmlspecialchars($_REQUEST['moment_id']);
@@ -269,7 +270,8 @@ class MomentsController extends CommonController
         $list[0] = "Delete moment is success.";
         echo json_encode($list);
     }
-
+    
+    // 删除 comment
     public function deleteComment()
     {
         $comment_id              = htmlspecialchars($_REQUEST['comment_id']);
