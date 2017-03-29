@@ -63,11 +63,7 @@
 					<div class="info-flow-right-user-name">{$vo.user_name}</div>
 					<!-- <div class="info-flow-right-text">{$vo.info}</div> -->
 					<if condition="$vo.img_url eq ''">
-						<div class="info-flow-right-img">
-							<a href="__PUBLIC__/Home/img/default/24.jpg" data-lightbox="{$vo.moment_id}">
-								<img class="lazy" data-original="__PUBLIC__/Home/img/default/24.jpg" onload="formatImg_2(this)" />
-							</a>
-						</div>
+                        <div class="info-flow-right-text">{$vo.info}</div>
 					</if>				
 					<if condition="$vo.img_url neq ''">
 						<div class="info-flow-right-img">
@@ -88,7 +84,7 @@
 					    </div>  
 					</div>
 					<div class="info-flow-right-like"></div>
-					<if condition="$vo.info neq ''">
+					<if condition="$vo.info neq '' and $vo.img_url neq ''">
 					    <div class="info-flow-right-text">
 					        About : {$vo.info}
 					    </div>
