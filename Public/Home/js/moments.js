@@ -435,7 +435,7 @@ function addMoment() {
             result += "</div>";
             result += "<div class='info-flow-right-like'></div>";
             if (ret['text_box']) {
-                result += "<div class='info-flow-right-text'>Some : " + ret['text_box'] + "</div>";
+                result += "<div class='info-flow-right-text'>About : " + ret['text_box'] + "</div>";
             }
             result += "<div class='info-flow-right-comment' ></div>";
             result += "<div class='info-flow-right-input' name='div_comment'>";
