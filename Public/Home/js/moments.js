@@ -165,6 +165,9 @@ function loadNextPage(page) {
                     result += '<img src=' + '../../moment_img/' + data[i]['img_url'] + " onload='formatImg_2(this)'>";
                     result += "</a></div>";
                 }
+                else{
+                    result += "<div class='info-flow-right-text'>" + data[i]['info'] + "</div>";
+                }
                 result += "<div class='info-flow-right-time'>" + data[i]['time'] + "</div>";
                 if ($("#camera").attr("name") == data[i]['user_name']) {
                     result += "<div class='delete-moment'>Delete</div>";
@@ -177,7 +180,7 @@ function loadNextPage(page) {
                 result += "</div>";
                 result += "</div>";
                 result += "<div class='info-flow-right-like'></div>";
-                if (data[i]['info']) {
+                if (data[i]['info'] && data[i]['img_url']) {
                     result += "<div class='info-flow-right-text'>About : " + data[i]['info'] + "</div>";
                 }
                 result += "<div class='info-flow-right-comment' ></div>";
