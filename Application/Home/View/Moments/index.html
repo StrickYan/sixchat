@@ -19,6 +19,7 @@
 <!-- 		<link href='http://fonts.useso.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'> -->
 		<link rel="stylesheet" href="__PUBLIC__/Home/css/lib/swiper.min.css" />
 		<link rel="stylesheet" href="__PUBLIC__/Home/css/lib/lightbox.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Home/css/lib/fakeLoader.css" />
 		<link rel="stylesheet" href="__PUBLIC__/Home/css/moments.css?version=24" />
     	<link rel="stylesheet" href="__PUBLIC__/Home/css/messages.css?version=24" />
     	<link rel="stylesheet" type="text/css" media="screen and (min-device-width: 1200px)" href="__PUBLIC__/Home/css/pc.css?version=24" />
@@ -35,8 +36,7 @@
 			<img id="camera" name="{$my_name}" src="__PUBLIC__/Home/img/default/camera.png" alt="" > 
 		</div>
 		<div id="slidebar"></div>
-<!-- 		<div id="slidebar_post"></div>
-		<div id="slidebar_friends"></div> -->
+		<div id="fakeloader"></div>
 		<div id="slidebar_profile"></div>
 		<div id="slide_wall">	
 	    	<div class="swiper-container">
@@ -98,9 +98,10 @@
 				</div>
 			</div>
 		</volist>
-		<div id="loading"><img src="__PUBLIC__/Home/img/default/loading.gif"></div>
+		<!-- <div id="loading"><img src="__PUBLIC__/Home/img/default/loading.gif"></div> -->
+		<div id="loading">Next Page</div>
 		<div id="footer" data-role="footer">
-			<div class="info-flow" >
+<!-- 			<div class="info-flow" >
 				<div class="footer-left">
 					<img src="__PUBLIC__/Home/img/default/my.ico" alt="">
 				</div>
@@ -120,9 +121,11 @@
 					</div>
 					<div class="footer-right-time">2016年8月1日 凌晨 the Begin</div>
 				</div>
-			</div>
+			</div> -->
 		</div> 
-		<script src="__PUBLIC__/Home/js/lib/jquery-3.1.0.min.js"></script>	
+		<!-- <script src="__PUBLIC__/Home/js/lib/jquery-3.1.0.min.js"></script> -->
+		<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+		<script src="__PUBLIC__/Home/js/lib/fakeLoader.min.js"></script>
 		<script src="__PUBLIC__/Home/js/lib/swiper.min.js"></script>
 		<script src="__PUBLIC__/Home/js/lib/lightbox.min.js"></script>
 		<script src="__PUBLIC__/Home/js/lib/jquery.lazyload.min.js"></script>

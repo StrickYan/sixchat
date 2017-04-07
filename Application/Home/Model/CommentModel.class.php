@@ -50,6 +50,39 @@ class CommentModel extends Model
         return $result;
     }
 
+
+    //获取moment的点赞人
+    public function getAllLikes()
+    {
+        $sql = '
+            SELECT 
+                group_concat(distinct(u.user_name)) as reply_names,c.moment_id,group_concat(c.comment_id) as comment_ids
+            FROM 
+                think_comment c,think_user u 
+            where 
+                c.reply_id = u.user_id and c.state=1 and c.type=1 
+            group by 
+                c.moment_id
+            order by 
+                c.moment_id desc
+        ';
+        return M()->query($sql);
+    }
+    public function getAllComments()
+    {
+        $sql = '
+            SELECT 
+                u1.user_name as reply_name,u2.user_name as replyed_name,c.moment_id,c.comment_id,c.comment,c.time 
+            from 
+                think_comment c,think_user u1,think_user u2 
+            where 
+                c.reply_id=u1.user_id and c.replyed_id=u2.user_id and c.state=1 and c.type=2
+            order by 
+                c.moment_id desc,c.time asc
+        ';
+        return M()->query($sql);
+    }
+
     public function getCommentId($condition)
     {
         return $this->where($condition)->getField('comment_id');
