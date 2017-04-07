@@ -13,7 +13,8 @@ class MomentsController extends CommonController
         $user_name        = $_SESSION["name"];
         $map['user_name'] = $user_name; //获取自己头像
         $avatar           = $this->userModel->getUserAvatar($map);
-        $list             = $this->momentModel->getMoments(); //获取朋友圈信息流
+        // $list             = $this->momentModel->getMoments(); //获取朋友圈信息流
+        $list = array();
 
         foreach ($list as $key => &$value) {
             $value['user_name'] = htmlspecialchars($value['user_name']);
@@ -78,6 +79,33 @@ class MomentsController extends CommonController
                 echo json_encode($list);
             }
         }
+    }
+
+
+    // 获取所有赞
+    public function getAllLikes()
+    {
+        $list = $this->commentModel->getAllLikes();
+        foreach ($list as $key => &$value) {
+            $value['reply_names'] = htmlspecialchars($value['reply_names']);
+        }
+        echo json_encode($list);
+    }
+    // 加载所有朋友圈下面所有的评论
+    public function getAllComments()
+    {
+
+        $list = $this->commentModel->getAllComments();
+        foreach ($list as $key => &$value) {
+            $value = array(
+                "reply_name"   => htmlspecialchars($value['reply_name']),
+                "replyed_name" => htmlspecialchars($value['replyed_name']),
+                "comment_id"   => $value['comment_id'],
+                "moment_id"   => $value['moment_id'],
+                "comment"      => htmlspecialchars($value['comment']),
+                "time"         => $value['time']);
+        }
+        echo json_encode($list);
     }
 
     // 获取每条朋友圈下面权限内可阅的评论

@@ -122,4 +122,5 @@ body {
 #loading {
     border-radius: 5px;
     box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.4);
+    margin-bottom: 10px;
 }

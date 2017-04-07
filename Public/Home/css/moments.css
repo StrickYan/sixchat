@@ -524,12 +524,14 @@ hr {
     border-bottom: 1px solid #eee;
     background-color: white;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    font-weight: 600;
+    cursor: pointer;
 }
 
 /*底部栏*/
 
 #footer {
-    padding-bottom: 24px;
+    /*padding-bottom: 24px;*/
     background-color: white;
 }
 

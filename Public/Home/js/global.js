@@ -63,7 +63,12 @@ function replace_str(str) {
 }
 // 刷新赞与评论
 function refresh() {
-    /*异步加载每条朋友圈的赞与评论*/
+    getAllLikes();
+    getAllComments();
+}
+// 刷新赞与评论在moment详情页
+function refreshAtDetails() {
+    /*异步加载moment的赞与评论*/
     $(".info-flow-right").each(function() {
         getLikesForAjax($(this).attr("id"), $(this).find(".info-flow-right-user-name").text());
         getCommentsForAjax($(this).attr("id"), $(this).find(".info-flow-right-user-name").text());
