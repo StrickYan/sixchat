@@ -33,13 +33,18 @@ function divPop(obj) {
         //取消事件冒泡
         event.stopPropagation();
         //设置弹出层位置
-        var offset = obj.offset();
-        obj.siblings(".divPop").css({
-            top: -10,
-            right: 30
-        });
-        //动画显示
-        obj.siblings(".divPop").show(mobile_speed);
+        //var offset = obj.offset();
+        if (obj.siblings(".divPop").css("display") == "block") {
+            obj.siblings(".divPop").hide(mobile_speed);
+        }
+        else{
+            obj.siblings(".divPop").css({
+                top: -10,
+                right: 30
+            });
+            //动画显示
+            obj.siblings(".divPop").show(mobile_speed);
+        }
     });
     //单击空白区域隐藏弹出层
     $(".info-flow").click(function() {
