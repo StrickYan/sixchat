@@ -157,8 +157,8 @@ function loadNextPage(page) {
         success: function(data) {
             var end_time = new Date().getTime();
             var run_time = end_time - start_time;
-            if (page == 0 && run_time < 1000) {
-                sleep(1000);
+            if (page == 0 && run_time < 1200) {
+                sleep(1200);
             }
             $("#fakeloader").hide();
             // var result = '';
