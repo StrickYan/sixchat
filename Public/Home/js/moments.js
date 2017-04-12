@@ -139,10 +139,11 @@ $(function() {
 // 加载更多moments
 function loadNextPage(page) {
     $("#fakeloader").fakeLoader({
-        timeToHide:10000,
+        timeToHide:60000,
         bgColor:"#2ecc71",
         spinner:"spinner1" //spinner1,spinner2,spinner3,spinner4,spinner5,spinner6,spinner7,spinner8 供8种效果
     });
+    var start_time = new Date().getTime();
     $.ajax({
         type: "POST",
         data: {
@@ -154,6 +155,11 @@ function loadNextPage(page) {
             // alert("加载错误，错误原因：\n" + errorThrown);
         },
         success: function(data) {
+            var end_time = new Date().getTime();
+            var run_time = end_time - start_time;
+            if (page == 0 && run_time < 1000) {
+                sleep(1000);
+            }
             $("#fakeloader").hide();
             // var result = '';
             for (var i = 0; i < data.length; i++) {
@@ -199,7 +205,7 @@ function loadNextPage(page) {
                 result += "</div>";
 
                 $('#loading').before(result);
-                $('.info-flow:last').hide().slideDown(1000);
+                $('.info-flow:last').hide().slideDown(1800);
                 divPop($('.button-img:last'));
                 $(".delete-moment:last").unbind().bind("click", function() {
                     deleteMoment($(this).parent());
