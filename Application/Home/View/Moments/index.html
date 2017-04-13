@@ -25,6 +25,17 @@
     	<link rel="stylesheet" type="text/css" media="screen and (min-device-width: 1200px)" href="__PUBLIC__/Home/css/pc.css?version=24" />
     	<script src="__PUBLIC__/Home/js/lib/formatImg.js"></script>
     	<script src="__PUBLIC__/Home/js/lib/preventOpenLinksInSafari.js"></script>
+		<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+		<script src="__PUBLIC__/Home/js/lib/fakeLoader.min.js"></script>
+		<script type="text/javascript">
+	        $(function() {
+				$("#fakeloader").fakeLoader({
+			        timeToHide:60000,
+			        bgColor:"#2ecc71",
+			        spinner:"spinner1" //spinner1,spinner2,spinner3,spinner4,spinner5,spinner6,spinner7,spinner8 供8种效果
+			    });
+			});
+		</script>
 	</head>
 	<body>
 		<div id="top" data-role="header" name="{$my_name}">
@@ -36,7 +47,6 @@
 			<img id="camera" name="{$my_name}" src="__PUBLIC__/Home/img/default/camera.png" alt="" > 
 		</div>
 		<div id="slidebar"></div>
-		<div id="fakeloader"></div>
 		<div id="slidebar_profile"></div>
 		<div id="slide_wall">	
 	    	<div class="swiper-container">
@@ -49,6 +59,7 @@
 	    	</div>
 	    	<div id="avatar" name="{$my_name}"><img src="__ROOT__/avatar_img/{$avatar}" alt=""></div>
 		</div>
+		<div id="fakeloader"></div>
 		<!--占位栏-->
 		<div id='free'></div>
 		<volist name="list" id="vo">
@@ -124,8 +135,6 @@
 			</div> -->
 		</div> 
 		<!-- <script src="__PUBLIC__/Home/js/lib/jquery-3.1.0.min.js"></script> -->
-		<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
-		<script src="__PUBLIC__/Home/js/lib/fakeLoader.min.js"></script>
 		<script src="__PUBLIC__/Home/js/lib/swiper.min.js"></script>
 		<script src="__PUBLIC__/Home/js/lib/lightbox.min.js"></script>
 		<script src="__PUBLIC__/Home/js/lib/jquery.lazyload.min.js"></script>
