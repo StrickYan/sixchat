@@ -138,11 +138,6 @@ $(function() {
 });
 // 加载更多moments
 function loadNextPage(page) {
-    $("#fakeloader").fakeLoader({
-        timeToHide:60000,
-        bgColor:"#2ecc71",
-        spinner:"spinner1" //spinner1,spinner2,spinner3,spinner4,spinner5,spinner6,spinner7,spinner8 供8种效果
-    });
     var start_time = new Date().getTime();
     $.ajax({
         type: "POST",
