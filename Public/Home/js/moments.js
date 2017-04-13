@@ -853,6 +853,10 @@ function clickToBack() {
         loadFriendRequest();
         location.hash = "#location"; //跳到消息界面位置
     } else if ($("#current_location").text() == "Messages") { //关闭消息侧边栏
+
+        self.location.href = "";
+        return;
+
         $("#current_location").text("SixChat");
         $("#back").text("News");
         if (isPC()) { //PC
