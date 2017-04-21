@@ -124,7 +124,7 @@ $.fn.longPress = function(fn) {
     var $this = this;
     for (var i = 0; i < $this.length; i++) {
         $this[i].addEventListener('touchstart', function(event) {
-            timeout = setTimeout(fn, 1000);
+            timeout = setTimeout(fn, 500);
         }, false);
         $this[i].addEventListener('touchend', function(event) {
             clearTimeout(timeout);
