@@ -329,7 +329,6 @@ a {
     border-bottom: 1px solid #eee;
     background-color: white;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    display: none;
 }
 
 #the_one_moment {
