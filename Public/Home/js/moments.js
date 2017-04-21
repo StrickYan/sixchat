@@ -200,7 +200,7 @@ function loadNextPage(page) {
                 result += "</div>";
 
                 $('#loading').before(result);
-                $('.info-flow:last').hide().slideDown(1800);
+                $('.info-flow:last').slideDown(1600);
                 divPop($('.button-img:last'));
                 $(".delete-moment:last").unbind().bind("click", function() {
                     deleteMoment($(this).parent());
