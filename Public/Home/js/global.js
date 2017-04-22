@@ -25,6 +25,21 @@ function initCommentEvent() {
         $(this).parent().siblings(".info-flow-right-input").children("input").attr("placeholder", "@".concat($(this).children(".comment-user-name").first().text())) //改变placeholder值
             .attr("id", $(this).children(".comment-user-name").first().text()).focus(); //输入框聚焦
     });
+
+    // 自动隐藏导航栏
+    $(window).scroll(function() {
+        //$(document).scrollTop() 获取垂直滚动的距离
+        //$(document).scrollLeft() 这是获取水平滚动条的距离
+        // if ($(document).scrollTop() <= 0) {
+        //     alert("滚动条已经到达顶部为0");
+        // }
+        if ($(document).scrollTop() <= 0 || ($(document).scrollTop() >= $(document).height() - $(window).height() - 16)) {
+            $('#top').slideDown('slow');
+        }
+        else if ($(document).scrollTop() > 40){
+            $('#top').slideUp('slow')
+        }
+    });
 }
 // 点击弹出赞与评论选项
 function divPop(obj) {
