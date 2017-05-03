@@ -206,7 +206,7 @@ function loadNextPage(page) {
                     deleteMoment($(this).parent());
                 });
             }
-            //$('.info-flow:first').hide().slideDown(1600);
+            $('.info-flow:first').hide().slideDown('slow');
             // $(".info-flow-right-button .button-img").each(function() {
             //     divPop($(this));
             // });
