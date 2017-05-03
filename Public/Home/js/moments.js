@@ -200,12 +200,13 @@ function loadNextPage(page) {
                 result += "</div>";
 
                 $('#loading').before(result);
-                $('.info-flow:last').hide().slideDown(1600);
+                //$('.info-flow:last').hide().slideDown(1200);
                 divPop($('.button-img:last'));
                 $(".delete-moment:last").unbind().bind("click", function() {
                     deleteMoment($(this).parent());
                 });
             }
+            //$('.info-flow:first').hide().slideDown(1600);
             // $(".info-flow-right-button .button-img").each(function() {
             //     divPop($(this));
             // });
@@ -327,6 +328,7 @@ function getAllComments() {
                 html += "<span>" + data[i].comment + "</span>"; //评论
                 html += "</div>";
                 $("#" + data[i].moment_id).children(".info-flow-right-comment").append(html);
+                $(".info-flow-right-comment").hide().slideDown('slow');
                 deleteComment($("#" + data[i].moment_id).children(".info-flow-right-comment").children('#'+ data[i].comment_id));
             }
         }
