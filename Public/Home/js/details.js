@@ -20,11 +20,12 @@ $(function() {
     });
     $("img.lazy").lazyload({
         effect: "fadeIn",
-        threshold: mobile_speed
+        threshold: 200
     }); //图片延迟加载
     $("#return").bind("click", function() {
         location.href = "../../index.html";
     }); //点击左上角导航返回
+    $("body").fadeIn('slow');
 });
 
 //回车发送评论或朋友圈

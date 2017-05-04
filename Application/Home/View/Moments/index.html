@@ -2,41 +2,12 @@
 <html>
 	<head>
 		<title>SixChat</title>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
-		<meta name="apple-mobile-web-app-capable" content="yes" />    
-		<meta name="apple-mobile-web-app-status-bar-style" content="default" />
-		<meta name="format-detection" content="telephone=no"/>
-		<meta name="msapplication-tap-highlight" content="no" />
-		<meta name="application-name" content="SixChat">
-		<meta name="description" content="SixChat">
-		<meta name="keywords" content="SixChat">
-		<link rel="apple-touch-icon-precomposed" href="__PUBLIC__/Home/img/default/icon.png" />
-		<link rel="apple-touch-startup-image" href="__PUBLIC__/Home/img/default/welcome.png" />
-		<link rel="icon" href="__PUBLIC__/Home/img/default/my.ico" type="image/x-icon" />
-		<link rel="shortcut icon" href="__PUBLIC__/Home/img/default/my.ico" type="image/x-icon" />
-		<link rel="bookmark" href="__PUBLIC__/Home/img/default/my.ico" type="image/x-icon" />
-        <link rel='stylesheet' href='http://fonts.lug.ustc.edu.cn/css?family=Open+Sans:300,400,600&subset=latin,latin-ext'>
-		<link rel="stylesheet" href="__PUBLIC__/Home/css/lib/swiper.min.css" />
-		<link rel="stylesheet" href="__PUBLIC__/Home/css/lib/lightbox.min.css" />
-		<link rel="stylesheet" href="__PUBLIC__/Home/css/lib/fakeLoader.css" />
-		<link rel="stylesheet" href="__PUBLIC__/Home/css/moments.css?version=24" />
-    	<link rel="stylesheet" href="__PUBLIC__/Home/css/messages.css?version=24" />
-    	<link rel="stylesheet" type="text/css" media="screen and (min-device-width: 1200px)" href="__PUBLIC__/Home/css/pc.css?version=24" />
-    	<script src="__PUBLIC__/Home/js/lib/formatImg.js"></script>
-    	<script src="__PUBLIC__/Home/js/lib/preventOpenLinksInSafari.js"></script>
-		<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
-		<script src="__PUBLIC__/Home/js/lib/fakeLoader.min.js"></script>
-		<script type="text/javascript">
-	        $(function() {
-				$("#fakeloader").fakeLoader({
-			        timeToHide:60000,
-			        bgColor:"#2ecc71",
-			        spinner:"spinner" + Math.ceil(Math.random()*8),
-			        //spinner1,spinner2,spinner3,spinner4,spinner5,spinner6,spinner7,spinner8 供8种效果
-			    });
-			});
-		</script>
+        <include file="./Public/header.html" />
+        <link rel="stylesheet" href="__PUBLIC__/Home/css/lib/swiper.min.css" />
+        <link rel="stylesheet" href="__PUBLIC__/Home/css/lib/fakeLoader.css" />
+        <link rel="stylesheet" href="__PUBLIC__/Home/css/moments.css?version=24" />
+        <link rel="stylesheet" href="__PUBLIC__/Home/css/messages.css?version=24" />
+        <link rel="stylesheet" type="text/css" media="screen and (min-device-width: 1200px)" href="__PUBLIC__/Home/css/pc.css?version=24" />
 	</head>
 	<body>
 		<div id="top" data-role="header" name="{$my_name}">
@@ -63,57 +34,13 @@
 		<div id="fakeloader"></div>
 		<!--占位栏-->
 		<div id='free'></div>
-		<volist name="list" id="vo">
-			<div class="info-flow">
-<!-- 				<div class="info-flow-left">
-					<img src="__ROOT__/avatar_img/{$vo.avatar}" alt="">
-				</div> -->
-				<div class="info-flow-right" id="{$vo.moment_id}">
-					<div class="info-flow-right-avatar">
-						<img src="__ROOT__/avatar_img/{$vo.avatar}" alt="">
-					</div>
-					<div class="info-flow-right-user-name">{$vo.user_name}</div>
-					<!-- <div class="info-flow-right-text">{$vo.info}</div> -->
-					<if condition="$vo.img_url eq ''">
-                        <div class="info-flow-right-text">{$vo.info}</div>
-                    </if>
-										
-					<if condition="$vo.img_url neq ''">
-						<div class="info-flow-right-img">
-							<a href="__ROOT__/moment_img/{$vo.img_url}" data-lightbox="{$vo.moment_id}">
-								<img class="lazy" data-original="__ROOT__/moment_img/{$vo.img_url}" onload="formatImg_2(this)" />
-							</a>
-						</div>
-					</if>
-					<div class="info-flow-right-time">{$vo.time}</div>
-					<if condition="$vo.user_name eq $_SESSION['name']">
-						<div class="delete-moment">Delete</div>
-					</if>
-					<div class="info-flow-right-button">
-						<img name="button" class="button-img" src="__PUBLIC__/Home/img/default/feed_comment.png" />
-					    <div class="divPop">  
-					        <img class="like-png" src="__PUBLIC__/Home/img/default/logout_like.png" />
-					        <img class="comment-png" src="__PUBLIC__/Home/img/default/logout_comment.png" />  
-					    </div>  
-					</div>
-					<div class="info-flow-right-like"></div>
-					<if condition="$vo.info neq '' and $vo.img_url neq ''">
-					    <div class="info-flow-right-text">
-					        About : {$vo.info}
-					    </div>
-					</if>
-					
-					<div class="info-flow-right-comment" ></div>
-					<div class="info-flow-right-input" name="div_comment">
-						<input type="text" class="comment-box" placeholder="Comment" maxlength="140" required/>
-					</div>
-				</div>
-			</div>
-		</volist>
-		<!-- <div id="loading"><img src="__PUBLIC__/Home/img/default/loading.gif"></div> -->
+
+        <!-- 瀑布流 -->
+
 		<div id="loading">Next Page</div>
 		<div id="footer" data-role="footer">
-<!-- 			<div class="info-flow" >
+        <!--
+            <div class="info-flow" >
 				<div class="footer-left">
 					<img src="__PUBLIC__/Home/img/default/my.ico" alt="">
 				</div>
@@ -122,9 +49,9 @@
 					<div class="footer-right-text">
 						About：<br>
 						1. 可以浏览所有人的likes<br>
-						2. 可以浏览好友关系的comments<br>
+						2. 可以浏览好友关系（现已开放所有）的comments<br>
 						3. 页面刷新：pc端双击或mobile端长按顶部SixChat<br>
-						4. 回车键发送moment,comment或其它<br>
+						4. 回车键发送comment<br>
 						Copyright © 两十两 SHENZHEN<br>
 						— 削笔工作室 Tel:18503056101 —<br>
 					</div>
@@ -133,14 +60,24 @@
 					</div>
 					<div class="footer-right-time">2016年8月1日 凌晨 the Begin</div>
 				</div>
-			</div> -->
+			</div> 
+		-->
 		</div> 
+		<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
 		<!-- <script src="__PUBLIC__/Home/js/lib/jquery-3.1.0.min.js"></script> -->
-		<script src="__PUBLIC__/Home/js/lib/swiper.min.js"></script>
-		<script src="__PUBLIC__/Home/js/lib/lightbox.min.js"></script>
-		<script src="__PUBLIC__/Home/js/lib/jquery.lazyload.min.js"></script>
-		<script type='application/javascript' src="__PUBLIC__/Home/js/lib/fastclick.js"></script>
-		<script src="__PUBLIC__/Home/js/global.js?version=24"></script>
-		<script src="__PUBLIC__/Home/js/moments.js?version=24"></script>
+        <include file="./Public/footer.html" />
+        <script src="__PUBLIC__/Home/js/lib/swiper.min.js"></script>
+		<script src="__PUBLIC__/Home/js/moments.js?version=24"></script>	
+		<script src="__PUBLIC__/Home/js/lib/fakeLoader.min.js"></script>
+		<script type="text/javascript">
+		    $(document).ready(function() {
+				$("#fakeloader").fakeLoader({
+			        timeToHide:60000,
+			        bgColor:"#2ecc71",
+			        spinner:"spinner" + Math.ceil(Math.random()*8),
+			        //spinner1,spinner2,spinner3,spinner4,spinner5,spinner6,spinner7,spinner8 供8种效果
+			    });
+			});
+		</script>
 	</body>	
 </html>

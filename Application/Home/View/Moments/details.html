@@ -2,26 +2,11 @@
 <html>
 	<head>
 		<title>SixChat</title>
-		<meta charset="utf-8">
-
-		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
-		<meta name="apple-mobile-web-app-capable" content="yes" />    
-		<meta name="apple-mobile-web-app-status-bar-style" content="default" />
-		<meta name="format-detection" content="telephone=no"/>
-		<meta name="msapplication-tap-highlight" content="no" />
-
-		<link rel="icon" href="__PUBLIC__/Home/img/default/my.ico" type="image/x-icon" />
-		<link rel="shortcut icon" href="__PUBLIC__/Home/img/default/my.ico" type="image/x-icon" />
-		<link rel="bookmark" href="__PUBLIC__/Home/img/default/my.ico" type="image/x-icon" />
-
-        <link rel='stylesheet' href='http://fonts.lug.ustc.edu.cn/css?family=Open+Sans:300,400,600&subset=latin,latin-ext'>
-		<link rel="stylesheet" href="__PUBLIC__/Home/css/lib/lightbox.min.css" />
+        <include file="./Public/header.html" />
 		<link rel="stylesheet" href="__PUBLIC__/Home/css/moments.css?version=24" />
     	<link rel="stylesheet" type="text/css" media="screen and (min-device-width: 1200px)" href="__PUBLIC__/Home/css/pc.css?version=24" />
-    	<script src="__PUBLIC__/Home/js/lib/formatImg.js"></script>
-    	<script src="__PUBLIC__/Home/js/lib/preventOpenLinksInSafari.js"></script>
 	</head>
-	<body>
+	<body style="display: none;">
 		<div id="top" data-role="header" name="{$my_name}">
 			<div id="return">
 				<img id="back_img" src="__PUBLIC__/Home/img/default/icon_back.png" alt="" >
@@ -45,7 +30,7 @@
 				<if condition="$details.img_url neq ''">
 					<div class="info-flow-right-img">
 						<a href="__ROOT__/moment_img/{$details.img_url}" data-lightbox="{$details.moment_id}">
-							<img class="lazy" data-original="__ROOT__/moment_img/{$details.img_url}" onload="formatImg_2(this)" />
+							<img class="lazy" data-original="__ROOT__/moment_img/{$details.img_url}" />
 						</a>
 					</div>
 				</if>
@@ -71,10 +56,7 @@
 			</div>
 		</div>
 		<script src="__PUBLIC__/Home/js/lib/jquery-3.1.0.min.js"></script>	
-		<script src="__PUBLIC__/Home/js/lib/lightbox.min.js"></script>
-		<script src="__PUBLIC__/Home/js/lib/jquery.lazyload.min.js"></script>
-		<script type='application/javascript' src="__PUBLIC__/Home/js/lib/fastclick.js"></script>
-		<script src="__PUBLIC__/Home/js/global.js?version=24"></script>
+        <include file="./Public/footer.html" />
 		<script src="__PUBLIC__/Home/js/details.js?version=24"></script>
 	</body>	
 </html>
