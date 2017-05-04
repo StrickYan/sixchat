@@ -13,7 +13,10 @@ $(function() {
     //去除移动端click延迟300ms插件fastclick初始化
     FastClick.attach(document.body);
     getRollingWall(); //异步加载随机滚动3图url
-    loadNextPage(0); //加载第一页
+
+    //loadNextPage(0); //加载第一页
+    loadNextPageViaHtml(0);
+
     initCommentEvent();
     var isCommitted = false;//表单是否已经提交标识，默认为false
     $(document).on("click", "#share", function() {
@@ -142,7 +145,8 @@ $(function() {
         }
     });
     $('#loading').on('click', function() {
-        loadNextPage(page);
+        // loadNextPage(page);
+        loadNextPageViaHtml(page);
         page++;   
     });
 
@@ -221,6 +225,52 @@ function loadNextPage(page) {
             // $(".delete-moment").unbind().bind("click", function() {
             //     deleteMoment($(this).parent());
             // });
+            refresh();
+
+            var end_time = new Date().getTime();
+            var run_time = end_time - start_time;
+            if (page == 0 && run_time < 1200) {
+                sleep(1200);
+            }
+            $("#fakeloader").fadeOut('slow');
+        }
+    });
+}
+// 返回一整块html直接渲染页面
+function loadNextPageViaHtml(page) {
+    var start_time = new Date().getTime();
+    $.ajax({
+        type: "POST",
+        data: {
+            "page": page
+        },
+        dataType: "html",
+        url: "./loadNextPageViaHtml",
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            //alert("加载错误，错误原因：\n" + errorThrown);
+        },
+        success: function(data) {
+            $('#loading').before(data);
+            $("div[data-page='" + page + "'] img.lazy").lazyload({
+                placeholder : "../../Public/Home/img/default/white.png", //用图片提前占位
+                // placeholder,值为某一图片路径.此图片用来占据将要加载的图片的位置,待图片加载时,占位图则会隐藏
+                effect: "fadeIn", // 载入使用何种效果
+                // effect(特效),值有show(直接显示),fadeIn(淡入),slideDown(下拉)等,常用fadeIn
+                threshold: 200, // 提前开始加载
+                // threshold,值为数字,代表页面高度.如设置为200,表示滚动条在离目标位置还有200的高度时就开始加载图片,可以做到不让用户察觉
+                //event: 'click',  // 事件触发时才加载
+                // event,值有click(点击),mouseover(鼠标划过),sporty(运动的),foobar(…).可以实现鼠标莫过或点击图片才开始加载,后两个值未测试…
+                //container: $("#container"),  // 对某容器中的图片实现效果
+                // container,值为某容器.lazyload默认在拉动浏览器滚动条时生效,这个参数可以让你在拉动某DIV的滚动条时依次加载其中的图片
+                failurelimit : 3 // 图片排序混乱时
+                // failurelimit,值为数字.lazyload默认在找到第一张不在可见区域里的图片时则不再继续加载,但当HTML容器混乱的时候可能出现可见区域内图片并没加载出来的情况,failurelimit意在加载N张可见区域外的图片,以避免出现这个问题.
+            });
+            $("div[data-page='" + page + "'] .info-flow-right-button .button-img").each(function() {
+                divPop($(this));
+            });
+            $("div[data-page='" + page + "'] .delete-moment").bind("click", function() {
+                deleteMoment($(this).parent());
+            });
             refresh();
 
             var end_time = new Date().getTime();
@@ -530,7 +580,7 @@ function addMoment() {
                 deleteMoment($(this).parent());
             });
         } else {
-            alert('发送失敗');
+            alert('Sorry, send failed.');
         }
     });
 }
@@ -548,12 +598,27 @@ function getRollingWall() {
             // var html_1 = "<img name=" + data[0].moment_id_1 + " src=../../moment_img/" + data[0].img_url_1 + ">";
             // var html_2 = "<img name=" + data[0].moment_id_2 + " src=../../moment_img/" + data[0].img_url_2 + ">";
             // var html_3 = "<img name=" + data[0].moment_id_3 + " src=../../moment_img/" + data[0].img_url_3 + ">";
-            var html_1 = "<a href=./details/id/" + data[0].moment_id_1 + "><img name=" + data[0].moment_id_1 + " src=../../moment_img/" + data[0].img_url_1 + "></a>";
-            var html_2 = "<a href=./details/id/" + data[0].moment_id_2 + "><img name=" + data[0].moment_id_2 + " src=../../moment_img/" + data[0].img_url_2 + "></a>";
-            var html_3 = "<a href=./details/id/" + data[0].moment_id_3 + "><img name=" + data[0].moment_id_3 + " src=../../moment_img/" + data[0].img_url_3 + "></a>";
+            var html_1 = "<a href=./details/id/" + data[0].moment_id_1 + "><img name=" + data[0].moment_id_1 + " class='lazy' data-original=../../moment_img/" + data[0].img_url_1 + "></a>";
+            var html_2 = "<a href=./details/id/" + data[0].moment_id_2 + "><img name=" + data[0].moment_id_2 + " class='lazy' data-original=../../moment_img/" + data[0].img_url_2 + "></a>";
+            var html_3 = "<a href=./details/id/" + data[0].moment_id_3 + "><img name=" + data[0].moment_id_3 + " class='lazy' data-original=../../moment_img/" + data[0].img_url_3 + "></a>";
             $(".swiper-slide").first().append(html_1);
             $(".swiper-slide").first().next().append(html_2);
             $(".swiper-slide").last().append(html_3);
+
+            $("#slide_wall img.lazy").lazyload({
+                placeholder : "../../Public/Home/img/default/white.png", //用图片提前占位
+                // placeholder,值为某一图片路径.此图片用来占据将要加载的图片的位置,待图片加载时,占位图则会隐藏
+                effect: "fadeIn", // 载入使用何种效果
+                // effect(特效),值有show(直接显示),fadeIn(淡入),slideDown(下拉)等,常用fadeIn
+                threshold: 1000, // 提前开始加载
+                // threshold,值为数字,代表页面高度.如设置为200,表示滚动条在离目标位置还有200的高度时就开始加载图片,可以做到不让用户察觉
+                //event: 'click',  // 事件触发时才加载
+                // event,值有click(点击),mouseover(鼠标划过),sporty(运动的),foobar(…).可以实现鼠标莫过或点击图片才开始加载,后两个值未测试…
+                //container: $("#container"),  // 对某容器中的图片实现效果
+                // container,值为某容器.lazyload默认在拉动浏览器滚动条时生效,这个参数可以让你在拉动某DIV的滚动条时依次加载其中的图片
+                //failurelimit : 3 // 图片排序混乱时
+                // failurelimit,值为数字.lazyload默认在找到第一张不在可见区域里的图片时则不再继续加载,但当HTML容器混乱的时候可能出现可见区域内图片并没加载出来的情况,failurelimit意在加载N张可见区域外的图片,以避免出现这个问题.
+            });
         }
     });
 }

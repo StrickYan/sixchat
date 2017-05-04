@@ -81,7 +81,6 @@ class MomentsController extends CommonController
         }
     }
 
-
     // 获取所有赞
     public function getAllLikes()
     {
@@ -101,7 +100,7 @@ class MomentsController extends CommonController
                 "reply_name"   => htmlspecialchars($value['reply_name']),
                 "replyed_name" => htmlspecialchars($value['replyed_name']),
                 "comment_id"   => $value['comment_id'],
-                "moment_id"   => $value['moment_id'],
+                "moment_id"    => $value['moment_id'],
                 "comment"      => htmlspecialchars($value['comment']),
                 "time"         => $value['time']);
         }
@@ -287,7 +286,7 @@ class MomentsController extends CommonController
         );
         echo json_encode($response);
     }
-    
+
     // 删除 moment
     public function deleteMoment()
     {
@@ -298,7 +297,7 @@ class MomentsController extends CommonController
         $list[0] = "Delete moment is success.";
         echo json_encode($list);
     }
-    
+
     // 删除 comment
     public function deleteComment()
     {
@@ -507,6 +506,23 @@ class MomentsController extends CommonController
             $value['info']      = htmlspecialchars($value['info']);
         }
         echo json_encode($list);
+    }
+
+    // 加载下一页moments
+    public function loadNextPageViaHtml()
+    {
+        $page = htmlspecialchars($_REQUEST['page']);
+        $list = $this->momentModel->getNextPage($page);
+
+        foreach ($list as $key => &$value) {
+            $value['user_name'] = htmlspecialchars($value['user_name']);
+            $value['time']      = $this->obj->tranTime(strtotime($value['time']));
+            $value['info']      = str_replace("\n", "<br>", htmlspecialchars($value['info']));
+        }
+
+        $this->assign('page', $page);
+        $this->assign('list', $list);
+        $this->display("Moments/flow");
     }
 
     // 加载未读消息数量
