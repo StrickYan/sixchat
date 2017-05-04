@@ -27,6 +27,7 @@ $(function() {
         // }
 
         if( isCommitted==false && ($.trim($("#text_box").val()) || $("#photo").val()) ) {
+            document.body.scrollTop = document.documentElement.scrollTop = 0; //跳转顶部
             isCommitted = true;
             addMoment();
             refresh();
@@ -109,6 +110,7 @@ $(function() {
     // });
     // 点击主页头像
     $("#avatar").bind("click", function() {
+        $("#camera").hide();
         searchUser($("#camera").attr("name"));
         document.body.scrollTop = document.documentElement.scrollTop = 0; //跳转顶部
     });
@@ -500,7 +502,7 @@ function addMoment() {
                 result += "</a></div>";
             }
             else{
-                result += "<div class='info-flow-right-text'>" + replace_str(ret['text_box']) + "</div>";
+                result += "<div class='info-flow-right-text only-text'>" + replace_str(ret['text_box']) + "</div>";
             }
             result += "<div class='info-flow-right-time'>" + ret['time'] + "</div>";
             result += "<div class='delete-moment'>Delete</div>";
@@ -856,6 +858,7 @@ function clickToBack() {
     if ($("#current_location").text() == "SixChat") { //打开消息侧边栏
         // loadMessages(); //异步加载消息
         // loadFriendRequest();
+        $("#camera").hide();
         $("#current_location").text("Messages");
         $("#back").text("SixChat");
         if (isPC()) { //PC
