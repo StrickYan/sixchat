@@ -85,6 +85,7 @@ a {
     border: 0;
     border-radius: 5px;
     background-color: rgb(91, 197, 190);
+    background-color: #2ecc71;
     cursor: pointer;
 }
 
@@ -365,12 +366,11 @@ a {
 
 .info-flow-right-user-name {
     display: inline-block;
-    font-weight: bold;
     line-height: 30px;
     height: 30px;
     color: rgb(41, 128, 185);
     border: 0 solid red;
-    /*color: #262626;*/
+    font-size: 15px;
 }
 
 .info-flow-right-text {
@@ -383,6 +383,11 @@ a {
     background-color: #f0f0f0;
     border-radius: 5px;
     border-radius: 5px;
+}
+
+.only-text {
+    background: none;
+    padding-left: 0;
 }
 
 .info-flow-right-img {
@@ -460,7 +465,7 @@ a {
 }
 
 .like-user-name {
-    font-weight: bold;
+    /*font-weight: bold;*/
     display: inline-block;
     padding-left: 2px;
     color: rgb(41, 128, 185);
@@ -489,7 +494,7 @@ a {
 }
 
 .comment-user-name {
-    font-weight: bold;
+    /*font-weight: bold;*/
     color: rgb(41, 128, 185);
 }
 
