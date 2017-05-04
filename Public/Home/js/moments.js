@@ -110,6 +110,7 @@ $(function() {
     // 点击主页头像
     $("#avatar").bind("click", function() {
         searchUser($("#camera").attr("name"));
+        document.body.scrollTop = document.documentElement.scrollTop = 0; //跳转顶部
     });
     $(document).on("click", "#logout", function() {
         location.href = "./logout";
@@ -868,7 +869,8 @@ function clickToBack() {
         }, mobile_speed);
         loadMessages(); //异步加载消息
         loadFriendRequest();
-        location.hash = "#location"; //跳到消息界面位置
+        //location.hash = "#location"; //跳到消息界面位置
+        document.body.scrollTop = document.documentElement.scrollTop = 0; //跳转顶部
     } else if ($("#current_location").text() == "Messages") { //关闭消息侧边栏
 
         self.location.href = "";
