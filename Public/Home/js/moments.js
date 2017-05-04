@@ -149,13 +149,7 @@ function loadNextPage(page) {
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             // alert("加载错误，错误原因：\n" + errorThrown);
         },
-        success: function(data) {
-            var end_time = new Date().getTime();
-            var run_time = end_time - start_time;
-            if (page == 0 && run_time < 1200) {
-                sleep(1200);
-            }
-            $("#fakeloader").hide();
+        success: function(data) {      
             // var result = '';
             for (var i = 0; i < data.length; i++) {
                 var result = '';
@@ -206,7 +200,7 @@ function loadNextPage(page) {
                     deleteMoment($(this).parent());
                 });
             }
-            $('.info-flow:first').hide().slideDown('slow');
+            //$('.info-flow:first').hide().slideDown('slow');
             // $(".info-flow-right-button .button-img").each(function() {
             //     divPop($(this));
             // });
@@ -214,6 +208,13 @@ function loadNextPage(page) {
             //     deleteMoment($(this).parent());
             // });
             refresh();
+
+            var end_time = new Date().getTime();
+            var run_time = end_time - start_time;
+            if (page == 0 && run_time < 1200) {
+                sleep(1200);
+            }
+            $("#fakeloader").fadeOut('slow');
         }
     });
 }
@@ -328,7 +329,7 @@ function getAllComments() {
                 html += "<span>" + data[i].comment + "</span>"; //评论
                 html += "</div>";
                 $("#" + data[i].moment_id).children(".info-flow-right-comment").append(html);
-                $(".info-flow-right-comment").hide().slideDown('slow');
+                //$(".info-flow-right-comment").hide().slideDown('slow');
                 deleteComment($("#" + data[i].moment_id).children(".info-flow-right-comment").children('#'+ data[i].comment_id));
             }
         }
