@@ -390,9 +390,10 @@ function searchUser(search_name) {
                     left: 0
                 }, mobile_speed);
             }
-            $("#slidebar_profile~div").animate({
-                opacity: 0
-            }, 100);
+            // $("#slidebar_profile~div").animate({
+            //     opacity: 0
+            // }, 100);
+            $("#slidebar_profile~div").remove();
             $("#back").text("SixChat");
             $("#current_location").text("Profile");
         }
@@ -864,9 +865,10 @@ function clickToBack() {
                 left: 0
             }, mobile_speed);
         }
-        $("#slidebar~div").animate({
-            opacity: 0
-        }, mobile_speed);
+        // $("#slidebar~div").animate({
+        //     opacity: 0
+        // }, mobile_speed);
+        $("#slidebar~div").remove();
         loadMessages(); //异步加载消息
         loadFriendRequest();
         //location.hash = "#location"; //跳到消息界面位置
