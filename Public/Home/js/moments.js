@@ -17,14 +17,25 @@ $(function() {
     initCommentEvent();
     var isCommitted = false;//表单是否已经提交标识，默认为false
     $(document).on("click", "#share", function() {
-        if( isCommitted==false && $("#text_box").length && $("#photo").val()) {
+        // if( isCommitted==false && $("#text_box").length && $("#photo").val()) {
+        //     isCommitted = true;
+        //     addMoment();
+        //     refresh();
+        // }
+        // else if(!$("#photo").val()){
+        //     alert("Please add a photo :D");
+        // }
+
+        if( isCommitted==false && ($.trim($("#text_box").val()) || $("#photo").val()) ) {
             isCommitted = true;
             addMoment();
             refresh();
+            isCommitted = false;
         }
-        else if(!$("#photo").val()){
-            alert("Please add a photo :D");
+        else if(!$.trim($("#text_box").val()) && !$("#photo").val()) {
+            alert("Please add a photo or some text :D");
         }
+
     });
     // 绑定消息点击事件
     $(document).on("click", ".message-flow", function() {
@@ -165,7 +176,7 @@ function loadNextPage(page) {
                 if (data[i]['img_url']) {
                     result += "<div class='info-flow-right-img'>";
                     result += "<a href=../../moment_img/" + data[i]['img_url'] + " data-lightbox=" + data[i]['moment_id'] + ">";
-                    result += '<img src=' + '../../moment_img/' + data[i]['img_url'] + " onload='formatImg_2(this)'>";
+                    result += '<img src=' + '../../moment_img/' + data[i]['img_url'] + " >";
                     result += "</a></div>";
                 }
                 else{
@@ -483,8 +494,11 @@ function addMoment() {
             if (ret['photo']) {
                 result += "<div class='info-flow-right-img'>";
                 result += "<a href=../../moment_img/" + ret['photo'] + " data-lightbox=" + ret['moment_id'] + ">";
-                result += '<img src=' + '../../moment_img/' + ret['photo'] + " onload='formatImg_2(this)'>";
+                result += '<img src=' + '../../moment_img/' + ret['photo'] + " >";
                 result += "</a></div>";
+            }
+            else{
+                result += "<div class='info-flow-right-text'>" + ret['text_box'] + "</div>";
             }
             result += "<div class='info-flow-right-time'>" + ret['time'] + "</div>";
             result += "<div class='delete-moment'>Delete</div>";
@@ -496,7 +510,7 @@ function addMoment() {
             result += "</div>";
             result += "</div>";
             result += "<div class='info-flow-right-like'></div>";
-            if (ret['text_box']) {
+            if (ret['photo'] && ret['text_box']) {
                 result += "<div class='info-flow-right-text'>About : " + ret['text_box'] + "</div>";
             }
             result += "<div class='info-flow-right-comment' ></div>";
