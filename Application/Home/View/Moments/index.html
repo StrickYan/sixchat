@@ -10,6 +10,8 @@
         <link rel="stylesheet" type="text/css" media="screen and (min-device-width: 1200px)" href="__PUBLIC__/Home/css/pc.css?version=24" />
 	</head>
 	<body>
+	    <div id="fakeloader"></div>
+
 		<div id="top" data-role="header" name="{$my_name}">
 			<div id="return">
 				<img id="back_img" src="__PUBLIC__/Home/img/default/icon_back.png" alt="" >
@@ -18,6 +20,7 @@
 			<span id="current_location" ontouchstart='return false'>SixChat</span>
 			<img id="camera" name="{$my_name}" src="__PUBLIC__/Home/img/default/camera.png" alt="" > 
 		</div>
+
 		<div id="slidebar"></div>
 		<div id="slidebar_profile"></div>
 		<div id="slide_wall">	
@@ -31,13 +34,14 @@
 	    	</div>
 	    	<div id="avatar" name="{$my_name}"><img src="__ROOT__/avatar_img/{$avatar}" alt=""></div>
 		</div>
-		<div id="fakeloader"></div>
+
 		<!--占位栏-->
 		<div id='free'></div>
 
         <!-- 瀑布流 -->
 
 		<div id="loading">Next Page</div>
+
 		<div id="footer" data-role="footer">
         <!--
             <div class="info-flow" >
@@ -63,21 +67,33 @@
 			</div> 
 		-->
 		</div> 
+
 		<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
 		<!-- <script src="__PUBLIC__/Home/js/lib/jquery-3.1.0.min.js"></script> -->
         <include file="./Public/footer.html" />
         <script src="__PUBLIC__/Home/js/lib/swiper.min.js"></script>
-		<script src="__PUBLIC__/Home/js/moments.js?version=24"></script>	
+		<script src="__PUBLIC__/Home/js/moments.js?version=24"></script>
+
 		<script src="__PUBLIC__/Home/js/lib/fakeLoader.min.js"></script>
 		<script type="text/javascript">
 		    $(document).ready(function() {
+		    	//spinner1,spinner2,spinner3 共3种效果
+		    	var whichSpinner = "spinner" + Math.ceil(Math.random() * 3); 
 				$("#fakeloader").fakeLoader({
-			        timeToHide:60000,
-			        bgColor:"#2ecc71",
-			        spinner:"spinner" + Math.ceil(Math.random()*8),
-			        //spinner1,spinner2,spinner3,spinner4,spinner5,spinner6,spinner7,spinner8 供8种效果
+			        timeToHide: 60000,
+			        bgColor: "#2ecc71",
+			        spinner: whichSpinner,
 			    });
+	            var winW = $(window).width();
+	            var winH = $(window).height();
+	            var spinnerW = $('.' + whichSpinner).outerWidth();
+	            var spinnerH = $('.' + whichSpinner).outerHeight();
+	            $('.' + whichSpinner).css({
+	                'left':(winW/2)-(spinnerW/2),
+	                'top':(winH/2)-(spinnerH/2)
+	            });
 			});
 		</script>
+
 	</body>	
 </html>
