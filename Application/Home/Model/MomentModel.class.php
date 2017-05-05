@@ -42,7 +42,7 @@ class MomentModel extends Model
 
     public function getRollingWall()
     {
-        $sql  = "select img_url,moment_id from think_moment where img_url <>'' and state=1 order by rand() limit 3"; //显示朋友圈信息流
+        $sql  = "select img_url,moment_id from think_moment where img_url <>'' and state=1 order by rand() limit 2"; //显示朋友圈信息流
         $list = M()->query($sql);
         return $list;
     }

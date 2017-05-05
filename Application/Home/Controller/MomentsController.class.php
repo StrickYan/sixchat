@@ -277,12 +277,12 @@ class MomentsController extends CommonController
 
         //返回json数据
         $response[] = array(
-            "img_url_1"   => $list[0]['img_url'],
-            "moment_id_1" => $list[0]['moment_id'],
-            "img_url_2"   => $list[1]['img_url'],
-            "moment_id_2" => $list[1]['moment_id'],
-            "img_url_3"   => $list[2]['img_url'],
-            "moment_id_3" => $list[2]['moment_id'],
+            "img_url_1"   => "1477756153.JPG",
+            "moment_id_1" => 101,
+            "img_url_2"   => $list[0]['img_url'],
+            "moment_id_2" => $list[0]['moment_id'],
+            "img_url_3"   => $list[1]['img_url'],
+            "moment_id_3" => $list[1]['moment_id'],
         );
         echo json_encode($response);
     }
