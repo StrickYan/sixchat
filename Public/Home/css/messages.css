@@ -28,6 +28,7 @@
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
     padding: 8px;
     border: 1px solid #EEE;
+    background-color: white;
 }
 
 .message-flow:hover {
@@ -58,7 +59,7 @@
 .message-flow-right-user-name, .request-flow-right-user-name {
     border: 0px solid red;
     color: rgb(41, 128, 185);
-    font-weight: 700;
+    /*font-weight: 700;*/
     line-height: 20px;
     display: inline-block;
 }

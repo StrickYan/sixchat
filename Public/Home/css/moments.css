@@ -19,6 +19,7 @@ body {
     /*opacity: 0;*/
     background-color: white;
     overflow-x: hidden;
+    background-color: rgb(242, 242, 242);
 }
 
 
@@ -42,6 +43,7 @@ a {
     top: 0;
     left: -100%;
     width: 100%;
+/*    background-color: white;*/
 }
 
 
@@ -56,6 +58,7 @@ a {
     width: 100%;
     padding-top: 60px;
     color: gray;
+    background-color: white;
 }
 
 #slidebar_profile div:not(#new_avatar_btn) {
@@ -535,8 +538,7 @@ hr {
 
 /*底部栏*/
 
-#footer {
-    /*padding-bottom: 24px;*/
+/*#footer {
     background-color: white;
 }
 
@@ -585,4 +587,11 @@ hr {
     height: 1.4rem;
     margin: 0 0;
     color: rgb(127, 140, 141);
+}
+*/
+
+#footer {
+    text-align: center;
+    width: 100%;
+    line-height: 40px;
 }
