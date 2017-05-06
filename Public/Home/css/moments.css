@@ -528,12 +528,13 @@ hr {
 #loading {
     text-align: center;
     position: relative;
-    padding: 10px 10px 5px 10px;
+    padding: 5px 10px;
     border-bottom: 1px solid #eee;
     background-color: white;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     font-weight: 600;
     cursor: pointer;
+    line-height: 20px;
 }
 
 /*底部栏*/
