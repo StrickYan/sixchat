@@ -947,7 +947,7 @@ function clickToBack() {
         return;
 
         $("#current_location").text("SixChat");
-        $("#back").text("News");
+        $("#back").text("New");
         if (isPC()) { //PC
             $("#slidebar,#message_top").fadeOut(pc_speed);
         } else {
