@@ -165,7 +165,30 @@ function deleteMoment(obj) {
 function deleteComment(obj) {
     if (obj.children(".comment-user-name").first().text() == $("#top").attr("name")) { //自己的评论才有权限删除
         if (isPC() == 0) { //移动端
-            obj.longPress(function() {
+            // obj.longPress(function() {
+            //     var data = confirm("Confirm deletion?");
+            //     if (data) {
+            //         $.ajax({
+            //             type: "POST",
+            //             data: {
+            //                 "comment_id": obj.attr("id")
+            //             },
+            //             dataType: "json",
+            //             url: "../../deleteComment",
+            //             error: function(XMLHttpRequest, textStatus, errorThrown) {
+            //                 //alert("加载错误，错误原因：\n"+errorThrown);
+            //             },
+            //             success: function(data) {
+            //                 obj.slideUp(500, function() {
+            //                     obj.remove();
+            //                 })
+            //             }
+            //         });
+            //     }
+            // });
+
+            touch.on(obj, 'hold', function(ev){
+                //console.log("you have done", ev.type);
                 var data = confirm("Confirm deletion?");
                 if (data) {
                     $.ajax({
@@ -186,6 +209,7 @@ function deleteComment(obj) {
                     });
                 }
             });
+            
         } else { //PC端
             var timeout;
             obj.mousedown(function() {
