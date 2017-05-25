@@ -518,6 +518,7 @@ function addComment() {
             // $(".comment-box:focus").parent().siblings(".info-flow-right-comment").append(html);
             $(".comment-box:focus").val("");
             $(".comment-box:focus").parent().hide();
+            refresh();
         }
     });
 }

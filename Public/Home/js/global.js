@@ -104,7 +104,7 @@ document.onkeypress = function EnterPress(e) {
     //满足 回车键&&输入框聚焦&&内容不为空
     if (e.keyCode == 13 && $(".comment-box:focus").length && $.trim($(".comment-box:focus").val())) {
         addComment();
-        refresh();
+        // refresh();
     } 
     // else if (e.keyCode == 13 && $("#text_box:focus").length && ($.trim($("#text_box:focus").val()) || $("#photo").val())) {
     //     addMoment();

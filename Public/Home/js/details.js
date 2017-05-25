@@ -28,13 +28,13 @@ $(function() {
     $("body").fadeIn('slow');
 });
 
-//回车发送评论或朋友圈
+//回车发送评论
 document.onkeypress = function EnterPress(e) {
     var e = e || window.event;
     //满足 回车键&&输入框聚焦&&内容不为空
     if (e.keyCode == 13 && $(".comment-box:focus").length && $.trim($(".comment-box:focus").val())) {
         addComment();
-        refreshAtDetails();
+        // refreshAtDetails();
     }
 };
 
@@ -136,6 +136,7 @@ function addComment() {
         success: function(data) { //当addComment后执行reFresh(),重新加载所有评论,所以下面单条添加可以省略
             $(".comment-box:focus").val("");
             $(".comment-box:focus").parent().hide();
+            refreshAtDetails();
         }
     });
 }
