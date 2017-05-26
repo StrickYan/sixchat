@@ -22,9 +22,12 @@ class MomentsController extends CommonController
             $value['info']      = htmlspecialchars($value['info']);
         }
 
+        $script = "<script>var global_user_name = \"" . $user_name . "\";</script>";
+
         $this->assign('list', $list);
         $this->assign('avatar', $avatar);
         $this->assign('my_name', $user_name);
+        $this->assign('script', $script);
         $this->display();
     }
 
@@ -559,8 +562,11 @@ class MomentsController extends CommonController
             $value['info']      = htmlspecialchars($value['info']);
         }
 
+        $script = "<script>var global_user_name = \"" . $user_name . "\";</script>";
+
         $this->assign('details', $result[0]);
         $this->assign('my_name', $user_name);
+        $this->assign('script', $script);
         $this->display();
     }
 

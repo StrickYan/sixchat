@@ -10,7 +10,7 @@ function initCommentEvent() {
     // 点击按钮弹出评论框或者隐藏评论框，评论框失去焦点则隐藏
     $(document).on("click", '.comment-png', function() {
         $(this).parent().parent().siblings(".info-flow-right-input").show();
-        $(this).parent().parent().siblings(".info-flow-right-input").children("input").attr("placeholder", "Comment").attr("id", $("#top").attr("name")).focus(); //输入框聚焦
+        $(this).parent().parent().siblings(".info-flow-right-input").children("input").attr("placeholder", "Comment").attr("id", global_user_name).focus(); //输入框聚焦
     });
     $(document).on("blur", '.info-flow-right-input input', function() { //评论框失去焦点则隐藏
         $(this).parent().hide();

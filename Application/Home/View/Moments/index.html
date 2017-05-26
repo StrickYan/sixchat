@@ -12,13 +12,13 @@
 	<body>
 	    <div id="fakeloader"></div>
 
-		<div id="top" data-role="header" name="{$my_name}">
+		<div id="top" data-role="header">
 			<div id="return">
 				<img id="back_img" src="__PUBLIC__/Home/img/default/icon_back.png" alt="" >
 				<span id="back">New</span>
 			</div>
 			<span id="current_location" ontouchstart='return false'>SixChat</span>
-			<img id="camera" name="{$my_name}" src="__PUBLIC__/Home/img/default/camera.png" alt="" > 
+			<img id="camera" src="__PUBLIC__/Home/img/default/camera.png" alt="" > 
 		</div>
 
 		<div id="slidebar"></div>
@@ -32,7 +32,7 @@
 		        </div>	       
 		        <div class="swiper-pagination"></div>   
 	    	</div>
-	    	<div id="avatar" name="{$my_name}"><img src="__ROOT__/avatar_img/{$avatar}" alt=""></div>
+	    	<div id="avatar"><img src="__ROOT__/avatar_img/{$avatar}" alt=""></div>
 		</div>
 
 		<!--占位栏-->
@@ -69,6 +69,7 @@
 		    <p>&copy2017 SixChat</p>
 		</div> 
 
+        {$script}
 		<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
 		<!-- <script src="__PUBLIC__/Home/js/lib/jquery-3.1.0.min.js"></script> -->
         <include file="./Public/footer.html" />

@@ -114,7 +114,7 @@ $(function() {
     // 点击主页头像
     $("#avatar").bind("click", function() {
         $("#camera").hide();
-        searchUser($("#camera").attr("name"));
+        searchUser(global_user_name);
         document.body.scrollTop = document.documentElement.scrollTop = 0; //跳转顶部
     });
     $(document).on("click", "#logout", function() {
@@ -190,7 +190,7 @@ function loadNextPage(page) {
                     result += "<div class='info-flow-right-text only-text'>" + replace_str(data[i]['info']) + "</div>";
                 }
                 result += "<div class='info-flow-right-time'>" + data[i]['time'] + "</div>";
-                if ($("#camera").attr("name") == data[i]['user_name']) {
+                if (global_user_name == data[i]['user_name']) {
                     result += "<div class='delete-moment'>Delete</div>";
                 }
                 result += "<div class='info-flow-right-button'>";
@@ -428,10 +428,8 @@ function searchUser(search_name) {
             if (data.is_friend == 0) { //还不是好友关系则显示
                 html += "<div id='add_friend_div' ><input type='text' placeholder='write some remark here to your new friend' maxlength=140 /></div>";
             }
-            if (data.user_name == $("#camera").attr("name")) { //自己的资料可以修改
+            if (data.user_name == global_user_name) { //自己的资料可以修改
                 html += "<div id='modify_profile_button'>modify</div>";
-            }
-            if (data.user_name == $("#camera").attr("name")) {
                 html += "<div id='logout'>Log Out</div>";
             }
             $("#slidebar_profile").empty().append(html);
@@ -648,7 +646,7 @@ function deleteMoment(obj) {
 
 // 删除评论函数
 function deleteComment(obj) {
-    if (obj.children(".comment-user-name").first().text() == $("#avatar").attr("name")) { //自己的评论才有权限删除
+    if (obj.children(".comment-user-name").first().text() == global_user_name) { //自己的评论才有权限删除
         if (isPC() == 0) { //移动端
             // obj.longPress(function() {
             //     var data = confirm("Confirm deletion?");
@@ -813,10 +811,9 @@ function getOneMoment(moment_id) {
             result += "</div>";
             result += "</div>";
             result += "</div>";
-            var my_name = $("#avatar").attr("name"); //临时存储我的名字
             $("#top~div").remove();
             $("#top").after(result);
-            $(".comment-box").attr("id", my_name); //将我的名字赋值给输入框作为id属性
+            $(".comment-box").attr("id", global_user_name); //将我的名字赋值给输入框作为id属性
             divPop($(".info-flow-right-button .button-img").first()); //给新载入的按钮元素绑定事件
             $(".delete-moment").first().bind("click", function() { //给新载入的删除朋友圈元素绑定事件
                 deleteMoment($(this).parent());

@@ -164,7 +164,7 @@ function deleteMoment(obj) {
 }
 // 删除评论函数
 function deleteComment(obj) {
-    if (obj.children(".comment-user-name").first().text() == $("#top").attr("name")) { //自己的评论才有权限删除
+    if (obj.children(".comment-user-name").first().text() == global_user_name) { //自己的评论才有权限删除
         if (isPC() == 0) { //移动端
             // obj.longPress(function() {
             //     var data = confirm("Confirm deletion?");
