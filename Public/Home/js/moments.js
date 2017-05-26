@@ -3,7 +3,7 @@ var swiper = new Swiper('.swiper-container', { //定义滚动墙参数
     paginationClickable: true,
     spaceBetween: 0,
     centeredSlides: true,
-    autoplay: 5000,
+    autoplay: 10000,
     autoplayDisableOnInteraction: false
 });
 var page = 1; //上拉加载更多全局页数
