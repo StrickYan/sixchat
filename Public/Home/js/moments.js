@@ -572,7 +572,7 @@ function addMoment() {
             result += "</div>";
             result += "</div>";
             result += "</div>";
-            $('.info-flow').first().before(result);
+            $("#free").after(result); //插入新发布的 moment
             $('.info-flow').first().hide().slideDown(mobile_speed);
             divPop($(".info-flow-right-button .button-img").first()); //给新载入的按钮元素绑定事件
             $(".delete-moment").first().bind("click", function() { //给新载入的删除朋友圈元素绑定事件
