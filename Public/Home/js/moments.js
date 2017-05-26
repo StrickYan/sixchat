@@ -299,7 +299,7 @@ function getLikesForAjax(moment_id, moment_user_name) {
             var html = "";
             var i = 0;
             if (data.length) {
-                html += "<img class='like-img' src='../../Public/Home/img/default/like.png'/>";
+                html += "<img class='like-img' src='../Public/Home/img/default/like.png'/>";
             }
             for (i = 0; i < data.length - 1; i++) {
                 html += "<span class='like-user-name'>" + data[i].reply_name + "</span>"; //点赞人名字
@@ -361,7 +361,7 @@ function getAllLikes() {
             var i = 0;
             for (i = 0; i < data.length; i++) {
                 var html = "";
-                html += "<img class='like-img' src='../../Public/Home/img/default/like.png'/>";
+                html += "<img class='like-img' src='../Public/Home/img/default/like.png'/>";
                 html += "<span class='like-user-name'>" + data[i].reply_names + "</span>"; //点赞人名字
                 $("#" + data[i].moment_id).children(".info-flow-right-like").append(html);
             }
@@ -419,7 +419,7 @@ function searchUser(search_name) {
             }
             var html = '';
             html += "<form name='form_profile' id='form_profile'>";
-            html += "<div id=profile_avatar><img src=" + "../../avatar_img/" + data.avatar + "></div>";
+            html += "<div id=profile_avatar><img src=" + "../avatar_img/" + data.avatar + "></div>";
             html += "<div id='profile_name' ><span class='profile-span'>Name：</span><span id='profile_name_val'>" + data.user_name + "</span></div><hr>";
             html += "<div id='profile_sex' ><span class='profile-span'>Gender：</span><span id='profile_sex_val'>" + data.sex + "</span></div><hr>";
             html += "<div id='profile_region' ><span class='profile-span'>Region：</span><span id='profile_region_val'>" + data.region + "</span></div><hr>";
@@ -537,17 +537,17 @@ function addMoment() {
             var result = '';
             result += "<div class='info-flow' >";
             // result += "<div class='info-flow-left'>";
-            // result += '<img src=' + '../../avatar_img/' + ret['avatar'] + '>';
+            // result += '<img src=' + '../avatar_img/' + ret['avatar'] + '>';
             // result += "</div>";
             result += "<div class='info-flow-right' id=" + ret['moment_id'] + ">";
             result += "<div class='info-flow-right-avatar'>";
-            result += '<img src=' + '../../avatar_img/' + ret['avatar'] + '>';
+            result += '<img src=' + '../avatar_img/' + ret['avatar'] + '>';
             result += "</div>";
             result += "<div class='info-flow-right-user-name'>" + ret['user_name'] + "</div>";
             if (ret['photo']) {
                 result += "<div class='info-flow-right-img'>";
-                result += "<a href=../../moment_img/" + ret['photo'] + " data-lightbox=" + ret['moment_id'] + ">";
-                result += '<img src=' + '../../moment_img/' + ret['photo'] + " >";
+                result += "<a href=../moment_img/" + ret['photo'] + " data-lightbox=" + ret['moment_id'] + ">";
+                result += '<img src=' + '../moment_img/' + ret['photo'] + " >";
                 result += "</a></div>";
             }
             else{
@@ -556,10 +556,10 @@ function addMoment() {
             result += "<div class='info-flow-right-time'>" + ret['time'] + "</div>";
             result += "<div class='delete-moment'>Delete</div>";
             result += "<div class='info-flow-right-button'>";
-            result += "<img name='button' class='button-img' src='../../Public/Home/img/default/feed_comment.png' />";
+            result += "<img name='button' class='button-img' src='../Public/Home/img/default/feed_comment.png' />";
             result += "<div class='divPop'>";
-            result += "<img class='like-png' src='../../Public/Home/img/default/logout_like.png' />";
-            result += "<img class='comment-png' src='../../Public/Home/img/default/logout_comment.png' />";
+            result += "<img class='like-png' src='../Public/Home/img/default/logout_like.png' />";
+            result += "<img class='comment-png' src='../Public/Home/img/default/logout_comment.png' />";
             result += "</div>";
             result += "</div>";
             result += "<div class='info-flow-right-like'></div>";
@@ -597,15 +597,15 @@ function getRollingWall() {
             // var html_1 = "<img name=" + data[0].moment_id_1 + " src=../../moment_img/" + data[0].img_url_1 + ">";
             // var html_2 = "<img name=" + data[0].moment_id_2 + " src=../../moment_img/" + data[0].img_url_2 + ">";
             // var html_3 = "<img name=" + data[0].moment_id_3 + " src=../../moment_img/" + data[0].img_url_3 + ">";
-            var html_1 = "<a href=./details/id/" + data[0].moment_id_1 + "><img name=" + data[0].moment_id_1 + " class='lazy' data-original=../../moment_img/" + data[0].img_url_1 + "></a>";
-            var html_2 = "<a href=./details/id/" + data[0].moment_id_2 + "><img name=" + data[0].moment_id_2 + " class='lazy' data-original=../../moment_img/" + data[0].img_url_2 + "></a>";
-            var html_3 = "<a href=./details/id/" + data[0].moment_id_3 + "><img name=" + data[0].moment_id_3 + " class='lazy' data-original=../../moment_img/" + data[0].img_url_3 + "></a>";
+            var html_1 = "<a href=./details/id/" + data[0].moment_id_1 + "><img name=" + data[0].moment_id_1 + " class='lazy' data-original=../moment_img/" + data[0].img_url_1 + "></a>";
+            var html_2 = "<a href=./details/id/" + data[0].moment_id_2 + "><img name=" + data[0].moment_id_2 + " class='lazy' data-original=../moment_img/" + data[0].img_url_2 + "></a>";
+            var html_3 = "<a href=./details/id/" + data[0].moment_id_3 + "><img name=" + data[0].moment_id_3 + " class='lazy' data-original=../moment_img/" + data[0].img_url_3 + "></a>";
             $(".swiper-slide").first().append(html_1);
             $(".swiper-slide").first().next().append(html_2);
             $(".swiper-slide").last().append(html_3);
 
             $("#slide_wall img.lazy").lazyload({
-                placeholder : "../../Public/Home/img/default/white.png", //用图片提前占位
+                placeholder : "../Public/Home/img/default/white.png", //用图片提前占位
                 // placeholder,值为某一图片路径.此图片用来占据将要加载的图片的位置,待图片加载时,占位图则会隐藏
                 effect: "fadeIn", // 载入使用何种效果
                 // effect(特效),值有show(直接显示),fadeIn(淡入),slideDown(下拉)等,常用fadeIn
@@ -750,7 +750,7 @@ function loadMessages() {
             for (var i = 0; i < data.length; i++) {
                 html += "<div class='message-flow' name=" + data[i].moment_id + ">";
                 html += "<div class='message-flow-left'>";
-                html += "<img src=../../avatar_img/" + data[i].avatar + " alt=''>";
+                html += "<img src=../avatar_img/" + data[i].avatar + " alt=''>";
                 html += "</div>";
                 html += "<div class='message-flow-right'>";
                 html += "<div class='line1'>";

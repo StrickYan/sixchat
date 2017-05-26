@@ -53,7 +53,7 @@ class LoginController extends Controller
                 $pw_placeholder = "密码错误";
             } else if (!$result) {
                 //登录成功
-                $this->redirect('Moments/index');
+                $this->redirect('/Moments/index');
                 return;
             }
         }

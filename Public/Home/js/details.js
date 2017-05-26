@@ -55,7 +55,7 @@ function getLikesForAjax(moment_id, moment_user_name) {
             var html = "";
             var i = 0;
             if (data.length) {
-                html += "<img class='like-img' src='../../../../Public/Home/img/default/like.png'/>";
+                html += "<img class='like-img' src='../../../Public/Home/img/default/like.png'/>";
             }
             for (i = 0; i < data.length - 1; i++) {
                 html += "<span class='like-user-name'>" + data[i].reply_name + "</span>"; //点赞人名字

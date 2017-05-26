@@ -28,7 +28,7 @@ class CommonController extends Controller
     {
         //判断用户是否已经登录
         if (!isset($_SESSION['name'])) {
-            $this->error('', U('Login/index'), 1);
+            $this->error('', U('/Login/index'), 1);
         }
     }
 
