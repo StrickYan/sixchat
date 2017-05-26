@@ -308,8 +308,8 @@ function getLikesForAjax(moment_id, moment_user_name) {
             if (i == data.length - 1) {
                 html += "<span class='like-user-name'>" + data[i].reply_name + "</span>"; //点赞人名字
             }
-            $("#" + moment_id).children(".info-flow-right-like").empty();
-            $("#" + moment_id).children(".info-flow-right-like").append(html);
+            $("div.info-flow-right[id=" + moment_id + "]").children(".info-flow-right-like").empty();
+            $("div.info-flow-right[id=" + moment_id + "]").children(".info-flow-right-like").append(html);
         }
     });
 }
@@ -340,8 +340,8 @@ function getCommentsForAjax(moment_id, moment_user_name) {
                 html += "<span>" + data[i].comment + "</span>"; //评论
                 html += "</div>";
             }
-            $("#" + moment_id).children(".info-flow-right-comment").children().remove();
-            $("#" + moment_id).children(".info-flow-right-comment").append(html);
+            $("div.info-flow-right[id=" + moment_id + "]").children(".info-flow-right-comment").children().remove();
+            $("div.info-flow-right[id=" + moment_id + "]").children(".info-flow-right-comment").append(html);
         }
     });
 }
@@ -363,7 +363,7 @@ function getAllLikes() {
                 var html = "";
                 html += "<img class='like-img' src='../Public/Home/img/default/like.png'/>";
                 html += "<span class='like-user-name'>" + data[i].reply_names + "</span>"; //点赞人名字
-                $("#" + data[i].moment_id).children(".info-flow-right-like").append(html);
+                $("div.info-flow-right[id=" + data[i].moment_id + "]").children(".info-flow-right-like").append(html);
             }
         }
     });
@@ -392,9 +392,9 @@ function getAllComments() {
                 html += "<span>：</span>"
                 html += "<span>" + data[i].comment + "</span>"; //评论
                 html += "</div>";
-                $("#" + data[i].moment_id).children(".info-flow-right-comment").append(html);
+                $("div.info-flow-right[id=" + data[i].moment_id + "]").children(".info-flow-right-comment").append(html);
                 //$(".info-flow-right-comment").hide().slideDown('slow');
-                deleteComment($("#" + data[i].moment_id).children(".info-flow-right-comment").children('#'+ data[i].comment_id));
+                deleteComment($("div.info-flow-right[id=" + data[i].moment_id + "]").children(".info-flow-right-comment").children('#'+ data[i].comment_id));
             }
         }
     });

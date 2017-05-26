@@ -64,8 +64,8 @@ function getLikesForAjax(moment_id, moment_user_name) {
             if (i == data.length - 1) {
                 html += "<span class='like-user-name'>" + data[i].reply_name + "</span>"; //点赞人名字
             }
-            $("#" + moment_id).children(".info-flow-right-like").empty();
-            $("#" + moment_id).children(".info-flow-right-like").append(html);
+            $("div.info-flow-right[id=" + moment_id + "]").children(".info-flow-right-like").empty();
+            $("div.info-flow-right[id=" + moment_id + "]").children(".info-flow-right-like").append(html);
         }
     });
 }
@@ -96,8 +96,8 @@ function getCommentsForAjax(moment_id, moment_user_name) {
                 html += "<span>" + data[i].comment + "</span>"; //评论
                 html += "</div>";
             }
-            $("#" + moment_id).children(".info-flow-right-comment").children().remove();
-            $("#" + moment_id).children(".info-flow-right-comment").append(html);
+            $("div.info-flow-right[id=" + moment_id + "]").children(".info-flow-right-comment").children().remove();
+            $("div.info-flow-right[id=" + moment_id + "]").children(".info-flow-right-comment").append(html);
         }
     });
 }
