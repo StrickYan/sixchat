@@ -129,15 +129,15 @@ DELIMITER ;
 
 -- 导出  表 think_sixchat.think_comment 结构
 CREATE TABLE IF NOT EXISTS `think_comment` (
-  `comment_id` int(11) NOT NULL AUTO_INCREMENT,
-  `moment_id` int(11) NOT NULL DEFAULT '0',
-  `comment` varchar(280) NOT NULL DEFAULT '',
-  `reply_id` int(11) NOT NULL DEFAULT '0',
-  `replyed_id` int(11) NOT NULL DEFAULT '0',
-  `type` int(2) NOT NULL DEFAULT '0',
-  `time` datetime NOT NULL,
-  `state` int(2) NOT NULL DEFAULT '1',
-  `news` int(2) NOT NULL DEFAULT '1',
+  `comment_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'comment id',
+  `moment_id` int(11) NOT NULL DEFAULT '0' COMMENT 'moment id',
+  `comment` varchar(280) NOT NULL DEFAULT '' COMMENT '评论内容',
+  `reply_id` int(11) NOT NULL DEFAULT '0' COMMENT '评论人id',
+  `replyed_id` int(11) NOT NULL DEFAULT '0' COMMENT '被评论人id',
+  `type` int(2) NOT NULL DEFAULT '0' COMMENT '类型，1为点赞，2为评论',
+  `state` int(2) NOT NULL DEFAULT '1' COMMENT '状态',
+  `news` int(2) NOT NULL DEFAULT '1' COMMENT '未读状态，0为已读，1为未读',
+  `time` datetime NOT NULL COMMENT '发布时间',
   PRIMARY KEY (`comment_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='type=1:点赞记录\r\ntype=2:评论记录';
 
@@ -146,58 +146,58 @@ CREATE TABLE IF NOT EXISTS `think_comment` (
 
 -- 导出  表 think_sixchat.think_friend 结构
 CREATE TABLE IF NOT EXISTS `think_friend` (
-  `user_id` varchar(50) NOT NULL DEFAULT '',
-  `friend_id` varchar(50) NOT NULL DEFAULT '',
-  `no` int(11) NOT NULL AUTO_INCREMENT,
-  `time` datetime NOT NULL,
+  `no` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `user_id` varchar(50) NOT NULL DEFAULT '' COMMENT 'user id',
+  `friend_id` varchar(50) NOT NULL DEFAULT '' COMMENT 'friend id',
+  `time` datetime NOT NULL COMMENT '建立好友关系的时间',
   PRIMARY KEY (`no`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='好友关系表';
 
 -- 数据导出被取消选择。
 
 
 -- 导出  表 think_sixchat.think_friend_request 结构
 CREATE TABLE IF NOT EXISTS `think_friend_request` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `request_id` int(11) NOT NULL DEFAULT '0',
-  `requested_id` int(11) NOT NULL DEFAULT '0',
-  `state` int(2) NOT NULL DEFAULT '1',
-  `remark` varchar(140) NOT NULL DEFAULT '',
-  `request_time` datetime NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `request_id` int(11) NOT NULL DEFAULT '0' COMMENT '好友请求的 user id',
+  `requested_id` int(11) NOT NULL DEFAULT '0' COMMENT '被好友请求的 user id',
+  `state` int(2) NOT NULL DEFAULT '1' COMMENT '该条好友请求状态',
+  `remark` varchar(140) NOT NULL DEFAULT '' COMMENT '备注',
+  `request_time` datetime NOT NULL COMMENT '请求时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='好友请求';
 
 -- 数据导出被取消选择。
 
 
 -- 导出  表 think_sixchat.think_moment 结构
 CREATE TABLE IF NOT EXISTS `think_moment` (
-  `moment_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` varchar(50) NOT NULL DEFAULT '0',
-  `info` varchar(300) NOT NULL DEFAULT '',
-  `img_url` varchar(100) NOT NULL DEFAULT '',
-  `state` int(11) NOT NULL DEFAULT '1',
-  `time` datetime NOT NULL,
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `moment_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'moment id',
+  `user_id` varchar(50) NOT NULL DEFAULT '0' COMMENT 'user id',
+  `info` varchar(300) NOT NULL DEFAULT '' COMMENT 'moment文本',
+  `img_url` varchar(100) NOT NULL DEFAULT '' COMMENT 'moment图片',
+  `state` int(11) NOT NULL DEFAULT '1' COMMENT '状态，0：删除，1：正常',
+  `time` datetime NOT NULL COMMENT '发布时间',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`moment_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='moment表';
 
 -- 数据导出被取消选择。
 
 
 -- 导出  表 think_sixchat.think_user 结构
 CREATE TABLE IF NOT EXISTS `think_user` (
-  `user_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `user_name` varchar(50) NOT NULL,
-  `password` varchar(100) NOT NULL,
-  `avatar` varchar(100) NOT NULL DEFAULT 'default_head.jpg',
-  `sex` varchar(50) NOT NULL DEFAULT 'you ask me?',
-  `region` varchar(50) NOT NULL DEFAULT 'Shenzhen,Guangdong',
-  `whatsup` varchar(50) NOT NULL DEFAULT 'hhh',
-  `register_time` datetime NOT NULL,
+  `user_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'user id, 用户唯一标识',
+  `user_name` varchar(50) NOT NULL DEFAULT '' COMMENT '用户名',
+  `password` varchar(100) NOT NULL DEFAULT '' COMMENT '密码',
+  `avatar` varchar(100) NOT NULL DEFAULT 'default_head.jpg' COMMENT '头像',
+  `sex` varchar(50) NOT NULL DEFAULT 'you ask me?' COMMENT '性别',
+  `region` varchar(50) NOT NULL DEFAULT 'Shenzhen,Guangdong' COMMENT '地区',
+  `whatsup` varchar(50) NOT NULL DEFAULT 'hhh' COMMENT '个性签名',
+  `register_time` datetime NOT NULL COMMENT '注册时间',
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_name` (`user_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
 
 -- 数据导出被取消选择。
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
