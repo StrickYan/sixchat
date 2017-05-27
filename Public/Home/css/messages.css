@@ -29,6 +29,7 @@
     padding: 8px;
     border: 1px solid #EEE;
     background-color: white;
+    cursor: pointer;
 }
 
 .message-flow:hover {
