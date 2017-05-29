@@ -462,6 +462,7 @@ class MomentsController extends CommonController
             echo "没有内容";
             exit;
         }
+
         $response           = array();
         $image_name         = '';
         $destination_folder = "avatar_img/"; //上传文件路径
@@ -482,7 +483,20 @@ class MomentsController extends CommonController
         }
         $user_name = $_SESSION["name"];
         foreach ($this->obj->getUserId($user_name, $user_name) as $k => $val) {
-            $user_id        = $val["reply_id"];
+            $user_id = $val["reply_id"];
+
+            $condition = array(
+                'user_name' => array('eq', $profile_name_box),
+                'user_id' => array('neq', $user_id),
+            );
+            $ret = $this->userModel->searchUser($condition);
+            if (!empty($ret)) {
+                $response['isSuccess'] = false;
+                $response['msg'] = '该用户名已存在';
+                echo json_encode($response);
+                exit;
+            }
+
             $map['user_id'] = $user_id;
             $data           = array(
                 'user_name' => $profile_name_box,

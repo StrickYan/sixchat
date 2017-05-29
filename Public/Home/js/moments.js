@@ -886,7 +886,7 @@ function modifyProfile() {
             alert('修改成功');
             self.location.href = "";
         } else {
-            alert('修改失敗');
+            alert(ret['msg']);
         }
     });
 }
