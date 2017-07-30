@@ -938,8 +938,8 @@ function clickCamera() {
                 $("#btn span").text("+");
             }
         });
-        $("#photo").click();
-        //document.getElementById("photo").click();
+        // $("#photo").click();
+        // document.getElementById("photo").click();
     }
 }
 //处理各种页面返回
