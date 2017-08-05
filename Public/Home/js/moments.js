@@ -811,7 +811,7 @@ function loadMessages() {
             var html = "";
             // html += "<div id='location' name='location'></div> <!-- 设定一个location.hash位置 -->";
             html += "<div id='search'>"
-            html += "<input type='text' id='search_box' placeholder='Search New Friends' maxlength=140 required/>"
+            html += "<input type='text' id='search_box' placeholder='Follow New Friends' maxlength=140 required/>"
             html += "</div>";
             for (var i = 0; i < data.length; i++) {
                 html += "<div class='message-flow' name=" + data[i].moment_id + ">";
