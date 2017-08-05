@@ -1,3 +1,17 @@
+/***************************************************************************
+ *
+ * Copyright (c) 2017 classmateer.com, Inc. All Rights Reserved
+ *
+ **************************************************************************/
+
+/**
+ * @file Public/Home/js/moment.js
+ * @author 1275330626(com@qq.com)
+ * @date 2017/08/06 03:22:39
+ * @brief
+ *
+ **/
+
 var swiper = new Swiper('.swiper-container', { //定义滚动墙参数
     pagination: '.swiper-pagination',
     paginationClickable: true,
@@ -9,7 +23,7 @@ var swiper = new Swiper('.swiper-container', { //定义滚动墙参数
 var page = 1; //上拉加载更多全局页数
 var pc_speed = 1000; //pc动画速度
 var mobile_speed = 200; //移动端动画速度
-$(function() {
+$(function () {
     //去除移动端click延迟300ms插件fastclick初始化
     FastClick.attach(document.body);
     getRollingWall(); //异步加载随机滚动3图url
@@ -19,7 +33,7 @@ $(function() {
 
     initCommentEvent();
     var isCommitted = false;//表单是否已经提交标识，默认为false
-    $(document).on("click", "#share", function() {
+    $(document).on("click", "#share", function () {
         // if( isCommitted==false && $("#text_box").length && $("#photo").val()) {
         //     isCommitted = true;
         //     addMoment();
@@ -29,30 +43,30 @@ $(function() {
         //     alert("Please add a photo :D");
         // }
 
-        if( isCommitted==false && ($.trim($("#text_box").val()) || $("#photo").val()) ) {
+        if (isCommitted == false && ($.trim($("#text_box").val()) || $("#photo").val())) {
             document.body.scrollTop = document.documentElement.scrollTop = 0; //跳转顶部
             isCommitted = true;
             addMoment();
             refresh();
             isCommitted = false;
         }
-        else if(!$.trim($("#text_box").val()) && !$("#photo").val()) {
+        else if (!$.trim($("#text_box").val()) && !$("#photo").val()) {
             alert("Please add a photo or some text :D");
         }
 
     });
     // 绑定消息点击事件
-    $(document).on("click", ".message-flow", function() {
+    $(document).on("click", ".message-flow", function () {
         location.href = "./details/id/" + $(this).attr("name");
     });
     // 响应好友请求
-    $(document).on("click", ".request-agree", function() {
+    $(document).on("click", ".request-agree", function () {
         //传送请求id和请求人名
         agreeRequest($(this).parent().parent(".request-flow").attr("name"), $(this).siblings(".line1").children(".request-flow-right-user-name").children("span").text());
         $(this).parent().parent(".request-flow").slideUp(mobile_speed);
     });
     // 点击修改资料按钮事件
-    $(document).on("click", "#modify_profile_button", function() {
+    $(document).on("click", "#modify_profile_button", function () {
         $(this).text("confirm").attr("id", "confirm_modify");
         var input_2_val = $("#profile_name_val").text();
         var input_3_val = $("#profile_sex_val").text();
@@ -73,13 +87,13 @@ $(function() {
         $("#profile_region_box").attr("value", input_4_val);
         $("#profile_whatsup_box").attr("value", input_5_val);
     });
-    $(document).on("click", "#confirm_modify", function() {
+    $(document).on("click", "#confirm_modify", function () {
         if ($.trim($("#profile_name_box").val()) && $.trim($("#profile_sex_box").val()) && $.trim($("#profile_region_box").val()) && $.trim($("#profile_whatsup_box").val())) {
             modifyProfile();
         }
     });
     //若选择了图片则显示图片名 否则显示New Avatar Image
-    $(document).on('change', "#profile_photo", function(e) {
+    $(document).on('change', "#profile_photo", function (e) {
         try {
             var name = e.currentTarget.files[0].name;
             $("#new_avatar_btn span").text('-');
@@ -89,14 +103,15 @@ $(function() {
     });
     //双击或长按顶部中间栏刷新
     if (isPC() == 0) { //移动端
-        $("#current_location").longPress(function() {
+        $("#current_location").longPress(function () {
             self.location.href = "";
         });
     } else {
-        $(document).on("dblclick", "#current_location", function() {
+        $(document).on("dblclick", "#current_location", function () {
             self.location.href = "";
         });
-    };
+    }
+    ;
     // 上拉到底加载更多
     // $(window).scroll(function() {
     //     //$(document).scrollTop() 获取垂直滚动的距离
@@ -112,16 +127,16 @@ $(function() {
     //     }
     // });
     // 点击主页头像
-    $("#avatar").bind("click", function() {
+    $("#avatar").bind("click", function () {
         $("#camera").hide();
         searchUser(global_user_name);
         document.body.scrollTop = document.documentElement.scrollTop = 0; //跳转顶部
     });
-    $(document).on("click", "#logout", function() {
+    $(document).on("click", "#logout", function () {
         location.href = "./logout";
     });
     // 替换文本内容
-    $(".info-flow-right-text").each(function() {
+    $(".info-flow-right-text").each(function () {
         var str = $(this).text();
         $(this).html(replace_str(str));
     });
@@ -131,29 +146,30 @@ $(function() {
         threshold: mobile_speed
     });
     //点击左上角导航返回
-    $("#return").bind("click", function() {
+    $("#return").bind("click", function () {
         // 不处于动画状态则响应
         if (!$("#slidebar").is(":animated")) {
             clickToBack();
         }
     });
     //点击camera图标触发发送编辑页面
-    $("#camera").on("click", function() {
+    $("#camera").on("click", function () {
         // 不处于动画状态则响应
         if (!$("#edit_box").is(":animated")) {
             clickCamera();
         }
     });
-    $('#loading').on('click', function() {
+    $('#loading').on('click', function () {
         // loadNextPage(page);
         loadNextPageViaHtml(page);
-        page++;   
+        page++;
     });
 
     loadNews(); //加载未读提示
     setInterval("loadNews()", 1000 * 60);
 
 });
+
 // 加载更多moments
 function loadNextPage(page) {
     var start_time = new Date().getTime();
@@ -164,10 +180,10 @@ function loadNextPage(page) {
         },
         dataType: "json",
         url: "./loadNextPage",
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
             // alert("加载错误，错误原因：\n" + errorThrown);
         },
-        success: function(data) {      
+        success: function (data) {
             // var result = '';
             for (var i = 0; i < data.length; i++) {
                 var result = '';
@@ -186,7 +202,7 @@ function loadNextPage(page) {
                     result += '<img src=' + '../../moment_img/' + data[i]['img_url'] + " >";
                     result += "</a></div>";
                 }
-                else{
+                else {
                     result += "<div class='info-flow-right-text only-text'>" + replace_str(data[i]['info']) + "</div>";
                 }
                 result += "<div class='info-flow-right-time'>" + data[i]['time'] + "</div>";
@@ -214,7 +230,7 @@ function loadNextPage(page) {
                 $('#loading').before(result);
                 //$('.info-flow:last').hide().slideDown(1200);
                 divPop($('.button-img:last'));
-                $(".delete-moment:last").unbind().bind("click", function() {
+                $(".delete-moment:last").unbind().bind("click", function () {
                     deleteMoment($(this).parent());
                 });
             }
@@ -236,6 +252,7 @@ function loadNextPage(page) {
         }
     });
 }
+
 // 返回一整块html直接渲染页面
 function loadNextPageViaHtml(page) {
     var start_time = new Date().getTime();
@@ -246,13 +263,13 @@ function loadNextPageViaHtml(page) {
         },
         dataType: "html",
         url: "./loadNextPageViaHtml",
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
             //alert("加载错误，错误原因：\n" + errorThrown);
         },
-        success: function(data) {
+        success: function (data) {
             $('#loading').before(data);
             $("div[data-page='" + page + "'] img.lazy").lazyload({
-                placeholder : "../../Public/Home/img/default/white.png", //用图片提前占位
+                placeholder: "../../Public/Home/img/default/white.png", //用图片提前占位
                 // placeholder,值为某一图片路径.此图片用来占据将要加载的图片的位置,待图片加载时,占位图则会隐藏
                 effect: "fadeIn", // 载入使用何种效果
                 // effect(特效),值有show(直接显示),fadeIn(淡入),slideDown(下拉)等,常用fadeIn
@@ -262,13 +279,13 @@ function loadNextPageViaHtml(page) {
                 // event,值有click(点击),mouseover(鼠标划过),sporty(运动的),foobar(…).可以实现鼠标莫过或点击图片才开始加载,后两个值未测试…
                 //container: $("#container"),  // 对某容器中的图片实现效果
                 // container,值为某容器.lazyload默认在拉动浏览器滚动条时生效,这个参数可以让你在拉动某DIV的滚动条时依次加载其中的图片
-                failurelimit : 3 // 图片排序混乱时
+                failurelimit: 3 // 图片排序混乱时
                 // failurelimit,值为数字.lazyload默认在找到第一张不在可见区域里的图片时则不再继续加载,但当HTML容器混乱的时候可能出现可见区域内图片并没加载出来的情况,failurelimit意在加载N张可见区域外的图片,以避免出现这个问题.
             });
-            $("div[data-page='" + page + "'] .info-flow-right-button .button-img").each(function() {
+            $("div[data-page='" + page + "'] .info-flow-right-button .button-img").each(function () {
                 divPop($(this));
             });
-            $("div[data-page='" + page + "'] .delete-moment").bind("click", function() {
+            $("div[data-page='" + page + "'] .delete-moment").bind("click", function () {
                 deleteMoment($(this).parent());
             });
             refresh();
@@ -282,6 +299,7 @@ function loadNextPageViaHtml(page) {
         }
     });
 }
+
 // 加载某条朋友圈下面的所有赞
 function getLikesForAjax(moment_id, moment_user_name) {
     $.ajax({
@@ -292,10 +310,10 @@ function getLikesForAjax(moment_id, moment_user_name) {
         },
         dataType: "json",
         url: "./getLikes",
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
             //alert("加载错误，错误原因：\n"+errorThrown);
         },
-        success: function(data) {
+        success: function (data) {
             var html = "";
             var i = 0;
             if (data.length) {
@@ -313,6 +331,7 @@ function getLikesForAjax(moment_id, moment_user_name) {
         }
     });
 }
+
 // 加载某条朋友圈下面的所有评论
 function getCommentsForAjax(moment_id, moment_user_name) {
     $.ajax({
@@ -324,10 +343,10 @@ function getCommentsForAjax(moment_id, moment_user_name) {
         },
         dataType: "json",
         url: "./getComments",
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
             //alert("加载错误，错误原因：\n"+errorThrown);
         },
-        success: function(data) {
+        success: function (data) {
             var html = "";
             for (var i = 0; i < data.length; i++) {
                 html += "<div class='one-comment' id=" + data[i].comment_id + " ontouchstart='return false'>";
@@ -353,10 +372,10 @@ function getAllLikes() {
         data: {},
         dataType: "json",
         url: "./getAllLikes",
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
             //alert("加载错误，错误原因：\n"+errorThrown);
         },
-        success: function(data) {
+        success: function (data) {
             $(".info-flow-right-like").empty();
             var i = 0;
             for (i = 0; i < data.length; i++) {
@@ -376,10 +395,10 @@ function getAllComments() {
         data: {},
         dataType: "json",
         url: "./getAllComments",
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
             //alert("加载错误，错误原因：\n"+errorThrown);
         },
-        success: function(data) {
+        success: function (data) {
             $(".info-flow-right-comment").empty();
             for (var i = 0; i < data.length; i++) {
                 var html = "";
@@ -394,7 +413,7 @@ function getAllComments() {
                 html += "</div>";
                 $("div.info-flow-right[id=" + data[i].moment_id + "]").children(".info-flow-right-comment").append(html);
                 //$(".info-flow-right-comment").hide().slideDown('slow');
-                deleteComment($("div.info-flow-right[id=" + data[i].moment_id + "]").children(".info-flow-right-comment").children('#'+ data[i].comment_id));
+                deleteComment($("div.info-flow-right[id=" + data[i].moment_id + "]").children(".info-flow-right-comment").children('#' + data[i].comment_id));
             }
         }
     });
@@ -409,10 +428,10 @@ function searchUser(search_name) {
         },
         dataType: "json",
         url: "./searchUser",
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
             //alert("查找用户失败，失败原因：\n"+errorThrown);
         },
-        success: function(data) {
+        success: function (data) {
             if (data.user_name == undefined) {
                 alert("This user does not exist, please try again");
                 return;
@@ -425,14 +444,24 @@ function searchUser(search_name) {
             html += "<div id='profile_region' ><span class='profile-span'>Region：</span><span id='profile_region_val'>" + data.region + "</span></div><hr>";
             html += "<div id='profile_whatsup' ><span class='profile-span'>What's Up：</span><span id='profile_whatsup_val'>" + data.whatsup + "</span></div><hr>";
             html += "</form>";
-            if (data.is_friend == 0) { //还不是好友关系则显示
-                html += "<div id='add_friend_div' ><input type='text' placeholder='write some remark here to your new friend' maxlength=140 /></div>";
-            }
             if (data.user_name == global_user_name) { //自己的资料可以修改
                 html += "<div id='modify_profile_button'>modify</div>";
                 html += "<div id='logout'>Log Out</div>";
             }
-            $("#slidebar_profile").empty().append(html);
+            else if (data.is_follow == 0) { //未关注
+                // html += "<div id='add_friend_div' ><input type='text' placeholder='write some remark here to your new friend' maxlength=140 /></div>"; // 发送好友请求
+                html += "<div id='follow_button'>Follow</div>";
+            }
+            else if (data.is_follow == 1) { //已关注
+                html += "<div id='follow_button'>Following</div>";
+            }
+
+            $("#back").text("SixChat");
+            $("#current_location").text("Profile");
+            $("#slidebar").remove();
+            $("#slidebar_profile~div").remove();
+
+            $("#slidebar_profile").html(html);
             if (isPC()) { //PC
                 $("#slidebar_profile").fadeIn(pc_speed);
             } else {
@@ -440,15 +469,45 @@ function searchUser(search_name) {
                     left: 0
                 }, mobile_speed);
             }
-            // $("#slidebar_profile~div").animate({
-            //     opacity: 0
-            // }, 100);
-            $("#slidebar_profile~div").remove();
-            $("#back").text("SixChat");
-            $("#current_location").text("Profile");
+
+            // 绑定关注按钮点击事件
+            var operation_follow = data.is_follow;
+            $("#follow_button").bind("click", function () {
+                operation_follow = 1 - operation_follow;
+                follow(data.follow_id, data.followed_id, operation_follow);
+            });
         }
     });
 };
+
+/*
+ * @brief 关注或者取消关注
+ * @param | follow_id 关注人
+ * @param | followed_id 被关注人
+ * @param | operation_follow 关注操作：1：关注 0：取消关注
+ * @return |
+ * */
+function follow(follow_id, followed_id, operation_follow) {
+    $.ajax({
+        type: "POST",
+        data: {
+            "follow_id": follow_id,
+            "followed_id": followed_id,
+            "operation_follow": operation_follow
+        },
+        dataType: "json",
+        url: "./follow",
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log(XMLHttpRequest + "\n" + textStatus + "\n" + errorThrown);
+        },
+        success: function (data) {
+            if (data.is_success) {
+                $("#follow_button").text(operation_follow ? "Following" : "Follow");
+            }
+        }
+    });
+}
+
 // 好友请求
 function friendRuquest(remark, requested_name) {
     $.ajax({
@@ -459,15 +518,16 @@ function friendRuquest(remark, requested_name) {
         },
         dataType: "json",
         url: "./friendRuquest",
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
             //alert("好友请求发送失败，失败原因：\n"+errorThrown);
         },
-        success: function(data) {
+        success: function (data) {
             alert("好友请求已发送，请等待对方响应");
             $("#add_friend_div input").val("").blur();
         }
     });
 };
+
 // 点赞
 function addLike(moment_id, moment_user_name) {
     $.ajax({
@@ -478,14 +538,15 @@ function addLike(moment_id, moment_user_name) {
         },
         dataType: "json",
         url: "./addLike",
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
             //alert("加载错误，错误原因：\n"+errorThrown);
         },
-        success: function(data) { //当addLike后执行reFresh(),重新加载所有赞,所以下面单条添加可以省略
+        success: function (data) { //当addLike后执行reFresh(),重新加载所有赞,所以下面单条添加可以省略
             refresh();
         }
     });
 }
+
 // 评论
 function addComment() {
     $.ajax({
@@ -497,10 +558,10 @@ function addComment() {
         },
         dataType: "json",
         url: "./addComment",
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
             //alert("加载错误，错误原因：\n"+errorThrown);
         },
-        success: function(data) { //当addComment后执行reFresh(),重新加载所有评论,所以下面单条添加可以省略
+        success: function (data) { //当addComment后执行reFresh(),重新加载所有评论,所以下面单条添加可以省略
             // var html="";
             // for(var i=0;i<data.length;i++){
             //     html+="<div class='one-comment' id="+data[i].comment_id+">";
@@ -520,6 +581,7 @@ function addComment() {
         }
     });
 }
+
 // 发送moment
 function addMoment() {
     var data = new FormData($('#form_moment')[0]);
@@ -532,7 +594,7 @@ function addMoment() {
         cache: false,
         processData: false,
         contentType: false
-    }).done(function(ret) {
+    }).done(function (ret) {
         if (ret['isSuccess']) {
             var result = '';
             result += "<div class='info-flow' >";
@@ -550,7 +612,7 @@ function addMoment() {
                 result += '<img src=' + '../moment_img/' + ret['photo'] + " >";
                 result += "</a></div>";
             }
-            else{
+            else {
                 result += "<div class='info-flow-right-text only-text'>" + replace_str(ret['text_box']) + "</div>";
             }
             result += "<div class='info-flow-right-time'>" + ret['time'] + "</div>";
@@ -575,7 +637,7 @@ function addMoment() {
             $("#free").after(result); //插入新发布的 moment
             $('.info-flow').first().hide().slideDown(mobile_speed);
             divPop($(".info-flow-right-button .button-img").first()); //给新载入的按钮元素绑定事件
-            $(".delete-moment").first().bind("click", function() { //给新载入的删除朋友圈元素绑定事件
+            $(".delete-moment").first().bind("click", function () { //给新载入的删除朋友圈元素绑定事件
                 deleteMoment($(this).parent());
             });
         } else {
@@ -583,6 +645,7 @@ function addMoment() {
         }
     });
 }
+
 // jquery $.ajax() 异步加载随机3图url
 function getRollingWall() {
     $.ajax({
@@ -590,10 +653,10 @@ function getRollingWall() {
         data: {},
         dataType: "json",
         url: "./getRollingWall",
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
             //alert("加载错误，错误原因：\n"+errorThrown);
         },
-        success: function(data) {
+        success: function (data) {
             // var html_1 = "<img name=" + data[0].moment_id_1 + " src=../../moment_img/" + data[0].img_url_1 + ">";
             // var html_2 = "<img name=" + data[0].moment_id_2 + " src=../../moment_img/" + data[0].img_url_2 + ">";
             // var html_3 = "<img name=" + data[0].moment_id_3 + " src=../../moment_img/" + data[0].img_url_3 + ">";
@@ -605,7 +668,7 @@ function getRollingWall() {
             $(".swiper-slide").last().append(html_3);
 
             $("#slide_wall img.lazy").lazyload({
-                placeholder : "../Public/Home/img/default/white.png", //用图片提前占位
+                placeholder: "../Public/Home/img/default/white.png", //用图片提前占位
                 // placeholder,值为某一图片路径.此图片用来占据将要加载的图片的位置,待图片加载时,占位图则会隐藏
                 effect: "fadeIn", // 载入使用何种效果
                 // effect(特效),值有show(直接显示),fadeIn(淡入),slideDown(下拉)等,常用fadeIn
@@ -621,6 +684,7 @@ function getRollingWall() {
         }
     });
 }
+
 // 删除moment
 function deleteMoment(obj) {
     var data = confirm("Confirm deletion?");
@@ -632,11 +696,11 @@ function deleteMoment(obj) {
             },
             dataType: "json",
             url: "./deleteMoment",
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
                 //alert("加载错误，错误原因：\n"+errorThrown);
             },
-            success: function(data) {
-                obj.parent().slideUp(500, function() {
+            success: function (data) {
+                obj.parent().slideUp(500, function () {
                     obj.parent().remove();
                 })
             }
@@ -670,7 +734,7 @@ function deleteComment(obj) {
             //     }
             // });
 
-            touch.on(obj, 'hold', function(ev){
+            touch.on(obj, 'hold', function (ev) {
                 //console.log("you have done", ev.type);
                 var data = confirm("Confirm deletion?");
                 if (data) {
@@ -681,11 +745,11 @@ function deleteComment(obj) {
                         },
                         dataType: "json",
                         url: "./deleteComment",
-                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
                             //alert("加载错误，错误原因：\n"+errorThrown);
                         },
-                        success: function(data) {
-                            obj.slideUp(500, function() {
+                        success: function (data) {
+                            obj.slideUp(500, function () {
                                 obj.remove();
                             })
                         }
@@ -695,8 +759,8 @@ function deleteComment(obj) {
 
         } else { //PC端
             var timeout;
-            obj.mousedown(function() {
-                timeout = setTimeout(function() {
+            obj.mousedown(function () {
+                timeout = setTimeout(function () {
                     var data = confirm("Confirm deletion?");
                     if (data) {
                         $.ajax({
@@ -706,11 +770,11 @@ function deleteComment(obj) {
                             },
                             dataType: "json",
                             url: "./deleteComment",
-                            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            error: function (XMLHttpRequest, textStatus, errorThrown) {
                                 //alert("加载错误，错误原因：\n"+errorThrown);
                             },
-                            success: function(data) {
-                                obj.slideUp(500, function() {
+                            success: function (data) {
+                                obj.slideUp(500, function () {
                                     obj.remove();
                                 })
                             }
@@ -718,10 +782,11 @@ function deleteComment(obj) {
                     }
                 }, 500);
             });
-            obj.mouseup(function() {
+            obj.mouseup(function () {
                 clearTimeout(timeout);
             });
-        };
+        }
+        ;
     }
 }
 
@@ -731,6 +796,7 @@ function preventDefault(event) {
     if (e.preventDefault) e.preventDefault();
     e.returnValue = false;
 };
+
 // 异步加载信息
 function loadMessages() {
     $.ajax({
@@ -738,12 +804,12 @@ function loadMessages() {
         data: {},
         dataType: "json",
         url: "./loadMessages",
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
             //alert("信息加载错误，错误原因：\n"+errorThrown);
         },
-        success: function(data) {
+        success: function (data) {
             var html = "";
-            html += "<div id='location' name='location'></div> <!-- 设定一个location.hash位置 -->";
+            // html += "<div id='location' name='location'></div> <!-- 设定一个location.hash位置 -->";
             html += "<div id='search'>"
             html += "<input type='text' id='search_box' placeholder='Search New Friends' maxlength=140 required/>"
             html += "</div>";
@@ -764,6 +830,7 @@ function loadMessages() {
         }
     });
 };
+
 // 查看一条moment
 function getOneMoment(moment_id) {
     $.ajax({
@@ -773,10 +840,10 @@ function getOneMoment(moment_id) {
             "moment_id": moment_id
         },
         dataType: 'JSON',
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
             //alert("信息加载错误，错误原因：\n"+errorThrown);
         },
-        success: function(data) {
+        success: function (data) {
             var result = '';
             result += "<div class='info-flow' id='the_one_moment'>";
             result += "<div class='info-flow-left'>";
@@ -815,13 +882,14 @@ function getOneMoment(moment_id) {
             $("#top").after(result);
             $(".comment-box").attr("id", global_user_name); //将我的名字赋值给输入框作为id属性
             divPop($(".info-flow-right-button .button-img").first()); //给新载入的按钮元素绑定事件
-            $(".delete-moment").first().bind("click", function() { //给新载入的删除朋友圈元素绑定事件
+            $(".delete-moment").first().bind("click", function () { //给新载入的删除朋友圈元素绑定事件
                 deleteMoment($(this).parent());
             });
             refresh();
         }
     });
 };
+
 // 加载好友添加请求
 function loadFriendRequest() {
     $.ajax({
@@ -829,10 +897,10 @@ function loadFriendRequest() {
         data: {},
         dataType: "json",
         url: "./loadFriendRequest",
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
             //alert("好友请求加载错误，错误原因：\n"+errorThrown);
         },
-        success: function(data) {
+        success: function (data) {
             var html = "";
             for (var i = 0; i < data.length; i++) {
                 html += "<div class='request-flow' name=" + data[i].id + ">";
@@ -852,6 +920,7 @@ function loadFriendRequest() {
         }
     });
 };
+
 // 处理好友请求
 function agreeRequest(id, request_name) {
     $.ajax({
@@ -862,14 +931,15 @@ function agreeRequest(id, request_name) {
         },
         dataType: "json",
         url: "./agreeRequest",
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
             // alert("好友添加错误，错误原因：\n"+errorThrown);
         },
-        success: function(data) {
+        success: function (data) {
             alert("已添加对方为好友");
         }
     });
 };
+
 // 修改资料
 function modifyProfile() {
     var data = new FormData($('#form_profile')[0]);
@@ -881,7 +951,7 @@ function modifyProfile() {
         cache: false,
         processData: false,
         contentType: false
-    }).done(function(ret) {
+    }).done(function (ret) {
         if (ret['isSuccess']) {
             alert('修改成功');
             self.location.href = "";
@@ -890,6 +960,7 @@ function modifyProfile() {
         }
     });
 }
+
 // 加载未读消息数量
 function loadNews() {
     $.ajax({
@@ -897,10 +968,10 @@ function loadNews() {
         data: {},
         dataType: "json",
         url: "./loadNews",
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
             // alert("查询错误，错误原因：\n"+errorThrown);
         },
-        success: function(data) {
+        success: function (data) {
             var html = "<span id='news'> +" + data['number'] + "</span>";
             $("#news").remove();
             if (data['number'] != 0) {
@@ -909,10 +980,11 @@ function loadNews() {
         }
     });
 }
+
 // edit a moment
 function clickCamera() {
     if ($("#edit_box").length) {
-        $("#edit_box").slideUp(mobile_speed, function() {
+        $("#edit_box").slideUp(mobile_speed, function () {
             $("#edit_box").remove();
         });
     } else {
@@ -927,10 +999,10 @@ function clickCamera() {
         html += "</form>";
         html += "</div>";
         $("#top").after(html);
-        $("#edit_box").hide().slideDown(mobile_speed, function() {
+        $("#edit_box").hide().slideDown(mobile_speed, function () {
             $("#text_box").focus();
         });
-        $("#photo").on('change', function(e) { //若选择了图片则显示图片名 否则显示+
+        $("#photo").on('change', function (e) { //若选择了图片则显示图片名 否则显示+
             try {
                 var name = e.currentTarget.files[0].name;
                 $("#btn span").text('-');
@@ -942,6 +1014,7 @@ function clickCamera() {
         // document.getElementById("photo").click();
     }
 }
+
 //处理各种页面返回
 function clickToBack() {
     if ($("#current_location").text() == "SixChat") { //打开消息侧边栏
@@ -957,34 +1030,14 @@ function clickToBack() {
                 left: 0
             }, mobile_speed);
         }
-        // $("#slidebar~div").animate({
-        //     opacity: 0
-        // }, mobile_speed);
-        $("#slidebar~div").remove();
+        $("#slidebar_profile~div").remove();
         loadMessages(); //异步加载消息
-        loadFriendRequest();
+        // loadFriendRequest();
         //location.hash = "#location"; //跳到消息界面位置
         document.body.scrollTop = document.documentElement.scrollTop = 0; //跳转顶部
     } else if ($("#current_location").text() == "Messages") { //关闭消息侧边栏
-
         self.location.href = "";
         return;
-
-        $("#current_location").text("SixChat");
-        $("#back").text("New");
-        if (isPC()) { //PC
-            $("#slidebar,#message_top").fadeOut(pc_speed);
-        } else {
-            $("#slidebar,#message_top").animate({
-                left: "-100%"
-            }, mobile_speed);
-        }
-        location.hash = "";
-        $("#slidebar~div").animate({
-            opacity: 1
-        }, mobile_speed);
-        //不知为何，关闭侧边栏后会显示lightbox的隐藏区域，所以暂时想到的解决方法是加下面一句fix bug
-        $("#lightboxOverlay,#lightbox").hide();
     } else if ($("#current_location").text() == "Details" || $("#current_location").text() == "Profile") { //返回主页面
         self.location.href = "";
     }

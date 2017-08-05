@@ -1,4 +1,18 @@
-<?php //注册控制器
+<?php
+/***************************************************************************
+ *
+ * Copyright (c) 2017 classmateer.com, Inc. All Rights Reserved
+ *
+ **************************************************************************/
+
+/**
+ * @file Application/Home/Controller/RrgisterController.class.php
+ * @author 1275330626(com@qq.com)
+ * @date 2017/08/06 03:22:39
+ * @brief
+ *
+ **/
+
 namespace Home\Controller;
 
 use Think\Controller;
@@ -7,12 +21,12 @@ class RegisterController extends Controller
 {
     public function index()
     {
-        $id               = trim($_POST['id']);
-        $password         = trim($_POST['password']);
+        $id = trim($_POST['id']);
+        $password = trim($_POST['password']);
         $text_placeholder = "新的账号";
-        $userid           = null;
+        $userid = null;
         if ($id != null && $password != null) {
-            $obj    = new SixChatApi2016Controller();
+            $obj = new SixChatApi2016Controller();
             $result = $obj->register($id, $password); //调用注册api
             if (!$result) {
                 //注册成功

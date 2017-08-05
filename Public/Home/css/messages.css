@@ -1,8 +1,9 @@
-#location {
-    height: 40px;
-}
+/*#location {*/
+    /*height: 40px;*/
+/*}*/
 
 #search {
+    margin-top: 40px;
     height: 40px;
     background-color: rgb(245, 245, 245);
     opacity: 0.97;

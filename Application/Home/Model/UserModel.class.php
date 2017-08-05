@@ -1,4 +1,5 @@
 <?php
+
 namespace Home\Model;
 
 use Think\Model;
@@ -54,8 +55,8 @@ class UserModel extends Model
 
     public function getUserNameViaUserId($condition)
     {
-        $result = $Model->table('think_user u1,think_user u2')
-            ->field('u1.user_nname as reply_name,u2.user_name as replyed_name')
+        $result = $this->table('think_user u1,think_user u2')
+            ->field('u1.user_name as reply_name,u2.user_name as replyed_name')
             ->where($condition)
             ->select();
         return $result;
