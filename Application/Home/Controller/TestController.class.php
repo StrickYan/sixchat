@@ -19,6 +19,6 @@ class TestController extends Controller
             'name' => "kobe",
             'age' => 22,
         );
-        Utility::returnData(ErrorCode::SUCCESS, $data, $msg = 'test.');
+        Utility::returnData(ErrorCode::SUCCESS, $data, $msg = '');
     }
 }

@@ -17,10 +17,10 @@ class ErrorCode
     {
         switch ($code)
         {
-            case -1:
+            case self::FAILED:
                 $errorMsg = "Failed";
                 break;
-            case 0:
+            case self::SUCCESS:
                 $errorMsg = "Successed";
                 break;
             default:
