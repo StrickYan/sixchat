@@ -2,20 +2,23 @@
 -- 主机:                           119.29.24.253
 -- 服务器版本:                        5.5.48-log - Source distribution
 -- 服务器操作系统:                      Linux
--- HeidiSQL 版本:                  9.3.0.4984
+-- HeidiSQL 版本:                  9.4.0.5125
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
+
 -- 导出 think_sixchat 的数据库结构
+DROP DATABASE IF EXISTS `think_sixchat`;
 CREATE DATABASE IF NOT EXISTS `think_sixchat` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `think_sixchat`;
 
-
 -- 导出  过程 think_sixchat.proc_CommentByFields1Select 结构
+DROP PROCEDURE IF EXISTS `proc_CommentByFields1Select`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `proc_CommentByFields1Select`(
 	IN `moment_id` INT
@@ -35,8 +38,8 @@ BEGIN
 END//
 DELIMITER ;
 
-
 -- 导出  过程 think_sixchat.proc_CommentByFields2Select 结构
+DROP PROCEDURE IF EXISTS `proc_CommentByFields2Select`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `proc_CommentByFields2Select`(
 	IN `moment_id` INT,
@@ -68,8 +71,8 @@ BEGIN
 END//
 DELIMITER ;
 
-
 -- 导出  过程 think_sixchat.proc_CommentByUserNameSelect 结构
+DROP PROCEDURE IF EXISTS `proc_CommentByUserNameSelect`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `proc_CommentByUserNameSelect`(
 	IN `moment_id` INT
@@ -89,8 +92,8 @@ BEGIN
 END//
 DELIMITER ;
 
-
 -- 导出  过程 think_sixchat.proc_MomentByFieldsSelect 结构
+DROP PROCEDURE IF EXISTS `proc_MomentByFieldsSelect`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `proc_MomentByFieldsSelect`()
     COMMENT 'get moments'
@@ -107,8 +110,8 @@ BEGIN
 END//
 DELIMITER ;
 
-
 -- 导出  过程 think_sixchat.proc_MomentGetNextPage 结构
+DROP PROCEDURE IF EXISTS `proc_MomentGetNextPage`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `proc_MomentGetNextPage`(IN `page` INT)
     COMMENT '加载更多朋友圈'
@@ -126,8 +129,8 @@ BEGIN
 END//
 DELIMITER ;
 
-
 -- 导出  表 think_sixchat.think_comment 结构
+DROP TABLE IF EXISTS `think_comment`;
 CREATE TABLE IF NOT EXISTS `think_comment` (
   `comment_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'comment id',
   `moment_id` int(11) NOT NULL DEFAULT '0' COMMENT 'moment id',
@@ -139,24 +142,22 @@ CREATE TABLE IF NOT EXISTS `think_comment` (
   `news` int(2) NOT NULL DEFAULT '1' COMMENT '未读状态，0为已读，1为未读',
   `time` datetime NOT NULL COMMENT '发布时间',
   PRIMARY KEY (`comment_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='type=1:点赞记录\r\ntype=2:评论记录';
+) ENGINE=InnoDB AUTO_INCREMENT=296 DEFAULT CHARSET=utf8mb4 COMMENT='type=1:点赞记录\r\ntype=2:评论记录';
 
 -- 数据导出被取消选择。
-
-
 -- 导出  表 think_sixchat.think_friend 结构
+DROP TABLE IF EXISTS `think_friend`;
 CREATE TABLE IF NOT EXISTS `think_friend` (
   `no` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `user_id` varchar(50) NOT NULL DEFAULT '' COMMENT 'user id',
   `friend_id` varchar(50) NOT NULL DEFAULT '' COMMENT 'friend id',
   `time` datetime NOT NULL COMMENT '建立好友关系的时间',
   PRIMARY KEY (`no`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='好友关系表';
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COMMENT='好友关系表';
 
 -- 数据导出被取消选择。
-
-
 -- 导出  表 think_sixchat.think_friend_request 结构
+DROP TABLE IF EXISTS `think_friend_request`;
 CREATE TABLE IF NOT EXISTS `think_friend_request` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `request_id` int(11) NOT NULL DEFAULT '0' COMMENT '好友请求的 user id',
@@ -168,9 +169,8 @@ CREATE TABLE IF NOT EXISTS `think_friend_request` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='好友请求';
 
 -- 数据导出被取消选择。
-
-
 -- 导出  表 think_sixchat.think_moment 结构
+DROP TABLE IF EXISTS `think_moment`;
 CREATE TABLE IF NOT EXISTS `think_moment` (
   `moment_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'moment id',
   `user_id` varchar(50) NOT NULL DEFAULT '0' COMMENT 'user id',
@@ -180,12 +180,11 @@ CREATE TABLE IF NOT EXISTS `think_moment` (
   `time` datetime NOT NULL COMMENT '发布时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`moment_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='moment表';
+) ENGINE=InnoDB AUTO_INCREMENT=229 DEFAULT CHARSET=utf8mb4 COMMENT='moment表';
 
 -- 数据导出被取消选择。
-
-
 -- 导出  表 think_sixchat.think_user 结构
+DROP TABLE IF EXISTS `think_user`;
 CREATE TABLE IF NOT EXISTS `think_user` (
   `user_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'user id, 用户唯一标识',
   `user_name` varchar(50) NOT NULL DEFAULT '' COMMENT '用户名',
@@ -197,7 +196,7 @@ CREATE TABLE IF NOT EXISTS `think_user` (
   `register_time` datetime NOT NULL COMMENT '注册时间',
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_name` (`user_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
 
 -- 数据导出被取消选择。
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
