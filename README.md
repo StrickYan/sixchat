@@ -1,5 +1,5 @@
 # SIXCHAT
-* 原文：https://github.com/sk1275330626/sixchat
+* 原文：https://github.com/StrickYan/sixchat
 * 作者：Strick Yan
 * 转载请标明出处，谢谢
 
