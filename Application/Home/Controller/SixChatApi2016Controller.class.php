@@ -105,11 +105,11 @@ class SixChatApi2016Controller extends Controller
 
             //注册时自动和官方账号建立双向关系
             $data1['user_id'] = $user_id;
-            $data1['friend_id'] = 1;
+            $data1['friend_id'] = 18;
             $data1['time'] = date("Y-m-d H:i:s");
             $this->friendModel->addFriend($data1);
 
-            $data1['user_id'] = 1;
+            $data1['user_id'] = 18;
             $data1['friend_id'] = $user_id;
             $data1['time'] = date("Y-m-d H:i:s");
             $this->friendModel->addFriend($data1);
