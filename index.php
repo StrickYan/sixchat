@@ -20,6 +20,12 @@ define('APP_DEBUG',True);
 // 定义应用目录
 define('APP_PATH','./Application/');
 
+// 定义 log 目录
+define('LOG_PATH','./Log/');
+
+// 引入 composer 模块入口文件
+require './vendor/autoload.php';
+
 // 引入ThinkPHP入口文件
 require './ThinkPHP/ThinkPHP.php';
 

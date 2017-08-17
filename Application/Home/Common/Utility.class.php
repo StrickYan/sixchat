@@ -28,8 +28,8 @@ class Utility
         if (empty($msg)) {
             $msg = ErrorCode::getErrorMsg($code);
         }
-        Log::pushNotice('retCode', $code);
-        Log::pushNotice('retMsg', $msg);
+        //Log::pushNotice('retCode', $code);
+        //Log::pushNotice('retMsg', $msg);
         echo json_encode(array(
             'retCode' => $code,
             'retMsg' => $msg,

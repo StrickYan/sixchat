@@ -12,7 +12,8 @@
         }
     ],
     "require": {
-        "php": ">=5.3.0"
+        "php": ">=5.3.0",
+        "monolog/monolog": "1.23.0"
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "stable"
 }
