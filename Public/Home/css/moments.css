@@ -17,7 +17,7 @@ body {
     font-size: 14px;
     height: 100%;
     /*opacity: 0;*/
-    background-color: white;
+    /*background-color: white;*/
     overflow-x: hidden;
     background-color: rgb(242, 242, 242);
 }
@@ -84,7 +84,7 @@ a {
     color: white;
     border: 0;
     border-radius: 5px;
-    background-color: rgb(91, 197, 190);
+    /*background-color: rgb(91, 197, 190);*/
     background-color: #2ecc71;
     cursor: pointer;
 }
@@ -379,7 +379,6 @@ a {
     color: #333;
     background-color: #f0f0f0;
     border-radius: 5px;
-    border-radius: 5px;
 }
 
 .only-text {
@@ -411,7 +410,6 @@ a {
     line-height: 20px;
     float: left;
     margin: 0 0 0 10px;
-    color: rgb(41, 128, 185);
     color: rgb(127, 140, 141);
     -webkit-tap-highlight-color: rgba(0, 0, 0, .2);
     cursor: pointer;
@@ -474,7 +472,6 @@ a {
     color: #333;
     border: 0 solid red;
     background-color: #f0f0f0;
-    border-radius: 5px;
     border-radius: 5px;
 }
 

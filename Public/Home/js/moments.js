@@ -43,7 +43,7 @@ $(function () {
         //     alert("Please add a photo :D");
         // }
 
-        if (isCommitted == false && ($.trim($("#text_box").val()) || $("#photo").val())) {
+        if (isCommitted === false && ($.trim($("#text_box").val()) || $("#photo").val())) {
             document.body.scrollTop = document.documentElement.scrollTop = 0; //跳转顶部
             isCommitted = true;
             addMoment();

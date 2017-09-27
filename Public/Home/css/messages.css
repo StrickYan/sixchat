@@ -14,10 +14,10 @@
 #search_box {
     width: 90%;
     border-radius: 5px;
-    border: 0px solid #dddddd;
+    border: 0 solid #dddddd;
     height: 24px;
     line-height: 24px;
-    padding: 0px 5px;
+    padding: 0 5px;
     color: #999999;
     background-color: white;
     margin: 8px;
@@ -25,7 +25,7 @@
 
 .message-flow, .request-flow {
     position: relative;
-    background-color: rgb(245, 245, 245);
+    /*background-color: rgb(245, 245, 245);*/
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
     padding: 8px;
     border: 1px solid #EEE;
@@ -39,7 +39,7 @@
 }
 
 .message-flow-left, .request-flow-left {
-    border: 0px solid red;
+    border: 0 solid red;
     position: absolute;
     left: 8px;
     top: 8px;
@@ -52,14 +52,14 @@
 }
 
 .message-flow-right, .request-flow-right {
-    border: 0px solid red;
+    border: 0 solid red;
     margin-left: 48px;
 }
 
 .line1 {}
 
 .message-flow-right-user-name, .request-flow-right-user-name {
-    border: 0px solid red;
+    border: 0 solid red;
     color: rgb(41, 128, 185);
     /*font-weight: 700;*/
     line-height: 20px;
@@ -74,7 +74,7 @@
 }
 
 .message-flow-right-text, .request-flow-right-text {
-    border: 0px solid red;
+    border: 0 solid red;
     line-height: 20px;
     display: inline-block;
 }
