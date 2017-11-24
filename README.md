@@ -1,6 +1,6 @@
 # SIXCHAT
 * 原文：https://github.com/StrickYan/sixchat
-* 作者：Strick Yan
+* 作者：StrickYan
 * 转载请标明出处，谢谢
 
 
@@ -121,14 +121,8 @@ location /sixchat/ {
 
 ## 2016/08/04
 1. 实现发moment功能（同时或单独发文字与图片）
-
-2. swiper插件（http://www.idangero.us/swiper/) 实现滚动墙功能
-    随机从数据库选取3个朋友圈图片展示,点击可跳转详细该条
-
-3. 评论权限：
-    浏览自己的帖子可以看到所有评论包括好友与非好友
-
-    浏览他人的帖子时只能看到互为好友的comment或者自己与该用户的对话
+2. swiper插件（http://www.idangero.us/swiper/) 实现滚动墙功能 随机从数据库选取3个朋友圈图片展示,点击可跳转详细该条
+3. 评论权限：浏览自己的帖子可以看到所有评论包括好友与非好友 浏览他人的帖子时只能看到互为好友的comment或者自己与该用户的对话
 
 ## 2016/08/03 ago
 1. 基于thinkphp3.2.3的webapp设计
