@@ -24,7 +24,7 @@ class RegisterController extends Controller
         $id = trim($_POST['id']);
         $password = trim($_POST['password']);
         $text_placeholder = "新的账号";
-        $userid = null;
+        // $userid = null;
         if ($id != null && $password != null) {
             $obj = new SixChatApi2016Controller();
             $result = $obj->register($id, $password); //调用注册api

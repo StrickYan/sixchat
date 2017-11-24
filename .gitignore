@@ -1,7 +1,8 @@
-#ignore these files 
+# ignore these files
 Application/Runtime/* 
 moment_img/*
 avatar_img/*
 .idea/*
 md_img/*
 Log/*
+.phpstorm.meta.php

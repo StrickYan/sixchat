@@ -6,22 +6,21 @@
  * Time: 20:35
  */
 
-namespace Home\Common;
+namespace util;
 
-class ErrorCode
+class SKErrorCode
 {
     const SUCCESS = 0;
     const FAILED = -1;
 
     public static function getErrorMsg($code)
     {
-        switch ($code)
-        {
+        switch ($code) {
             case self::FAILED:
                 $errorMsg = "Failed";
                 break;
             case self::SUCCESS:
-                $errorMsg = "Successed";
+                $errorMsg = "Succeeded";
                 break;
             default:
                 $errorMsg = "";

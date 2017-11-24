@@ -12,16 +12,19 @@
 // 应用入口文件
 
 // 检测PHP环境
-if(version_compare(PHP_VERSION,'5.3.0','<'))  die('require PHP > 5.3.0 !');
+if(version_compare(PHP_VERSION, '5.3.0', '<')) die('require PHP > 5.3.0 !');
 
 // 开启调试模式 建议开发阶段开启 部署阶段注释或者设为false
-define('APP_DEBUG',True);
+define('APP_DEBUG', True);
 
 // 定义应用目录
-define('APP_PATH','./Application/');
+define('APP_PATH', './Application/');
 
 // 定义 log 目录
-define('LOG_PATH','./Log/');
+define('LOG_PATH', './Log/');
+define('LOG_NAME', 'sixchat'); // 日志名
+define('LOG_FILE_NAME', 'sixchat.log'); // 日志路径
+define('MAX_LOG_FILES', 1); // 日志数量
 
 // 引入 composer 模块入口文件
 require './vendor/autoload.php';

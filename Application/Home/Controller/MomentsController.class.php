@@ -15,11 +15,8 @@
 
 namespace Home\Controller;
 
-use Think\Controller;
-
-class MomentsController extends CommonController
+class MomentsController extends BaseController
 {
-
     // 显示朋友圈信息流
     public function index()
     {
@@ -442,8 +439,8 @@ class MomentsController extends CommonController
             $map1['requested_id'] = $request_id;
             $map1['state'] = 1;
 
-            $result_1 = $this->friendRuquestModel->getFriendRequest($map);
-            $result_2 = $this->friendRuquestModel->getFriendRequest($map1);
+            $result_1 = $this->friendRequestModel->getFriendRequest($map);
+            $result_2 = $this->friendRequestModel->getFriendRequest($map1);
             if ($result_1 || $result_2) {
                 //已存在任意一方的请求则不进行操作
             } else {
@@ -452,7 +449,7 @@ class MomentsController extends CommonController
                 $data['requested_id'] = $requested_id;
                 $data['remark'] = $remark;
                 $data['request_time'] = date("Y-m-d H:i:s");
-                $this->friendRuquestModel->addFriendRequest($data);
+                $this->friendRequestModel->addFriendRequest($data);
             }
         }
         echo json_encode(array("result" => "ok"));
@@ -465,7 +462,7 @@ class MomentsController extends CommonController
         $user_id = $this->userModel->getUserId($map);
         $map1['requested_id'] = $user_id;
         $map1['state'] = 1;
-        $result = $this->friendRuquestModel->getFriendRequest($map1);
+        $result = $this->friendRequestModel->getFriendRequest($map1);
         foreach ($result as $key => &$value) {
             $map2['user_id'] = $value['request_id'];
             $request_name = $this->userModel->getUserName($map2);
@@ -487,7 +484,7 @@ class MomentsController extends CommonController
         $requested_name = $_SESSION['name']; //被请求人
 
         $map['id'] = $id;
-        $this->friendRuquestModel->setFriendRequestState($map);
+        $this->friendRequestModel->setFriendRequestState($map);
 
         foreach ($this->obj->getUserId($request_name, $requested_name) as $k => $val) {
             $request_id = $val["reply_id"];
@@ -608,7 +605,7 @@ class MomentsController extends CommonController
         $list = $this->momentModel->getNews($user_id);
         $map1['requested_id'] = $user_id;
         $map1['state'] = 1;
-        $result = $this->friendRuquestModel->getFriendRequest($map1);
+        $result = $this->friendRequestModel->getFriendRequest($map1);
         $num = count($list) + count($result);
         echo json_encode(array("number" => $num));
     }

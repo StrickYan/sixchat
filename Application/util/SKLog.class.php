@@ -9,16 +9,16 @@
  * @file Application/Home/Common/CLog.class.php
  * @author 1275330626(com@qq.com)
  * @date 2017/08/17 03:22:39
- * @brief 二次封装Monolog
+ * @brief 二次封装 Monolog
  *
  **/
 
-namespace Home\Common;
+namespace util;
 
 use Monolog\Logger;
 use Monolog\Handler\RotatingFileHandler;
 
-class CLog
+class SKLog
 {
     /*
      * Log Levels
@@ -33,10 +33,6 @@ class CLog
      * EMERGENCY (600): Emergency: system is unusable.
      * */
 
-    public static $logName = 'sixchat'; // 日志名
-    public static $filename = LOG_PATH . '/sixchat.log'; // 日志路径
-    public static $maxFiles = 0; // 日志数量
-
     /**
      * @brief 以天为单位 打印日志到文件
      * @param string | $logLevel 日志等级
@@ -45,45 +41,45 @@ class CLog
      */
     public static function _log($logLevel, $msg = '', $data = array())
     {
-        $logger = new Logger(self::$logName);
-        $handler = (new RotatingFileHandler(self::$filename, self::$maxFiles));
+        $logger = new Logger(LOG_NAME);
+        $handler = (new RotatingFileHandler(LOG_PATH . LOG_FILE_NAME, MAX_LOG_FILES));
         $logger->pushHandler($handler);
         $logger->{$logLevel}($msg, $data);
     }
 
     public static function debug($msg = '', $data = array())
     {
-        return self::_log("debug", $msg, $data);
+        self::_log("debug", $msg, $data);
     }
 
     public static function info($msg = '', $data = array())
     {
-        return self::_log("info", $msg, $data);
+        self::_log("info", $msg, $data);
     }
 
     public static function notice($msg = '', $data = array())
     {
-        return self::_log("notice", $msg, $data);
+        self::_log("notice", $msg, $data);
     }
 
     public static function warning($msg = '', $data = array())
     {
-        return self::_log("warning", $msg, $data);
+        self::_log("warning", $msg, $data);
     }
 
     public static function error($msg = '', $data = array())
     {
-        return self::_log("error", $msg, $data);
+        self::_log("error", $msg, $data);
     }
 
     public static function critical($msg = '', $data = array())
     {
-        return self::_log("critical", $msg, $data);
+        self::_log("critical", $msg, $data);
     }
 
     public static function emergency($msg = '', $data = array())
     {
-        return self::_log("emergency", $msg, $data);
+        self::_log("emergency", $msg, $data);
     }
 
 }

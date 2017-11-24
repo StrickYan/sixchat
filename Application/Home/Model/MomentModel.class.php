@@ -15,7 +15,7 @@
 
 namespace Home\Model;
 
-use Home\Common\Utility;
+use util\SKUtility;
 use Think\Model;
 
 class MomentModel extends Model
@@ -43,7 +43,7 @@ class MomentModel extends Model
                 think_friend f
             where 
                 m.state = 1 
-                and m.user_id = f.friend_id and f.user_id = u2.user_id and u2.user_name = " . Utility::qstr($user_name) . " 
+                and m.user_id = f.friend_id and f.user_id = u2.user_id and u2.user_name = " . SKUtility::qstr($user_name) . " 
                 and m.user_id = u.user_id
             order by 
                 m.time desc 

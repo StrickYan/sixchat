@@ -6,10 +6,15 @@
  * Time: 5:00
  */
 
-namespace Home\Common;
+namespace util;
 
-class Utility
+class SKUtility
 {
+    /**
+     * @param $s
+     * @return string
+     * @brief e.g. abc'ced =>'abc''ced'
+     */
     public static function qstr($s)
     {
         $x = "'" . str_replace("'", "''", $s) . "'";
@@ -17,16 +22,16 @@ class Utility
     }
 
     /**
+     * @param int $code 返回代码
+     * @param array $data 返回的数据
+     * @param string $msg 提示信息
      * @brief 异步返回json数据
-     * @param int | $code 返回代码
-     * @param array | $data 返回的数据
-     * @return string | $msg 提示信息
      */
     public static function returnData($code, $data = array(), $msg = '')
     {
         $data = isset($data) ? $data : array();
         if (empty($msg)) {
-            $msg = ErrorCode::getErrorMsg($code);
+            $msg = SKErrorCode::getErrorMsg($code);
         }
         //Log::pushNotice('retCode', $code);
         //Log::pushNotice('retMsg', $msg);

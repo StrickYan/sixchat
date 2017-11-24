@@ -2,9 +2,9 @@
 
 namespace Home\Controller;
 
-use Home\Common\ErrorCode;
-use Home\Common\Utility;
-use Home\Common\CLog;
+use util\SKErrorCode;
+use util\SKUtility;
+use util\SKLog;
 use Think\Controller;
 
 use Monolog\Logger;
@@ -24,7 +24,7 @@ class TestController extends Controller
             'name' => "kobe",
             'age' => 22,
         );
-        Utility::returnData(ErrorCode::SUCCESS, $data, $msg = '');
+        SKUtility::returnData(SKErrorCode::SUCCESS, $data, $msg = '');
     }
 
     public function testMonolog()
@@ -49,7 +49,7 @@ class TestController extends Controller
 
     public function testCLog()
     {
-        CLog::warning("test log");
+        SKLog::warning("test log");
     }
 
 }

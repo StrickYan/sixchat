@@ -8,7 +8,7 @@
  *
  */
 
-namespace Home\Common;
+namespace util;
 
 class Log
 {
