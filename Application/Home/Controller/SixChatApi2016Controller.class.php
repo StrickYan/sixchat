@@ -23,7 +23,7 @@ class SixChatApi2016Controller extends Controller
     protected $momentModel;
     protected $userModel;
     protected $commentModel;
-    protected $friendRuquestModel;
+    protected $friendRequestModel;
     protected $friendModel;
 
     public function __construct()
@@ -32,7 +32,7 @@ class SixChatApi2016Controller extends Controller
         $this->momentModel = D('Moment');
         $this->userModel = D('User');
         $this->commentModel = D('comment');
-        $this->friendRuquestModel = D("Friend_request");
+        $this->friendRequestModel = D("Friend_request");
         $this->friendModel = D("Friend");
     }
 
@@ -40,7 +40,6 @@ class SixChatApi2016Controller extends Controller
     public function login($id, $password)
     {
         $condition['user_name'] = $id;
-        // $user_name              = M('User')->where($condition)->getfield('user_name');
         $user_name = $this->userModel->getUserName($condition);
         if (!$user_name) {
             //该用户不存在
@@ -49,11 +48,10 @@ class SixChatApi2016Controller extends Controller
             setcookie("user", "$id", time() + 60 * 60 * 24 * 7); //用户名存在，保存用户名cookie
             $condition1['user_name'] = $id;
             $condition1['password'] = md5($password);
-            // $user_name_1             = M('User')->where($condition1)->getfield('user_name');
             $user_name_1 = $this->userModel->getUserName($condition1);
             if ($user_name_1) {
                 //登录成功
-                setcookie("password", "$password", time() + 60 * 60 * 24 * 7, "/login/", "six.classmateer.com"); //登录成功再保存密码cookie
+                setcookie("password", "$password", time() + 60 * 60 * 24 * 7, "/Login/", "six.classmateer.com"); //登录成功再保存密码cookie
                 // setcookie("password", "$password", time()+60*60*24,"/sixchat/Home/Login/", "localhost");//本地环境
                 session_start();
                 $_SESSION["name"] = $user_name_1;
@@ -70,7 +68,7 @@ class SixChatApi2016Controller extends Controller
     public function logout()
     {
         session_destroy();
-        setcookie("password", "", time() - 3600, "/login/", "six.classmateer.com");
+        setcookie("password", "", time() - 3600, "/Login/", "six.classmateer.com");
         // setcookie("password","", time()-3600,"/sixchat/Home/Login/","localhost");//本地环境
     }
 
@@ -78,7 +76,6 @@ class SixChatApi2016Controller extends Controller
     public function register($id, $password)
     {
         $condition['user_name'] = $id;
-        // $user_name              = M('User')->where($condition)->getfield('user_name');
         $user_name = $this->userModel->getUserName($condition);
         if ($user_name) {
             //该账号已存在
@@ -88,19 +85,16 @@ class SixChatApi2016Controller extends Controller
             $data['user_name'] = $id;
             $data['password'] = MD5($password);
             $data['register_time'] = date("Y-m-d H:i:s");
-            // M('User')->data($data)->filter('htmlspecialchars')->add();
             $this->userModel->addUser($data);
 
             //查询该新用户的user_id
             $condition1['user_name'] = $id;
-            // $user_id                 = M('User')->where($condition1)->getfield('user_id');
             $user_id = $this->userModel->getUserId($condition1);
 
             //注册时自动关注自己
             $data1['user_id'] = $user_id;
             $data1['friend_id'] = $user_id;
             $data1['time'] = date("Y-m-d H:i:s");
-            // M('Friend')->data($data1)->filter('htmlspecialchars')->add();
             $this->friendModel->addFriend($data1);
 
             //注册时自动和官方账号建立双向关系
@@ -121,7 +115,7 @@ class SixChatApi2016Controller extends Controller
     /*时间转换函数*/
     public function tranTime($time)
     {
-        $rtime = date("M j, Y H:i", $time);
+        $fullTime = date("M j, Y H:i", $time);
         $time = time() - $time;
         if ($time < 60 * 2) {
             $str = '1 min ago ';
@@ -145,7 +139,7 @@ class SixChatApi2016Controller extends Controller
             }
 
         } else {
-            $str = $rtime;
+            $str = $fullTime;
         }
         return $str;
     }
@@ -155,10 +149,6 @@ class SixChatApi2016Controller extends Controller
     {
         $condition['u1.user_name'] = $reply_name;
         $condition['u2.user_name'] = $replyed_name;
-        // $result                    = M()->table('think_user u1,think_user u2')
-        //     ->field('u1.user_id as reply_id,u2.user_id as replyed_id')
-        //     ->where($condition)
-        //     ->select();
         $result = $this->userModel->getUserIdViaUserName($condition);
         return $result;
     }
@@ -168,10 +158,6 @@ class SixChatApi2016Controller extends Controller
     {
         $condition['u1.user_id'] = $reply_id;
         $condition['u2.user_id'] = $replyed_id;
-        // $result                  = M()->table('think_user u1,think_user u2')
-        //     ->field('u1.user_nname as reply_name,u2.user_name as replyed_name')
-        //     ->where($condition)
-        //     ->select();
         $result = $this->userModel->getUserNameViaUserId($condition);
         return $result;
     }
@@ -204,7 +190,6 @@ class SixChatApi2016Controller extends Controller
             'image/x-png',
         );
         $max_file_size = 8000000; //上传文件大小限制, 单位BYTE
-        $image_name = '';
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_FILES["$input_file_name"]['tmp_name'])) //已选择图片才执行下面
         {
             if (!is_uploaded_file($_FILES["$input_file_name"]['tmp_name'])) //判断指定的文件是否是通过 HTTP POST 上传的
@@ -227,13 +212,13 @@ class SixChatApi2016Controller extends Controller
                 mkdir($destination_folder);
             }
             $filename = $file["tmp_name"];
-            $image_size = getimagesize($filename);
+            // $image_size = getimagesize($filename);
             $pinfo = pathinfo($file["name"]);
             $ftype = $pinfo['extension'];
             $current_time = time();
             $image_name = $current_time . "." . $ftype;
             $destination = $destination_folder . $image_name;
-            if (file_exists($destination) && $overwrite != true) {
+            if (file_exists($destination)) {
                 echo "同名文件已经存在了";
                 exit;
             }
@@ -314,9 +299,9 @@ class SixChatApi2016Controller extends Controller
             } else if (!strcasecmp($filetype, "png")) {
                 imagepng($newim, $name);
             }
-            // else if( !strcasecmp($filetype,"gif")  ){    //不处理GIF文件因为压缩后就不会动了，开注释可处理
-            //     imagegif($newim,$name);
-            // }
+             else if( !strcasecmp($filetype,"gif")  ){
+                 imagegif($newim,$name);
+             }
             imagedestroy($newim);
         } else {
             //原图小于设定的最大长度和宽度，则不进行压缩，原图输出
@@ -326,9 +311,9 @@ class SixChatApi2016Controller extends Controller
             } else if (!strcasecmp($filetype, "png")) {
                 imagepng($im, $name);
             }
-            // else if( !strcasecmp($filetype,"gif")  ){    //不处理GIF文件因为压缩后就不会动了，开注释可处理
-            //     imagegif($im,$name);
-            // }
+             else if( !strcasecmp($filetype,"gif")  ){
+                 imagegif($im,$name);
+             }
         }
     }
 
