@@ -189,32 +189,21 @@ a {
     border-bottom: 1px solid #E0E0E0;
 }
 
-/*#btn, #new_avatar_btn {
-    line-height: 1.8rem;
-    position: relative;
-    overflow: hidden;
-    padding: 10px 10px;
-    cursor: pointer;
-    text-align: center;
-    color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background: #5bb75b;
-}*/
-
+#btn {
+    margin: 0 0 3px 10px;
+}
 #btn, #new_avatar_btn {
     display: inline-block;
-    margin: 0 0 3px 10px;
     cursor: pointer;
     text-align: center;
     color: #212121;
     border: 1px solid #ccc;
     border-radius: 5px;
     background: #FAFAFA;
-    width: 2.6rem;
-    height: 2.6rem;
-    font-size: 2.2rem;
-    line-height: 2.6rem;
+    width: 26px;
+    height: 26px;
+    font-size: 22px;
+    line-height: 26px;
     position: relative;
 }
 
@@ -228,9 +217,9 @@ a {
     border-radius: 5px;
     background: #FAFAFA;
     width: 6.6rem;
-    height: 2.6rem;
-    font-size: 1.6rem;
-    line-height: 2.6rem;
+    height: 26px;
+    font-size: 16px;
+    line-height: 26px;
 }
 
 #btn input {
@@ -242,7 +231,7 @@ a {
     opacity: 0;
     border: solid transparent;
     filter: alpha(opacity=0);
-    width: 2.6rem;
+    width: 26px;
 }
 
 #new_avatar_btn input {
@@ -254,8 +243,8 @@ a {
     opacity: 0;
     border: solid transparent;
     filter: alpha(opacity=0);
-    width: 2.6rem;
-    height: 2.6rem;
+    width: 26px;
+    height: 26px;
 
 }
 
