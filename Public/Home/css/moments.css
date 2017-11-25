@@ -47,7 +47,7 @@ a {
 /*个人资料*/
 
 #slidebar_profile {
-    line-height: 1.8rem;
+    line-height: 18px;
     position: absolute;
     z-index: 2;
     top: 0;
@@ -78,7 +78,7 @@ a {
 }
 
 #modify_profile_button, #confirm_modify, #logout, #follow_button {
-    line-height: 3.8rem;
+    line-height: 38px;
     box-sizing: border-box;
     text-align: center;
     color: white;
@@ -90,7 +90,7 @@ a {
 }
 
 #slidebar_profile input {
-    line-height: 1.8rem;
+    line-height: 18px;
     box-sizing: border-box;
     width: 100%;
     padding: 3px 5px;
@@ -111,9 +111,6 @@ a {
     height: 40px;
     opacity: .97;
     filter: alpha(opacity=.97);
-    /*    background-color: rgb(91, 197, 190);
-        box-shadow: 0 .2rem .2rem rgba(0, 0, 0, .32);*/
-
     background-color: #FAFAFA;
     color: black;
     border-bottom: 1px solid #E0E0E0;
@@ -143,7 +140,7 @@ a {
 
 #current_location {
     font-weight: bold;
-    line-height: 2.4rem;
+    line-height: 24px;
     position: absolute;
     top: 8px;
     left: 40%;
@@ -176,7 +173,7 @@ a {
 }
 
 #text_box {
-    line-height: 1.8rem;
+    line-height: 18px;
     box-sizing: border-box;
     width: 100%;
     height: 90px;
@@ -216,7 +213,7 @@ a {
     border: 1px solid #ccc;
     border-radius: 5px;
     background: #FAFAFA;
-    width: 6.6rem;
+    width: 66px;
     height: 26px;
     font-size: 16px;
     line-height: 26px;
@@ -263,7 +260,7 @@ a {
 }
 
 .swiper-slide {
-    font-size: 1.8rem;
+    font-size: 18px;
     /* Center slide text vertically */
     display: -webkit-box;
     display: -ms-flexbox;
@@ -387,7 +384,7 @@ a {
 }
 
 .info-flow-right-time {
-    font-size: 1.2rem;
+    font-size: 12px;
     line-height: 20px;
     float: left;
     margin: 0 0;
@@ -395,7 +392,7 @@ a {
 }
 
 .delete-moment {
-    font-size: 1.2rem;
+    font-size: 12px;
     line-height: 20px;
     float: left;
     margin: 0 0 0 10px;
@@ -440,7 +437,7 @@ a {
 }
 
 .like-img {
-    line-height: 1.2rem;
+    line-height: 12px;
     display: inline-block;
     height: 12px;
     margin-right: 3px;
@@ -482,18 +479,18 @@ a {
 }
 
 .info-flow-right-input {
-    line-height: 2.2rem;
+    line-height: 22px;
     display: none;
-    height: 2.2rem;
+    height: 22px;
     margin: 0 0;
 }
 
 .comment-box {
-    line-height: 2.2rem;
+    line-height: 22px;
     float: left;
     box-sizing: border-box;
     width: 100%;
-    height: 2.2rem;
+    height: 22px;
     padding: 0 5px;
     color: #999;
     border: 0 solid #ddd;
