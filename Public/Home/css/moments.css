@@ -16,14 +16,11 @@ body {
     font-family: 'Open Sans', Arial, 'Microsoft YaHei', Verdana, Geneva, sans-serif;
     font-size: 14px;
     height: 100%;
-    /*opacity: 0;*/
-    /*background-color: white;*/
     overflow-x: hidden;
     background-color: rgb(242, 242, 242);
 }
 
 /*去掉旧版IE显示紫色边框bug*/
-
 a, img {
     border: none;
 }
@@ -34,18 +31,15 @@ a {
 }
 
 /*消息栏*/
-
 #slidebar {
     position: absolute;
     z-index: 2;
     top: 0;
     left: -100%;
     width: 100%;
-    /*    background-color: white;*/
 }
 
 /*个人资料*/
-
 #slidebar_profile {
     line-height: 18px;
     position: absolute;
@@ -84,7 +78,6 @@ a {
     color: white;
     border: 0;
     border-radius: 5px;
-    /*background-color: rgb(91, 197, 190);*/
     background-color: #2ecc71;
     cursor: pointer;
 }
@@ -101,7 +94,6 @@ a {
 }
 
 /*顶部导航栏*/
-
 #top {
     position: fixed;
     z-index: 10;
@@ -134,7 +126,6 @@ a {
     width: 60px;
     margin-top: 8px;
     margin-left: 3px;
-    /*color: white;*/
     color: #212121;
 }
 
@@ -146,7 +137,6 @@ a {
     left: 40%;
     width: 20%;
     text-align: center;
-    /*color: white;*/
     cursor: pointer;
     color: #212121;
 }
@@ -160,14 +150,11 @@ a {
 }
 
 /*moment发送栏*/
-
 #edit_box {
     position: fixed;
     z-index: 3;
     top: 40px;
     width: 100%;
-    /*background-color: #f5f5f5;*/
-
     background-color: #FAFAFA;
     border-bottom: 1px solid #E0E0E0;
 }
@@ -180,7 +167,6 @@ a {
     padding: 10px 10px;
     color: #999;
     border: 0;
-    /*background-color: #f5f5f5;*/
     background-color: #FAFAFA;
     border-top: 1px solid #E0E0E0;
     border-bottom: 1px solid #E0E0E0;
@@ -189,6 +175,7 @@ a {
 #btn {
     margin: 0 0 3px 10px;
 }
+
 #btn, #new_avatar_btn {
     display: inline-block;
     cursor: pointer;
@@ -246,7 +233,6 @@ a {
 }
 
 /*滚动墙*/
-
 #slide_wall {
     position: relative;
     width: 100%;
@@ -284,7 +270,6 @@ a {
 }
 
 /*个人头像*/
-
 #avatar {
     position: absolute;
     z-index: 1;
@@ -305,7 +290,6 @@ a {
 }
 
 /*moments信息流*/
-
 .info-flow {
     position: relative;
     padding: 10px 10px 5px 10px;
@@ -331,7 +315,6 @@ a {
 }
 
 .info-flow-right {
-    /*margin-left: 50px;*/
     border: 0 solid red;
 }
 
@@ -359,7 +342,6 @@ a {
 .info-flow-right-text {
     line-height: 20px;
     border: 0 solid red;
-
     margin: 5px 0;
     padding: 0 5px;
     color: #333;
@@ -474,7 +456,6 @@ a {
 }
 
 .comment-user-name {
-    /*font-weight: bold;*/
     color: rgb(41, 128, 185);
 }
 
