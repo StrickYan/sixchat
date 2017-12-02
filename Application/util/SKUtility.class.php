@@ -33,13 +33,13 @@ class SKUtility
         if (empty($msg)) {
             $msg = SKErrorCode::getErrorMsg($code);
         }
-        //Log::pushNotice('retCode', $code);
-        //Log::pushNotice('retMsg', $msg);
-        echo json_encode(array(
+        $result = json_encode(array(
             'retCode' => $code,
-            'retMsg' => $msg,
             'retData' => $data,
+            'retMsg' => $msg,
         ));
+        SKLog::info($result);
+        echo $result . "\n";
         exit;
     }
 

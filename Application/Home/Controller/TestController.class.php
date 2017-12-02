@@ -8,7 +8,6 @@ use util\SKLog;
 use Think\Controller;
 
 use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
 use Monolog\Handler\RotatingFileHandler;
 
 class TestController extends Controller
@@ -47,7 +46,7 @@ class TestController extends Controller
         $logger->emergency('My logger is now ready', array('username' => 'Seldaek'));
     }
 
-    public function testCLog()
+    public function testSKLog()
     {
         SKLog::warning("test log");
     }
