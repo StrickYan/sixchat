@@ -421,7 +421,7 @@ class MomentsController extends BaseController
     }
 
     // 好友请求
-    public function friendRuquest()
+    public function friendRequest()
     {
         $requested_name = htmlspecialchars($_REQUEST['requested_name']);
         $request_name = $_SESSION['name'];
@@ -592,7 +592,7 @@ class MomentsController extends BaseController
 
         $this->assign('page', $page);
         $this->assign('list', $list);
-        $this->display("moments/flow");
+        $this->display("Moments/flow");
     }
 
     // 加载未读消息数量
