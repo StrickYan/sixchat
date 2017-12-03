@@ -23,7 +23,7 @@ $(function() {
         threshold: 200
     }); //图片延迟加载
     $("#return").bind("click", function() {
-        location.href = "../../index.html";
+        location.href = "../../index";
     }); //点击左上角导航返回
     $("body").fadeIn('slow');
 });

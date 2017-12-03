@@ -28,7 +28,7 @@
 					<input type="password" name="password" id="password" class="input-box" placeholder="{$pw_placeholder}" value="{$password}" maxlength="20" required>			
 					<button id="submit_button" type="button">log In</button>
 				</form>
-				<a href="{:U('/Register/index')}">Register Account</a>
+				<a href="{:U('/register/index')}">Register Account</a>
 				<a id="notice" >I'm a diver >></a>
 			</div>
 			<div id="footer"></div>
@@ -49,7 +49,7 @@
 		    }
 		    document.onkeypress=function EnterPress(e) {
 				var e = e || window.event;   
-				if(e.keyCode == 13){
+				if(e.keyCode === 13){
 					validate();
 				}
 			};	

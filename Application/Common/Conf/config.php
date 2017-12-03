@@ -14,6 +14,6 @@ return array(
 
     'URL_MODEL' => '2', //url省略index.php
 
-    'URL_HTML_SUFFIX' => 'html',  // URL伪静态后缀设置
+    'URL_HTML_SUFFIX' => '',  // URL伪静态后缀设置
 
 );

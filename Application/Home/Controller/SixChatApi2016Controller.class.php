@@ -32,7 +32,7 @@ class SixChatApi2016Controller extends Controller
         $this->momentModel = D('Moment');
         $this->userModel = D('User');
         $this->commentModel = D('comment');
-        $this->friendRequestModel = D("Friend_request");
+        $this->friendRequestModel = D("FriendRequest");
         $this->friendModel = D("Friend");
     }
 
@@ -51,7 +51,7 @@ class SixChatApi2016Controller extends Controller
             $user_name_1 = $this->userModel->getUserName($condition1);
             if ($user_name_1) {
                 //登录成功
-                setcookie("password", "$password", time() + 60 * 60 * 24 * 7, "/Login/", "six.classmateer.com"); //登录成功再保存密码cookie
+                setcookie("password", "$password", time() + 60 * 60 * 24 * 7, "/login/", "six.classmateer.com"); //登录成功再保存密码cookie
                 // setcookie("password", "$password", time()+60*60*24,"/sixchat/Home/Login/", "localhost");//本地环境
                 session_start();
                 $_SESSION["name"] = $user_name_1;
@@ -68,7 +68,7 @@ class SixChatApi2016Controller extends Controller
     public function logout()
     {
         session_destroy();
-        setcookie("password", "", time() - 3600, "/Login/", "six.classmateer.com");
+        setcookie("password", "", time() - 3600, "/login/", "six.classmateer.com");
         // setcookie("password","", time()-3600,"/sixchat/Home/Login/","localhost");//本地环境
     }
 

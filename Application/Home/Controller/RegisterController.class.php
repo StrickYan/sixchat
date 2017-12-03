@@ -30,7 +30,7 @@ class RegisterController extends Controller
             $result = $obj->register($id, $password); //调用注册api
             if (!$result) {
                 //注册成功
-                echo "<script>window.alert('注册成功,现在登录>>');window.location.href='../Login/';</script>";
+                echo "<script>window.alert('注册成功,现在登录>>');window.location.href='../login/';</script>";
             } else {
                 $text_placeholder = "该账号已存在";
             }

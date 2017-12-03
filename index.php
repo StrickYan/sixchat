@@ -21,7 +21,7 @@ define('APP_DEBUG', True);
 define('APP_PATH', './Application/');
 
 // 定义 log 目录
-define('LOG_PATH', './Log/');
+define('LOG_PATH', './logs/');
 define('LOG_NAME', 'sixchat'); // 日志名
 define('LOG_FILE_NAME', 'sixchat.log'); // 日志路径
 define('MAX_LOG_FILES', 1); // 日志数量

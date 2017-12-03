@@ -26,7 +26,7 @@ class BaseController extends Controller
         $this->momentModel = D('Moment');
         $this->userModel = D('User');
         $this->commentModel = D('Comment');
-        $this->friendRequestModel = D("Friend_request");
+        $this->friendRequestModel = D("FriendRequest");
         $this->friendModel = D("Friend");
     }
 
@@ -34,7 +34,7 @@ class BaseController extends Controller
     {
         //判断用户是否已经登录
         if (!isset($_SESSION['name'])) {
-            $this->error('', U('/Login/index'), 1);
+            $this->error('', U('/login/index'), 1);
         }
     }
 

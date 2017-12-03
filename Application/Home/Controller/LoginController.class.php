@@ -23,7 +23,7 @@ class LoginController extends Controller
     {
         if (isset($_SESSION['name']) && !empty($_SESSION['name'])) {
             //判断是否已经登录
-            $this->redirect('/Moments/index');
+            $this->redirect('/moments/index');
             return;
         }
 
@@ -66,7 +66,7 @@ class LoginController extends Controller
                 $passwordPlaceholder = "密码错误";
             } else if (!$result) {
                 //登录成功
-                $this->redirect('/Moments/index');
+                $this->redirect('/moments/index');
                 return;
             }
         }

@@ -518,7 +518,6 @@ class MomentsController extends BaseController
         }
 
         $response = array();
-        $image_name = '';
         $destination_folder = "avatar_img/"; //上传文件路径
         $input_file_name = "profile_upfile";
         $maxwidth = 200;
@@ -593,7 +592,7 @@ class MomentsController extends BaseController
 
         $this->assign('page', $page);
         $this->assign('list', $list);
-        $this->display("Moments/flow");
+        $this->display("moments/flow");
     }
 
     // 加载未读消息数量
