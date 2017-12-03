@@ -19,10 +19,13 @@ use Think\Controller;
 
 class LoginController extends Controller
 {
+    /**
+     * 登录函数
+     */
     public function index()
     {
         if (isset($_SESSION['name']) && !empty($_SESSION['name'])) {
-            //判断是否已经登录
+            // 判断是否已经登录
             $this->redirect('/moments/index');
             return;
         }

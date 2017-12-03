@@ -23,8 +23,7 @@ class RegisterController extends Controller
     {
         $id = trim($_POST['id']);
         $password = trim($_POST['password']);
-        $text_placeholder = "新的账号";
-        // $userid = null;
+        $textPlaceholder = "新的账号";
         if ($id != null && $password != null) {
             $obj = new SixChatApi2016Controller();
             $result = $obj->register($id, $password); //调用注册api
@@ -32,10 +31,10 @@ class RegisterController extends Controller
                 //注册成功
                 echo "<script>window.alert('注册成功,现在登录>>');window.location.href='../login/';</script>";
             } else {
-                $text_placeholder = "该账号已存在";
+                $textPlaceholder = "该账号已存在";
             }
         }
-        $array['text_placeholder'] = $text_placeholder;
+        $array['text_placeholder'] = $textPlaceholder;
         $this->assign($array); //模板赋值
         $this->display(); //模板渲染
     }

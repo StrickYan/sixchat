@@ -32,7 +32,7 @@ class MomentModel extends Model
     //加载更多
     public function getNextPage($page)
     {
-        $user_name = $_SESSION["name"];
+        $userName = $_SESSION["name"];
         $sql = "
             select 
                 u.user_name, u.avatar, m.info, m.img_url, m.time, m.moment_id
@@ -43,7 +43,7 @@ class MomentModel extends Model
                 think_friend f
             where 
                 m.state = 1 
-                and m.user_id = f.friend_id and f.user_id = u2.user_id and u2.user_name = " . SKUtility::qstr($user_name) . " 
+                and m.user_id = f.friend_id and f.user_id = u2.user_id and u2.user_name = " . SKUtility::qstr($userName) . " 
                 and m.user_id = u.user_id
             order by 
                 m.time desc 
@@ -78,7 +78,7 @@ class MomentModel extends Model
         $this->where($condition)->setField('state', 0);
     }
 
-    public function getOneMoment($moment_id)
+    public function getOneMoment($momentId)
     {
         $sql = "
             SELECT 
@@ -86,15 +86,15 @@ class MomentModel extends Model
             from 
                 think_moment m,think_user u
             where 
-                m.moment_id=" . $moment_id . " and m.state=1 and m.user_id=u.user_id
+                m.moment_id=" . $momentId . " and m.state=1 and m.user_id=u.user_id
         "; //显示该条朋友圈内容
         $list = M()->query($sql);
         return $list;
     }
 
-    public function getNews($user_id)
+    public function getNews($userId)
     {
-        $sql = "SELECT moment_id FROM think_comment c,think_user u where c.reply_id=u.user_id and state=1 and news=1 and ((reply_id<>" . $user_id . " and reply_id=replyed_id and moment_id in(select moment_id from think_moment where user_id=" . $user_id . ")) or (replyed_id=" . $user_id . " and reply_id<>replyed_id)) order by comment_id desc limit 0,100";
+        $sql = "SELECT moment_id FROM think_comment c,think_user u where c.reply_id=u.user_id and state=1 and news=1 and ((reply_id<>" . $userId . " and reply_id=replyed_id and moment_id in(select moment_id from think_moment where user_id=" . $userId . ")) or (replyed_id=" . $userId . " and reply_id<>replyed_id)) order by comment_id desc limit 0,100";
         $list = M()->query($sql);
         return $list;
     }

@@ -19,6 +19,9 @@ class BaseController extends Controller
     protected $friendRequestModel;
     protected $friendModel;
 
+    /**
+     * BaseController constructor.
+     */
     public function __construct()
     {
         parent::__construct();
@@ -30,9 +33,12 @@ class BaseController extends Controller
         $this->friendModel = D("Friend");
     }
 
+    /**
+     * 登录状态验证
+     */
     public function _initialize()
     {
-        //判断用户是否已经登录
+        // 判断用户是否已经登录
         if (!isset($_SESSION['name'])) {
             $this->error('', U('/login/index'), 1);
         }

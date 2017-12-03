@@ -26,6 +26,9 @@ class SixChatApi2016Controller extends Controller
     protected $friendRequestModel;
     protected $friendModel;
 
+    /**
+     * SixChatApi2016Controller constructor.
+     */
     public function __construct()
     {
         parent::__construct();
@@ -36,49 +39,59 @@ class SixChatApi2016Controller extends Controller
         $this->friendModel = D("Friend");
     }
 
-    /*登录API*/
+    /**
+     * 登录API
+     * @param string $id 用户名
+     * @param string $password 密码
+     * @return int
+     */
     public function login($id, $password)
     {
         $condition['user_name'] = $id;
-        $user_name = $this->userModel->getUserName($condition);
-        if (!$user_name) {
-            //该用户不存在
+        $userName = $this->userModel->getUserName($condition);
+        // 该用户不存在
+        if (!$userName) {
             return -1;
         } else {
-            setcookie("user", "$id", time() + 60 * 60 * 24 * 7); //用户名存在，保存用户名cookie
-            $condition1['user_name'] = $id;
-            $condition1['password'] = md5($password);
-            $user_name_1 = $this->userModel->getUserName($condition1);
-            if ($user_name_1) {
-                //登录成功
-                setcookie("password", "$password", time() + 60 * 60 * 24 * 7, "/login/", "six.classmateer.com"); //登录成功再保存密码cookie
-                // setcookie("password", "$password", time()+60*60*24,"/sixchat/Home/Login/", "localhost");//本地环境
+            // 用户名存在，保存用户名cookie
+            setcookie("user", "$id", time() + 60 * 60 * 24 * 7);
+            $condition['password'] = md5($password);
+            $userName = $this->userModel->getUserName($condition);
+            // 登录成功
+            if ($userName) {
+                // 保存密码cookie
+                setcookie("password", "$password", time() + 60 * 60 * 24 * 7, "/login/", "six.classmateer.com");
                 session_start();
-                $_SESSION["name"] = $user_name_1;
+                $_SESSION["name"] = $userName;
                 return 0;
-            } else //密码错误
-            {
-                return -2;
+            } else {
+                return -2; //密码错误
             }
 
         }
     }
 
-    //注销
+    /**
+     * 注销
+     */
     public function logout()
     {
         session_destroy();
         setcookie("password", "", time() - 3600, "/login/", "six.classmateer.com");
-        // setcookie("password","", time()-3600,"/sixchat/Home/Login/","localhost");//本地环境
     }
 
-    /*注册API*/
+    /**
+     * 注册
+     * @param $id
+     * @param $password
+     * @return int
+     */
     public function register($id, $password)
     {
         $condition['user_name'] = $id;
-        $user_name = $this->userModel->getUserName($condition);
-        if ($user_name) {
-            //该账号已存在
+        $userName = $this->userModel->getUserName($condition);
+        //该账号已存在
+        if ($userName) {
             return -1;
         } else {
             //注册成功添加新用户
@@ -88,31 +101,32 @@ class SixChatApi2016Controller extends Controller
             $this->userModel->addUser($data);
 
             //查询该新用户的user_id
-            $condition1['user_name'] = $id;
-            $user_id = $this->userModel->getUserId($condition1);
+            $userId = $this->userModel->getUserId($condition);
+
+            $saveData['time'] = date("Y-m-d H:i:s");
 
             //注册时自动关注自己
-            $data1['user_id'] = $user_id;
-            $data1['friend_id'] = $user_id;
-            $data1['time'] = date("Y-m-d H:i:s");
-            $this->friendModel->addFriend($data1);
+            $saveData['user_id'] = $userId;
+            $saveData['friend_id'] = $userId;
+            $this->friendModel->addFriend($saveData);
 
             //注册时自动和官方账号建立双向关系
-            $data1['user_id'] = $user_id;
-            $data1['friend_id'] = 18;
-            $data1['time'] = date("Y-m-d H:i:s");
-            $this->friendModel->addFriend($data1);
-
-            $data1['user_id'] = 18;
-            $data1['friend_id'] = $user_id;
-            $data1['time'] = date("Y-m-d H:i:s");
-            $this->friendModel->addFriend($data1);
+            $saveData['user_id'] = $userId;
+            $saveData['friend_id'] = 18;
+            $this->friendModel->addFriend($saveData);
+            $saveData['user_id'] = 18;
+            $saveData['friend_id'] = $userId;
+            $this->friendModel->addFriend($saveData);
 
             return 0;
         }
     }
 
-    /*时间转换函数*/
+    /**
+     * 时间转换函数
+     * @param $time
+     * @return false|string
+     */
     public function tranTime($time)
     {
         $fullTime = date("M j, Y H:i", $time);
@@ -129,7 +143,6 @@ class SixChatApi2016Controller extends Controller
             } else {
                 $str = $h . ' hours ago ';
             }
-
         } elseif ($time < 60 * 60 * 24 * 7) {
             $d = floor($time / (60 * 60 * 24));
             if ($d == 1) {
@@ -137,87 +150,101 @@ class SixChatApi2016Controller extends Controller
             } else {
                 $str = $d . ' day(s) ago ';
             }
-
         } else {
             $str = $fullTime;
         }
         return $str;
     }
 
-    //以user_name匹配用户user_id
-    public function getUserId($reply_name, $replyed_name)
+    /**
+     * 以user_name匹配用户user_id
+     * @param $replyName
+     * @param $replyedName
+     * @return mixed
+     */
+    public function getUserId($replyName, $replyedName)
     {
-        $condition['u1.user_name'] = $reply_name;
-        $condition['u2.user_name'] = $replyed_name;
+        $condition['u1.user_name'] = $replyName;
+        $condition['u2.user_name'] = $replyedName;
         $result = $this->userModel->getUserIdViaUserName($condition);
         return $result;
     }
 
-    //以user_id匹配用户user_name
-    public function getUserName($reply_id, $replyed_id)
+    /**
+     * 以user_id匹配用户user_name
+     * @param $replyId
+     * @param $replyedId
+     * @return mixed
+     */
+    public function getUserName($replyId, $replyedId)
     {
-        $condition['u1.user_id'] = $reply_id;
-        $condition['u2.user_id'] = $replyed_id;
+        $condition['u1.user_id'] = $replyId;
+        $condition['u2.user_id'] = $replyedId;
         $result = $this->userModel->getUserNameViaUserId($condition);
         return $result;
     }
 
-    /*图片上传函数*/
-    public function uploadImg($destination_folder, $input_file_name, $maxwidth, $maxheight)
+    /**
+     * 图片上传函数
+     * @param $destinationFolder
+     * @param $inputFileName
+     * @param $maxWidth
+     * @param $maxHeight
+     * @return bool|string
+     */
+    public function uploadImg($destinationFolder, $inputFileName, $maxWidth, $maxHeight)
     {
 
         /******************************************************************************
          * 参数说明:
-         * $max_file_size  : 上传文件大小限制, 单位BYTE
-         * $destination_folder : 上传文件路径
-         * $input_file_name ：文件上传input的name
-         * $maxwidth="640";//设置压缩后图片的最大宽度
-         * $maxheight="1136";//设置压缩图片的最大高度
+         * $maxFileSize  : 上传文件大小限制, 单位BYTE
+         * $destinationFolder : 上传文件路径
+         * $inputFileName ：文件上传input的name
+         * $maxWidth="640";//设置压缩后图片的最大宽度
+         * $maxHeight="1136";//设置压缩图片的最大高度
          *
          * 使用说明:
          * 1. 将PHP.INI文件里面的"extension=php_gd2.dll"一行前面的;号去掉,因为我们要用到GD库;
          * 2. 将extension_dir =改为你的php_gd2.dll所在目录;
          ******************************************************************************/
 
-        //上传文件类型列表
-        $uptypes = array(
+        // 上传文件类型列表
+        $upTypes = array(
             'image/jpg',
             'image/jpeg',
             'image/png',
-            'image/pjpeg',
             'image/gif',
             'image/bmp',
             'image/x-png',
         );
-        $max_file_size = 8000000; //上传文件大小限制, 单位BYTE
-        if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_FILES["$input_file_name"]['tmp_name'])) //已选择图片才执行下面
+        $maxFileSize = 8000000; // 上传文件大小限制, 单位BYTE
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_FILES["$inputFileName"]['tmp_name'])) // 已选择图片才执行下面
         {
-            if (!is_uploaded_file($_FILES["$input_file_name"]['tmp_name'])) //判断指定的文件是否是通过 HTTP POST 上传的
+            if (!is_uploaded_file($_FILES["$inputFileName"]['tmp_name'])) // 判断指定的文件是否是通过 HTTP POST 上传的
             {
                 echo "post出错，尝试修改服务器post文件大小限制，默认2M";
                 exit;
             }
-            $file = $_FILES["$input_file_name"];
-            if ($max_file_size < $file["size"]) //检查文件大小
+            $file = $_FILES["$inputFileName"];
+            if ($maxFileSize < $file["size"]) // 检查文件大小
             {
                 echo "文件太大!";
                 exit;
             }
-            if (!in_array($file["type"], $uptypes)) //检查文件类型
+            if (!in_array($file["type"], $upTypes)) // 检查文件类型
             {
                 echo "文件类型不符!" . $file["type"];
                 exit;
             }
-            if (!file_exists($destination_folder)) {
-                mkdir($destination_folder);
+            if (!file_exists($destinationFolder)) {
+                mkdir($destinationFolder);
             }
             $filename = $file["tmp_name"];
-            // $image_size = getimagesize($filename);
             $pinfo = pathinfo($file["name"]);
             $ftype = $pinfo['extension'];
             $current_time = time();
             $image_name = $current_time . "." . $ftype;
-            $destination = $destination_folder . $image_name;
+            $destination = $destinationFolder . $image_name;
             if (file_exists($destination)) {
                 echo "同名文件已经存在了";
                 exit;
@@ -228,92 +255,91 @@ class SixChatApi2016Controller extends Controller
                 exit;
             }
 
-            //图片压缩并写回原位置替代原文件
-            $route = $destination; //原图片路径
-            $name = $destination_folder . $current_time; //压缩图片存放路径加名称，不带后缀
-            $filetype = $ftype; //图片类型
-            self::resizeImage($route, $maxwidth, $maxheight, $name, $filetype); //调用函数
+            // 图片压缩并写回原位置替代原文件
+            $route = $destination; // 原图片路径
+            $name = $destinationFolder . $current_time; // 压缩图片存放路径加名称，不带后缀
+            $filetype = $ftype; // 图片类型
+            self::resizeImage($route, $maxWidth, $maxHeight, $name, $filetype); // 调用函数
             return $image_name;
         }
         return false;
     }
 
-    /*图片压缩函数
-    $route;//原图片的存放路径
-    $maxwidth="640";//设置图片的最大宽度
-    $maxheight="1136";//设置图片的最大高度
-    $name=$destination_folder.$current_time;//压缩图片存放路径加名称，不带后缀
-    $filetype="jpg";//图片类型
+    /**
+     * 图片压缩函数
+     * @param string $route 原图片的存放路径
+     * @param int $maxWidth 设置图片的最大宽度
+     * @param int $maxHeight 设置图片的最大高度
+     * @param string $name 压缩图片存放路径加名称，不带后缀
+     * @param string $fileType 图片类型
      */
-    public function resizeImage($route, $maxwidth, $maxheight, $name, $filetype)
+    public function resizeImage($route, $maxWidth, $maxHeight, $name, $fileType)
     {
         $im = '';
-        if (!strcasecmp($filetype, "jpg") || !strcasecmp($filetype, "jpeg")) {
-            $im = imagecreatefromjpeg("$route"); //参数是原图片的存放路径
-        } else if (!strcasecmp($filetype, "png")) {
-            $im = imagecreatefrompng("$route"); //参数是原图片的存放路径
-        } else if (!strcasecmp($filetype, "gif")) {
-            $im = imagecreatefromgif("$route"); //参数是原图片的存放路径
+        if (!strcasecmp($fileType, "jpg") || !strcasecmp($fileType, "jpeg")) {
+            $im = imagecreatefromjpeg("$route"); // 参数是原图片的存放路径
+        } else if (!strcasecmp($fileType, "png")) {
+            $im = imagecreatefrompng("$route"); // 参数是原图片的存放路径
+        } else if (!strcasecmp($fileType, "gif")) {
+            $im = imagecreatefromgif("$route"); // 参数是原图片的存放路径
         }
 
-        $pic_width = imagesx($im);
-        $pic_height = imagesy($im);
-        if (($maxwidth && $pic_width > $maxwidth) || ($maxheight && $pic_height > $maxheight)) {
-            if ($maxwidth && $pic_width > $maxwidth) {
-                $widthratio = $maxwidth / $pic_width;
-                $resizewidth_tag = true;
+        $picWidth = imagesx($im);
+        $picHeight = imagesy($im);
+        if (($maxWidth && $picWidth > $maxWidth) || ($maxHeight && $picHeight > $maxHeight)) {
+            if ($maxWidth && $picWidth > $maxWidth) {
+                $widthRatio = $maxWidth / $picWidth;
+                $resizeWidthTag = true;
             }
-            if ($maxheight && $pic_height > $maxheight) {
-                $heightratio = $maxheight / $pic_height;
-                $resizeheight_tag = true;
+            if ($maxHeight && $picHeight > $maxHeight) {
+                $heightRatio = $maxHeight / $picHeight;
+                $resizeHeightTag = true;
             }
-            if ($resizewidth_tag && $resizeheight_tag) {
-                if ($widthratio < $heightratio) {
-                    $ratio = $widthratio;
+            if ($resizeWidthTag && $resizeHeightTag) {
+                if ($widthRatio < $heightRatio) {
+                    $ratio = $widthRatio;
                 } else {
-                    $ratio = $heightratio;
+                    $ratio = $heightRatio;
                 }
 
             }
-            if ($resizewidth_tag && !$resizeheight_tag) {
-                $ratio = $widthratio;
+            if ($resizeWidthTag && !$resizeHeightTag) {
+                $ratio = $widthRatio;
             }
 
-            if ($resizeheight_tag && !$resizewidth_tag) {
-                $ratio = $heightratio;
+            if ($resizeHeightTag && !$resizeWidthTag) {
+                $ratio = $heightRatio;
             }
 
-            $newwidth = $pic_width * $ratio;
-            $newheight = $pic_height * $ratio;
+            $newWidth = $picWidth * $ratio;
+            $newHeight = $picHeight * $ratio;
 
             if (function_exists("imagecopyresampled")) {
-                $newim = imagecreatetruecolor($newwidth, $newheight); //PHP系统函数
-                imagecopyresampled($newim, $im, 0, 0, 0, 0, $newwidth, $newheight, $pic_width, $pic_height); //PHP系统函数
+                $newIm = imagecreatetruecolor($newWidth, $newHeight); // PHP系统函数
+                imagecopyresampled($newIm, $im, 0, 0, 0, 0, $newWidth, $newHeight, $picWidth, $picHeight); // PHP系统函数
             } else {
-                $newim = imagecreate($newwidth, $newheight);
-                imagecopyresized($newim, $im, 0, 0, 0, 0, $newwidth, $newheight, $pic_width, $pic_height);
+                $newIm = imagecreate($newWidth, $newHeight);
+                imagecopyresized($newIm, $im, 0, 0, 0, 0, $newWidth, $newHeight, $picWidth, $picHeight);
             }
-            $name = $name . "." . $filetype;
-            if (!strcasecmp($filetype, "jpg") || !strcasecmp($filetype, "jpeg")) {
-                imagejpeg($newim, $name);
-            } else if (!strcasecmp($filetype, "png")) {
-                imagepng($newim, $name);
+            $name = $name . "." . $fileType;
+            if (!strcasecmp($fileType, "jpg") || !strcasecmp($fileType, "jpeg")) {
+                imagejpeg($newIm, $name);
+            } else if (!strcasecmp($fileType, "png")) {
+                imagepng($newIm, $name);
+            } else if (!strcasecmp($fileType, "gif")) {
+                imagegif($newIm, $name);
             }
-             else if( !strcasecmp($filetype,"gif")  ){
-                 imagegif($newim,$name);
-             }
-            imagedestroy($newim);
+            imagedestroy($newIm);
         } else {
-            //原图小于设定的最大长度和宽度，则不进行压缩，原图输出
-            $name = $name . "." . $filetype;
-            if (!strcasecmp($filetype, "jpg") && !strcasecmp($filetype, "jpeg")) {
+            // 原图小于设定的最大长度和宽度，则不进行压缩，原图输出
+            $name = $name . "." . $fileType;
+            if (!strcasecmp($fileType, "jpg") && !strcasecmp($fileType, "jpeg")) {
                 imagejpeg($im, $name);
-            } else if (!strcasecmp($filetype, "png")) {
+            } else if (!strcasecmp($fileType, "png")) {
                 imagepng($im, $name);
+            } else if (!strcasecmp($fileType, "gif")) {
+                imagegif($im, $name);
             }
-             else if( !strcasecmp($filetype,"gif")  ){
-                 imagegif($im,$name);
-             }
         }
     }
 
