@@ -1,9 +1,13 @@
 # ignore these files
+
 Application/Runtime
 moment_img
 avatar_img
-md_img
 Log
 
+# idea files
 *.idea
-.phpstorm.meta.php
+*.phpstorm.meta.php
+
+# mac files
+*.DS_Store
