@@ -13,8 +13,8 @@ html {
 }
 
 body {
-    font-family: 'Open Sans', Arial, 'Microsoft YaHei', Verdana, Geneva, sans-serif;
-    font-size: 14px;
+    /*font-family: 'Open Sans', Arial, 'Microsoft YaHei', Verdana, Geneva, sans-serif;*/
+    /*font-size: 14px;*/
     height: 100%;
     overflow-x: hidden;
     background-color: rgb(242, 242, 242);
@@ -336,7 +336,7 @@ a {
     height: 30px;
     color: rgb(41, 128, 185);
     border: 0 solid red;
-    font-size: 15px;
+    /*font-size: 15px;*/
 }
 
 .info-flow-right-text {

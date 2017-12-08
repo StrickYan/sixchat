@@ -1,0 +1,15 @@
+body {
+    font-family: 'Open Sans', Arial, 'Microsoft YaHei', Verdana, Geneva, sans-serif;
+}
+
+@media screen and (max-width:1200px) {
+    body {
+        font-size: 15px;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    body {
+        font-size: 16px;
+    }
+}
