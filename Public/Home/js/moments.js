@@ -439,10 +439,10 @@ function searchUser(search_name) {
             var html = '';
             html += "<form name='form_profile' id='form_profile'>";
             html += "<div id=profile_avatar><img src=" + "../avatar_img/" + data.avatar + "></div>";
-            html += "<div id='profile_name' ><span class='profile-span'>Name：</span><span id='profile_name_val'>" + data.user_name + "</span></div><hr>";
-            html += "<div id='profile_sex' ><span class='profile-span'>Gender：</span><span id='profile_sex_val'>" + data.sex + "</span></div><hr>";
-            html += "<div id='profile_region' ><span class='profile-span'>Region：</span><span id='profile_region_val'>" + data.region + "</span></div><hr>";
-            html += "<div id='profile_whatsup' ><span class='profile-span'>What's Up：</span><span id='profile_whatsup_val'>" + data.whatsup + "</span></div><hr>";
+            html += "<div id='profile_name' ><span class='profile-span'>Name：</span><span id='profile_name_val' class='profile-val'>" + data.user_name + "</span></div><hr>";
+            html += "<div id='profile_sex' ><span class='profile-span'>Gender：</span><span id='profile_sex_val' class='profile-val'>" + data.sex + "</span></div><hr>";
+            html += "<div id='profile_region' ><span class='profile-span'>Region：</span><span id='profile_region_val' class='profile-val'>" + data.region + "</span></div><hr>";
+            html += "<div id='profile_whatsup' ><span class='profile-span'>What's Up：</span><span id='profile_whatsup_val' class='profile-val'>" + data.whatsup + "</span></div><hr>";
             html += "</form>";
             if (data.user_name == global_user_name) { //自己的资料可以修改
                 html += "<div id='modify_profile_button'>modify</div>";

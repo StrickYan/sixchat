@@ -56,9 +56,8 @@ a {
     margin: 10px 20px;
 }
 
-.profile-span {
-    display: inline-block;
-    width: 82px;
+.profile-val {
+    float: right;
 }
 
 #profile_avatar {
