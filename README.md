@@ -33,7 +33,7 @@
 # 配置nginx.conf
 
 ```
-#ThnkPHP URL_MODEL=>2 rewrite
+# ThnkPHP URL_MODEL=>2 rewrite
 location /sixchat/ {
     if (!-e $request_filename) {
         rewrite ^/sixchat/(.*)$ /sixchat/index.php?s=/Home/$1 last;
