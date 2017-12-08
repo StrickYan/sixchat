@@ -13,8 +13,8 @@
 				<img src="__ROOT__/avatar_img/{$head_image}">
 				<br>
 				<form method="post" autocomplete="off">
-					<input type="text" name="id" id="id" class="input-box" placeholder="{$text_placeholder}" value="{$id}" maxlength="20" required>			
-					<input type="password" name="password" id="password" class="input-box" placeholder="{$pw_placeholder}" value="{$password}" maxlength="20" required>			
+					<input type="text" name="id" id="id" class="input-box" placeholder="{$id_placeholder}" value="{$id}" maxlength="20" required>
+					<input type="password" name="password" id="password" class="input-box" placeholder="{$password_placeholder}" value="{$password}" maxlength="20" required>
 					<button id="submit_button" type="button">log In</button>
 				</form>
 				<a href="{:U('/register/index')}">Register Account</a>
@@ -24,7 +24,7 @@
 		</div>
 		<script src="__PUBLIC__/Home/js/lib/jquery-3.1.0.min.js"></script>	
 		<script>
-			//验证用户输入
+			// 验证用户输入
 		    function validate() {	
 				if(!$.trim($("#id").val())){   
 					$("#id").focus();
@@ -36,7 +36,7 @@
 				} 
 			    $("form").submit();
 		    }
-		    document.onkeypress=function EnterPress(e) {
+		    document.onkeypress = function EnterPress(e) {
 				var e = e || window.event;   
 				if(e.keyCode === 13){
 					validate();

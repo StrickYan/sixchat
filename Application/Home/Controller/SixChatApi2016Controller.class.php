@@ -53,8 +53,8 @@ class SixChatApi2016Controller extends Controller
         if (!$userName) {
             return -1;
         } else {
-            // 用户名存在，保存用户名cookie
-            setcookie("user", "$id", time() + 60 * 60 * 24 * 7);
+            // 用户存在，保存用户名cookie
+            setcookie("id", "$id", time() + 60 * 60 * 24 * 7);
             $condition['password'] = md5($password);
             $userName = $this->userModel->getUserName($condition);
             // 登录成功

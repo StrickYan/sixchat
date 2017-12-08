@@ -22,21 +22,21 @@ class SKUtility
     }
 
     /**
-     * @param int $code 返回代码
-     * @param array $data 返回的数据
-     * @param string $msg 提示信息
+     * @param int $retCode 返回代码
+     * @param array $retData 返回的数据
+     * @param string $retMsg 提示信息
      * @brief 异步返回json数据
      */
-    public static function returnData($code, $data = array(), $msg = '')
+    public static function returnData($retCode, $retData = array(), $retMsg = '')
     {
-        $data = isset($data) ? $data : array();
-        if (empty($msg)) {
-            $msg = SKErrorCode::getErrorMsg($code);
+        $retData = isset($retData) ? $retData : array();
+        if (empty($retMsg)) {
+            $retMsg = SKErrorCode::getErrorMsg($retCode);
         }
         $result = json_encode(array(
-            'retCode' => $code,
-            'retData' => $data,
-            'retMsg' => $msg,
+            'retCode' => $retCode,
+            'retData' => $retData,
+            'retMsg' => $retMsg,
         ));
         SKLog::info($result);
         echo $result . "\n";
