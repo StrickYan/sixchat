@@ -91,7 +91,7 @@ class AuthController extends Controller
         $array['id'] = $id;
         $array['password'] = $password;
         $this->assign($array); // 模板赋值
-        $this->display("login/index"); // 模板渲染
+        $this->display("Login/index"); // 模板渲染
     }
 
     /**
