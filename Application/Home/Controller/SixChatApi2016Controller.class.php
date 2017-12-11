@@ -77,7 +77,7 @@ class SixChatApi2016Controller extends Controller
     public function logout()
     {
         session_destroy();
-        setcookie("password", "", time() - 3600, "/auth/login/", "six.classmateer.com");
+        setcookie("password", "", time() - 3600, "/auth", "six.classmateer.com");
     }
 
     /**
