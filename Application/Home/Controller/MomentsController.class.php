@@ -22,17 +22,7 @@ class MomentsController extends BaseController
      */
     public function index()
     {
-        session_start();
-        $userName = $_SESSION["name"];
-        $map['user_name'] = $userName; //获取自己头像
-        $avatar = $this->userModel->getUserAvatar($map);
-        $list = array();
-
-        $script = "<script>var global_user_name = \"" . $userName . "\";</script>";
-
-        $this->assign('list', $list);
-        $this->assign('avatar', $avatar);
-        $this->assign('my_name', $userName);
+        $script = "<script>const GLOBAL_USER_NAME = \"" . $_SESSION["name"] . "\";</script>";
         $this->assign('script', $script);
         $this->display();
     }
@@ -363,7 +353,7 @@ class MomentsController extends BaseController
         $myName = $_SESSION["name"];
         $list = $this->momentModel->getOneMoment($momentId);
         foreach ($list as $key => &$value) {
-            $value['my_name'] = $myName;
+            //$value['my_name'] = $myName;
             $value['user_name'] = $value['user_name'];
             $value['avatar'] = $value['avatar'];
             $value['text_box'] = $value['info'];
@@ -435,97 +425,6 @@ class MomentsController extends BaseController
         }
 
         echo json_encode(array("is_success" => ($ret === false ? 0 : 1)));
-    }
-
-    /**
-     * 好友请求
-     */
-    public function friendRequest()
-    {
-        $requestedName = htmlspecialchars($_REQUEST['requested_name']);
-        $requestName = $_SESSION['name'];
-        $remark = htmlspecialchars($_REQUEST['remark']);
-
-        foreach ($this->obj->getUserId($requestName, $requestedName) as $k => $val) {
-            $requestId = $val["reply_id"];
-            $requestedId = $val["replyed_id"];
-
-            $map['request_id'] = $requestId;
-            $map['requested_id'] = $requestedId;
-            $map['state'] = 1;
-
-            $map1['request_id'] = $requestedId;
-            $map1['requested_id'] = $requestId;
-            $map1['state'] = 1;
-
-            $result = $this->friendRequestModel->getFriendRequest($map);
-            $result1 = $this->friendRequestModel->getFriendRequest($map1);
-            if ($result || $result1) {
-                // 已存在任意一方的请求则不进行操作
-            } else {
-                // 插入好友请求
-                $data['request_id'] = $requestId;
-                $data['requested_id'] = $requestedId;
-                $data['remark'] = $remark;
-                $data['request_time'] = date("Y-m-d H:i:s");
-                $this->friendRequestModel->addFriendRequest($data);
-            }
-        }
-        echo json_encode(array("result" => "ok"));
-    }
-
-    /**
-     * 获取好友请求
-     */
-    public function loadFriendRequest()
-    {
-        $userName = $_SESSION["name"];
-        $map['user_name'] = $userName;
-        $userId = $this->userModel->getUserId($map);
-        $map1['requested_id'] = $userId;
-        $map1['state'] = 1;
-        $result = $this->friendRequestModel->getFriendRequest($map1);
-        foreach ($result as $key => &$value) {
-            $map2['user_id'] = $value['request_id'];
-            $requestName = $this->userModel->getUserName($map2);
-            $avatar = $this->userModel->getUserAvatar($map2);
-            $value['request_name'] = $requestName;
-            $value['avatar'] = $avatar;
-            $value['id'] = $value['id'];
-            $value['remark'] = $value['remark'];
-            $value['time'] = $this->obj->tranTime(strtotime($value['request_time']));
-        }
-        echo json_encode($result);
-    }
-
-    /**
-     * 处理好友请求
-     */
-    public function agreeRequest()
-    {
-        $id = htmlspecialchars($_REQUEST['id']); //该好友请求id
-        $requestName = htmlspecialchars($_REQUEST['request_name']); //请求人
-        $requestedName = $_SESSION['name']; //被请求人
-
-        $map['id'] = $id;
-        $this->friendRequestModel->setFriendRequestState($map);
-
-        foreach ($this->obj->getUserId($requestName, $requestedName) as $k => $val) {
-            $requestId = $val["reply_id"];
-            $requestedId = $val["replyed_id"];
-
-            $data['user_id'] = $requestId;
-            $data['friend_id'] = $requestedId;
-            $data['time'] = date("Y-m-d H:i:s");
-            $this->friendModel->addFriend($data); //好友表添加记录
-
-            $data1['user_id'] = $requestedId;
-            $data1['friend_id'] = $requestId;
-            $data1['time'] = date("Y-m-d H:i:s");
-            $this->friendModel->addFriend($data1); //双向好友
-
-        }
-        echo json_encode(array("result" => "ok"));
     }
 
     /**
@@ -666,10 +565,9 @@ class MomentsController extends BaseController
             $value['info'] = htmlspecialchars($value['info']);
         }
 
-        $script = "<script>var global_user_name = \"" . $userName . "\";</script>";
+        $script = "<script>const GLOBAL_USER_NAME = \"" . $userName . "\";</script>";
 
         $this->assign('details', $result[0]);
-        $this->assign('my_name', $userName);
         $this->assign('script', $script);
         $this->display();
     }

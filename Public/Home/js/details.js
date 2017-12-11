@@ -4,7 +4,7 @@ $(function() {
     refreshAtDetails(); //初始化：刷新评论 给朋友圈元素绑定事件
     initCommentEvent(); //初始化点赞和评论相关事件
     //双击或长按顶部中间栏刷新
-    if (isPC() == 0) { //移动端
+    if (isPC() === 0) { //移动端
         $("#current_location").longPress(function() {
             self.location.href = "";
         });
@@ -32,7 +32,7 @@ $(function() {
 document.onkeypress = function EnterPress(e) {
     var e = e || window.event;
     //满足 回车键&&输入框聚焦&&内容不为空
-    if (e.keyCode == 13 && $(".comment-box:focus").length && $.trim($(".comment-box:focus").val())) {
+    if (e.keyCode === 13 && $(".comment-box:focus").length && $.trim($(".comment-box:focus").val())) {
         addComment();
         // refreshAtDetails();
     }
@@ -61,7 +61,7 @@ function getLikesForAjax(moment_id, moment_user_name) {
                 html += "<span class='like-user-name'>" + data[i].reply_name + "</span>"; //点赞人名字
                 html += "<span>,</span>";
             }
-            if (i == data.length - 1) {
+            if (i === data.length - 1) {
                 html += "<span class='like-user-name'>" + data[i].reply_name + "</span>"; //点赞人名字
             }
             $("div.info-flow-right[id=" + moment_id + "]").children(".info-flow-right-like").empty();
@@ -164,7 +164,7 @@ function deleteMoment(obj) {
 }
 // 删除评论函数
 function deleteComment(obj) {
-    if (obj.children(".comment-user-name").first().text() == global_user_name) { //自己的评论才有权限删除
+    if (obj.children(".comment-user-name").first().text() === GLOBAL_USER_NAME) { //自己的评论才有权限删除
         if (isPC() == 0) { //移动端
             // obj.longPress(function() {
             //     var data = confirm("Confirm deletion?");
@@ -210,7 +210,6 @@ function deleteComment(obj) {
                     });
                 }
             });
-            
         } else { //PC端
             var timeout;
             obj.mousedown(function() {
@@ -239,6 +238,6 @@ function deleteComment(obj) {
             obj.mouseup(function() {
                 clearTimeout(timeout);
             });
-        };
+        }
     }
 }

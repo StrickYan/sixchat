@@ -5,12 +5,18 @@
  **************************************************************************/
 
 /**
- * @file Public/Home/js/global.js
+ * @file global.js
  * @author 1275330626(com@qq.com)
  * @date 2017/08/06 03:22:39
  * @brief
  *
  **/
+
+const PARAM_RET_CODE = "retCode";
+const PARAM_RET_DATA = "retData";
+const PARAM_RET_MSG = "retMsg";
+const ERROR_CODE_FAILED = -1;
+const ERROR_CODE_SUCCESS = 0;
 
 function initCommentEvent() {
     // 点击按钮弹出点赞或评论选项，点击周围则隐藏
@@ -24,7 +30,7 @@ function initCommentEvent() {
     // 点击按钮弹出评论框或者隐藏评论框，评论框失去焦点则隐藏
     $(document).on("click", '.comment-png', function () {
         $(this).parent().parent().siblings(".info-flow-right-input").show();
-        $(this).parent().parent().siblings(".info-flow-right-input").children("input").attr("placeholder", "Comment").attr("id", global_user_name).focus(); //输入框聚焦
+        $(this).parent().parent().siblings(".info-flow-right-input").children("input").attr("placeholder", "Comment").attr("id", GLOBAL_USER_NAME).focus(); //输入框聚焦
     });
     $(document).on("blur", '.info-flow-right-input input', function () { //评论框失去焦点则隐藏
         $(this).parent().hide();
@@ -136,7 +142,7 @@ document.onkeypress = function EnterPress(e) {
     }
     //好友请求 发送加好友备注信息
     else if (e.keyCode == 13 && $("#add_friend_div input:focus").length) {
-        friendRuquest($("#add_friend_div input:focus").val(), $("#profile_name").children().last().text());
+        friendRequest($("#add_friend_div input:focus").val(), $("#profile_name").children().last().text());
     }
 };
 
@@ -166,9 +172,14 @@ $.fn.longPress = function (fn) {
             clearTimeout(timeout);
         }, false);
     }
-}
+};
 
 function sleep(n) {
     var start = new Date().getTime();
     while (true) if (new Date().getTime() - start > n) break;
+}
+
+// 重组路由
+function reFormatUrl(url) {
+    return window.location.protocol + "//" + window.location.host + "/" + url;
 }

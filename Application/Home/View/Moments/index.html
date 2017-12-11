@@ -33,7 +33,7 @@
 		        </div>	       
 		        <div class="swiper-pagination"></div>   
 	    	</div>
-	    	<div id="avatar"><img src="__ROOT__/avatar_img/{$avatar}" alt=""></div>
+	    	<div id="avatar"><img src="" alt=""></div>
 		</div>
 
 		<!--占位栏-->
@@ -45,44 +45,31 @@
 
 		<div id="footer" data-role="footer">
         <!--
-            <div class="info-flow" >
-				<div class="footer-left">
-					<img src="__PUBLIC__/Home/img/default/my.ico" alt="">
-				</div>
-				<div class="footer-right" >
-					<div class="footer-right-user-name">StrickYan</div>
-					<div class="footer-right-text">
-						About：<br>
-						1. 一般人我不给她看到
-						2. 可以看到已follow人的moment
-						3. 可以浏览所有人的likes<br>
-						4. 可以浏览所有人的comments<br>
-						5. 页面刷新：pc端双击或mobile端长按顶部SixChat<br>
-						6. 回车键发送comment<br>
-						Copyright © 两十两 SHENZHEN<br>
-						— 旧街场工作室 Tel:18503056101 —<br>
-					</div>
-					<div class="footer-right-img">
-						<img src="__PUBLIC__/Home/img/default/my.ico" alt="">
-					</div>
-					<div class="footer-right-time">2016年8月1日 凌晨 the Begin</div>
-				</div>
-			</div> 
+			<div id="footer_text">
+				About：<br>
+				1. 一般人我不给她看到
+				2. 可以看到已follow人的moment
+				3. 可以浏览所有人的likes<br>
+				4. 可以浏览所有人的comments<br>
+				5. 页面刷新：pc端双击或mobile端长按顶部SixChat<br>
+				6. 回车键发送comment<br>
+				Copyright © 两十两 SHENZHEN<br>
+				— 旧街场工作室 Tel:18503056101 —<br>
+			</div>
+			<div id="footer_time">2016年8月1日 凌晨 the Begin</div>
 		-->
 		    <p>&copy2017 SixChat</p>
 		</div> 
 
         {$script}
 		<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
-		<!-- <script src="__PUBLIC__/Home/js/lib/jquery-3.1.0.min.js"></script> -->
         <include file="./Public/footer.html" />
         <script src="__PUBLIC__/Home/js/lib/swiper.min.js"></script>
-		<script src="__PUBLIC__/Home/js/moments.js?v=17080600"></script>
-
+		<script src="__PUBLIC__/Home/js/moments.js?v=17121100"></script>
 		<script src="__PUBLIC__/Home/js/lib/fakeLoader.min.js"></script>
 		<script>
 		    $(document).ready(function() {
-		    	//spinner1,spinner2,spinner3 共3种效果
+		    	// spinner1, spinner2, spinner3 共3种效果
 		    	var whichSpinner = "spinner" + Math.ceil(Math.random() * 3); 
 				$("#fakeloader").fakeLoader({
 			        timeToHide: 60000,
@@ -91,9 +78,10 @@
 			    });
 	            var winW = $(window).width();
 	            var winH = $(window).height();
-	            var spinnerW = $('.' + whichSpinner).outerWidth();
-	            var spinnerH = $('.' + whichSpinner).outerHeight();
-	            $('.' + whichSpinner).css({
+	            var $selector = $('.' + whichSpinner);
+	            var spinnerW = $selector.outerWidth();
+	            var spinnerH = $selector.outerHeight();
+                $selector.css({
 	                'left':(winW/2)-(spinnerW/2),
 	                'top':(winH/2)-(spinnerH/2)
 	            });

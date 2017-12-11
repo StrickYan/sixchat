@@ -62,4 +62,12 @@ class UserModel extends Model
         return $result;
     }
 
+    public function getUser($map)
+    {
+        return $this->table('think_user')
+            ->field('user_id, user_name, avatar, sex, region, whatsup, register_time')
+            ->where($map)
+            ->select();
+    }
+
 }

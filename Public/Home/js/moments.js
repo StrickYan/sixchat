@@ -12,7 +12,8 @@
  *
  **/
 
-var swiper = new Swiper('.swiper-container', { //定义滚动墙参数
+var swiper = new Swiper('.swiper-container', {
+    // 定义滚动墙参数
     pagination: '.swiper-pagination',
     paginationClickable: true,
     spaceBetween: 0,
@@ -20,31 +21,19 @@ var swiper = new Swiper('.swiper-container', { //定义滚动墙参数
     autoplay: 10000,
     autoplayDisableOnInteraction: false
 });
-var page = 1; //上拉加载更多全局页数
-var pc_speed = 1000; //pc动画速度
-var mobile_speed = 200; //移动端动画速度
+var page = 1; // 上拉加载更多全局页数
+var pc_speed = 1000; // pc动画速度
+var mobile_speed = 200; // 移动端动画速度
 $(function () {
-    //去除移动端click延迟300ms插件fastclick初始化
-    FastClick.attach(document.body);
-    getRollingWall(); //异步加载随机滚动3图url
-
-    //loadNextPage(0); //加载第一页
+    FastClick.attach(document.body); // 去除移动端click延迟300ms插件fastclick初始化
+    getSessionUser(); // 获取登录用户信息
+    getRollingWall(); // 异步加载随机滚动3图url
     loadNextPageViaHtml(0);
-
     initCommentEvent();
-    var isCommitted = false;//表单是否已经提交标识，默认为false
+    var isCommitted = false;// 表单是否已经提交标识，默认为false
     $(document).on("click", "#share", function () {
-        // if( isCommitted==false && $("#text_box").length && $("#photo").val()) {
-        //     isCommitted = true;
-        //     addMoment();
-        //     refresh();
-        // }
-        // else if(!$("#photo").val()){
-        //     alert("Please add a photo :D");
-        // }
-
         if (isCommitted === false && ($.trim($("#text_box").val()) || $("#photo").val())) {
-            document.body.scrollTop = document.documentElement.scrollTop = 0; //跳转顶部
+            document.body.scrollTop = document.documentElement.scrollTop = 0; // 跳转顶部
             isCommitted = true;
             addMoment();
             refresh();
@@ -53,17 +42,10 @@ $(function () {
         else if (!$.trim($("#text_box").val()) && !$("#photo").val()) {
             alert("Please add a photo or some text :D");
         }
-
     });
     // 绑定消息点击事件
     $(document).on("click", ".message-flow", function () {
         location.href = "./details/id/" + $(this).attr("name");
-    });
-    // 响应好友请求
-    $(document).on("click", ".request-agree", function () {
-        //传送请求id和请求人名
-        agreeRequest($(this).parent().parent(".request-flow").attr("name"), $(this).siblings(".line1").children(".request-flow-right-user-name").children("span").text());
-        $(this).parent().parent(".request-flow").slideUp(mobile_speed);
     });
     // 点击修改资料按钮事件
     $(document).on("click", "#modify_profile_button", function () {
@@ -92,7 +74,7 @@ $(function () {
             modifyProfile();
         }
     });
-    //若选择了图片则显示图片名 否则显示New Avatar Image
+    // 若选择了图片则显示图片名 否则显示New Avatar Image
     $(document).on('change', "#profile_photo", function (e) {
         try {
             var name = e.currentTarget.files[0].name;
@@ -101,8 +83,9 @@ $(function () {
             $("#new_avatar_btn span").text("+");
         }
     });
-    //双击或长按顶部中间栏刷新
-    if (isPC() == 0) { //移动端
+    // 双击或长按顶部中间栏刷新
+    if (isPC() === 0) {
+        // 移动端
         $("#current_location").longPress(function () {
             self.location.href = "";
         });
@@ -111,7 +94,6 @@ $(function () {
             self.location.href = "";
         });
     }
-    ;
     // 上拉到底加载更多
     // $(window).scroll(function() {
     //     //$(document).scrollTop() 获取垂直滚动的距离
@@ -129,7 +111,7 @@ $(function () {
     // 点击主页头像
     $("#avatar").bind("click", function () {
         $("#camera").hide();
-        searchUser(global_user_name);
+        searchUser(GLOBAL_USER_NAME);
         document.body.scrollTop = document.documentElement.scrollTop = 0; //跳转顶部
     });
     $(document).on("click", "#logout", function () {
@@ -170,90 +152,28 @@ $(function () {
 
 });
 
-// 加载更多moments
-function loadNextPage(page) {
-    var start_time = new Date().getTime();
+// 获取登录用户信息
+function getSessionUser() {
     $.ajax({
         type: "POST",
-        data: {
-            "page": page
-        },
+        url: reFormatUrl("User/getSessionUser"),
         dataType: "json",
-        url: "./loadNextPage",
+        data: {},
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            // alert("加载错误，错误原因：\n" + errorThrown);
+            console.log("XMLHttpRequest: " + XMLHttpRequest + "\n" + "textStatus: " + textStatus + "\n" + "errorThrown: " + errorThrown);
         },
-        success: function (data) {
-            // var result = '';
-            for (var i = 0; i < data.length; i++) {
-                var result = '';
-                result += "<div class='info-flow' >";
-                // result += "<div class='info-flow-left'>";
-                // result += '<img src=' + '../../avatar_img/' + data[i]['avatar'] + '>';
-                // result += "</div>";
-                result += "<div class='info-flow-right' id=" + data[i]['moment_id'] + ">";
-                result += "<div class='info-flow-right-avatar'>";
-                result += '<img src=' + '../../avatar_img/' + data[i]['avatar'] + '>';
-                result += "</div>";
-                result += "<div class='info-flow-right-user-name'>" + data[i]['user_name'] + "</div>";
-                if (data[i]['img_url']) {
-                    result += "<div class='info-flow-right-img'>";
-                    result += "<a href=../../moment_img/" + data[i]['img_url'] + " data-lightbox=" + data[i]['moment_id'] + ">";
-                    result += '<img src=' + '../../moment_img/' + data[i]['img_url'] + " >";
-                    result += "</a></div>";
-                }
-                else {
-                    result += "<div class='info-flow-right-text only-text'>" + replace_str(data[i]['info']) + "</div>";
-                }
-                result += "<div class='info-flow-right-time'>" + data[i]['time'] + "</div>";
-                if (global_user_name == data[i]['user_name']) {
-                    result += "<div class='delete-moment'>Delete</div>";
-                }
-                result += "<div class='info-flow-right-button'>";
-                result += "<img name='button' class='button-img' src='../../Public/Home/img/default/feed_comment.png' />";
-                result += "<div class='divPop'>";
-                result += "<img class='like-png' src='../../Public/Home/img/default/logout_like.png' />";
-                result += "<img class='comment-png' src='../../Public/Home/img/default/logout_comment.png' />";
-                result += "</div>";
-                result += "</div>";
-                result += "<div class='info-flow-right-like'></div>";
-                if (data[i]['info'] && data[i]['img_url']) {
-                    result += "<div class='info-flow-right-text'>About : " + replace_str(data[i]['info']) + "</div>";
-                }
-                result += "<div class='info-flow-right-comment' ></div>";
-                result += "<div class='info-flow-right-input' name='div_comment'>";
-                result += "<input type='text' class='comment-box' placeholder='Comment' maxlength=140 required/>";
-                result += "</div>";
-                result += "</div>";
-                result += "</div>";
-
-                $('#loading').before(result);
-                //$('.info-flow:last').hide().slideDown(1200);
-                divPop($('.button-img:last'));
-                $(".delete-moment:last").unbind().bind("click", function () {
-                    deleteMoment($(this).parent());
-                });
+        success: function (ret) {
+            var retData = ret[PARAM_RET_DATA];
+            if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
+                alert(ret[PARAM_RET_MSG]);
+                return;
             }
-            //$('.info-flow:first').hide().slideDown('slow');
-            // $(".info-flow-right-button .button-img").each(function() {
-            //     divPop($(this));
-            // });
-            // $(".delete-moment").unbind().bind("click", function() {
-            //     deleteMoment($(this).parent());
-            // });
-            refresh();
-
-            var end_time = new Date().getTime();
-            var run_time = end_time - start_time;
-            if (page == 0 && run_time < 1200) {
-                sleep(1200);
-            }
-            $("#fakeloader").fadeOut('slow');
+            $("#avatar img").attr("src", reFormatUrl("avatar_img/") + retData.avatar);
         }
     });
 }
 
-// 返回一整块html直接渲染页面
+// 加载更多moments 返回一整块html直接渲染页面
 function loadNextPageViaHtml(page) {
     var start_time = new Date().getTime();
     $.ajax({
@@ -262,7 +182,7 @@ function loadNextPageViaHtml(page) {
             "page": page
         },
         dataType: "html",
-        url: "./loadNextPageViaHtml",
+        url: reFormatUrl("Moments/loadNextPageViaHtml"),
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             //alert("加载错误，错误原因：\n" + errorThrown);
         },
@@ -275,9 +195,9 @@ function loadNextPageViaHtml(page) {
                 // effect(特效),值有show(直接显示),fadeIn(淡入),slideDown(下拉)等,常用fadeIn
                 threshold: 200, // 提前开始加载
                 // threshold,值为数字,代表页面高度.如设置为200,表示滚动条在离目标位置还有200的高度时就开始加载图片,可以做到不让用户察觉
-                //event: 'click',  // 事件触发时才加载
+                // event: 'click',  // 事件触发时才加载
                 // event,值有click(点击),mouseover(鼠标划过),sporty(运动的),foobar(…).可以实现鼠标莫过或点击图片才开始加载,后两个值未测试…
-                //container: $("#container"),  // 对某容器中的图片实现效果
+                // container: $("#container"),  // 对某容器中的图片实现效果
                 // container,值为某容器.lazyload默认在拉动浏览器滚动条时生效,这个参数可以让你在拉动某DIV的滚动条时依次加载其中的图片
                 failurelimit: 3 // 图片排序混乱时
                 // failurelimit,值为数字.lazyload默认在找到第一张不在可见区域里的图片时则不再继续加载,但当HTML容器混乱的时候可能出现可见区域内图片并没加载出来的情况,failurelimit意在加载N张可见区域外的图片,以避免出现这个问题.
@@ -292,7 +212,7 @@ function loadNextPageViaHtml(page) {
 
             var end_time = new Date().getTime();
             var run_time = end_time - start_time;
-            if (page == 0 && run_time < 1200) {
+            if (page === 0 && run_time < 1200) {
                 sleep(1200);
             }
             $("#fakeloader").fadeOut('slow');
@@ -323,7 +243,7 @@ function getLikesForAjax(moment_id, moment_user_name) {
                 html += "<span class='like-user-name'>" + data[i].reply_name + "</span>"; //点赞人名字
                 html += "<span>,</span>";
             }
-            if (i == data.length - 1) {
+            if (i === data.length - 1) {
                 html += "<span class='like-user-name'>" + data[i].reply_name + "</span>"; //点赞人名字
             }
             $("div.info-flow-right[id=" + moment_id + "]").children(".info-flow-right-like").empty();
@@ -344,7 +264,7 @@ function getCommentsForAjax(moment_id, moment_user_name) {
         dataType: "json",
         url: "./getComments",
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            //alert("加载错误，错误原因：\n"+errorThrown);
+            // alert("加载错误，错误原因：\n"+errorThrown);
         },
         success: function (data) {
             var html = "";
@@ -432,7 +352,7 @@ function searchUser(search_name) {
             //alert("查找用户失败，失败原因：\n"+errorThrown);
         },
         success: function (data) {
-            if (data.user_name == undefined) {
+            if (data.user_name === undefined) {
                 alert("This user does not exist, please try again");
                 return;
             }
@@ -444,15 +364,14 @@ function searchUser(search_name) {
             html += "<div id='profile_region' ><span class='profile-span'>Region：</span><span id='profile_region_val' class='profile-val'>" + data.region + "</span></div><hr>";
             html += "<div id='profile_whatsup' ><span class='profile-span'>What's Up：</span><span id='profile_whatsup_val' class='profile-val'>" + data.whatsup + "</span></div><hr>";
             html += "</form>";
-            if (data.user_name == global_user_name) { //自己的资料可以修改
+            if (data.user_name === GLOBAL_USER_NAME) { //自己的资料可以修改
                 html += "<div id='modify_profile_button'>modify</div>";
                 html += "<div id='logout'>Log Out</div>";
             }
-            else if (data.is_follow == 0) { //未关注
-                // html += "<div id='add_friend_div' ><input type='text' placeholder='write some remark here to your new friend' maxlength=140 /></div>"; // 发送好友请求
+            else if (data.is_follow === 0) { //未关注
                 html += "<div id='follow_button'>Follow</div>";
             }
-            else if (data.is_follow == 1) { //已关注
+            else if (data.is_follow === 1) { //已关注
                 html += "<div id='follow_button'>Following</div>";
             }
 
@@ -480,12 +399,12 @@ function searchUser(search_name) {
     });
 };
 
-/*
+/**
  * @brief 关注或者取消关注
- * @param | follow_id 关注人
- * @param | followed_id 被关注人
- * @param | operation_follow 关注操作：1：关注 0：取消关注
- * @return |
+ * @param follow_id 关注人
+ * @param followed_id 被关注人
+ * @param operation_follow 关注操作：1：关注 0：取消关注
+ * @return
  * */
 function follow(follow_id, followed_id, operation_follow) {
     $.ajax({
@@ -509,7 +428,7 @@ function follow(follow_id, followed_id, operation_follow) {
 }
 
 // 好友请求
-function friendRuquest(remark, requested_name) {
+function friendRequest(remark, requested_name) {
     $.ajax({
         type: "POST",
         data: {
@@ -517,7 +436,7 @@ function friendRuquest(remark, requested_name) {
             "requested_name": requested_name
         },
         dataType: "json",
-        url: "./friendRuquest",
+        url: "./friendRequest",
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             //alert("好友请求发送失败，失败原因：\n"+errorThrown);
         },
@@ -526,7 +445,7 @@ function friendRuquest(remark, requested_name) {
             $("#add_friend_div input").val("").blur();
         }
     });
-};
+}
 
 // 点赞
 function addLike(moment_id, moment_user_name) {
@@ -561,20 +480,8 @@ function addComment() {
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             //alert("加载错误，错误原因：\n"+errorThrown);
         },
-        success: function (data) { //当addComment后执行reFresh(),重新加载所有评论,所以下面单条添加可以省略
-            // var html="";
-            // for(var i=0;i<data.length;i++){
-            //     html+="<div class='one-comment' id="+data[i].comment_id+">";
-            //     html+="<span class='comment-user-name'>"+data[i].reply_name+"</span>";//回复人名字
-            //     if(data[i].reply_name!=data[i].replyed_name){
-            //         html+=" @ ";
-            //      html+="<span class='comment-user-name'>"+data[i].replyed_name+"</span>";//被回复人名
-            //     }
-            //     html+="："
-            //     html+="<span>"+data[i].comment_val+"</span>";//评论
-            //     html+="</div>";
-            // }
-            // $(".comment-box:focus").parent().siblings(".info-flow-right-comment").append(html);
+        success: function (data) {
+            // 当addComment后执行reFresh(), 重新加载所有评论
             $(".comment-box:focus").val("");
             $(".comment-box:focus").parent().hide();
             refresh();
@@ -598,9 +505,6 @@ function addMoment() {
         if (ret['isSuccess']) {
             var result = '';
             result += "<div class='info-flow' >";
-            // result += "<div class='info-flow-left'>";
-            // result += '<img src=' + '../avatar_img/' + ret['avatar'] + '>';
-            // result += "</div>";
             result += "<div class='info-flow-right' id=" + ret['moment_id'] + ">";
             result += "<div class='info-flow-right-avatar'>";
             result += '<img src=' + '../avatar_img/' + ret['avatar'] + '>';
@@ -634,10 +538,11 @@ function addMoment() {
             result += "</div>";
             result += "</div>";
             result += "</div>";
-            $("#free").after(result); //插入新发布的 moment
+            $("#free").after(result); // 插入新发布的 moment
             $('.info-flow').first().hide().slideDown(mobile_speed);
-            divPop($(".info-flow-right-button .button-img").first()); //给新载入的按钮元素绑定事件
-            $(".delete-moment").first().bind("click", function () { //给新载入的删除朋友圈元素绑定事件
+            divPop($(".info-flow-right-button .button-img").first()); // 给新载入的按钮元素绑定事件
+            $(".delete-moment").first().bind("click", function () {
+                // 给新载入的删除朋友圈元素绑定事件
                 deleteMoment($(this).parent());
             });
         } else {
@@ -657,9 +562,6 @@ function getRollingWall() {
             //alert("加载错误，错误原因：\n"+errorThrown);
         },
         success: function (data) {
-            // var html_1 = "<img name=" + data[0].moment_id_1 + " src=../../moment_img/" + data[0].img_url_1 + ">";
-            // var html_2 = "<img name=" + data[0].moment_id_2 + " src=../../moment_img/" + data[0].img_url_2 + ">";
-            // var html_3 = "<img name=" + data[0].moment_id_3 + " src=../../moment_img/" + data[0].img_url_3 + ">";
             var html_1 = "<a href=./details/id/" + data[0].moment_id_1 + "><img name=" + data[0].moment_id_1 + " class='lazy' data-original=../moment_img/" + data[0].img_url_1 + "></a>";
             var html_2 = "<a href=./details/id/" + data[0].moment_id_2 + "><img name=" + data[0].moment_id_2 + " class='lazy' data-original=../moment_img/" + data[0].img_url_2 + "></a>";
             var html_3 = "<a href=./details/id/" + data[0].moment_id_3 + "><img name=" + data[0].moment_id_3 + " class='lazy' data-original=../moment_img/" + data[0].img_url_3 + "></a>";
@@ -674,11 +576,11 @@ function getRollingWall() {
                 // effect(特效),值有show(直接显示),fadeIn(淡入),slideDown(下拉)等,常用fadeIn
                 threshold: 1000, // 提前开始加载
                 // threshold,值为数字,代表页面高度.如设置为200,表示滚动条在离目标位置还有200的高度时就开始加载图片,可以做到不让用户察觉
-                //event: 'click',  // 事件触发时才加载
+                // event: 'click',  // 事件触发时才加载
                 // event,值有click(点击),mouseover(鼠标划过),sporty(运动的),foobar(…).可以实现鼠标莫过或点击图片才开始加载,后两个值未测试…
-                //container: $("#container"),  // 对某容器中的图片实现效果
+                // container: $("#container"),  // 对某容器中的图片实现效果
                 // container,值为某容器.lazyload默认在拉动浏览器滚动条时生效,这个参数可以让你在拉动某DIV的滚动条时依次加载其中的图片
-                //failurelimit : 3 // 图片排序混乱时
+                // failurelimit : 3 // 图片排序混乱时
                 // failurelimit,值为数字.lazyload默认在找到第一张不在可见区域里的图片时则不再继续加载,但当HTML容器混乱的时候可能出现可见区域内图片并没加载出来的情况,failurelimit意在加载N张可见区域外的图片,以避免出现这个问题.
             });
         }
@@ -710,8 +612,8 @@ function deleteMoment(obj) {
 
 // 删除评论函数
 function deleteComment(obj) {
-    if (obj.children(".comment-user-name").first().text() == global_user_name) { //自己的评论才有权限删除
-        if (isPC() == 0) { //移动端
+    if (obj.children(".comment-user-name").first().text() === GLOBAL_USER_NAME) { //自己的评论才有权限删除
+        if (isPC() === 0) { //移动端
             // obj.longPress(function() {
             //     var data = confirm("Confirm deletion?");
             //     if (data) {
@@ -733,7 +635,6 @@ function deleteComment(obj) {
             //         });
             //     }
             // });
-
             touch.on(obj, 'hold', function (ev) {
                 //console.log("you have done", ev.type);
                 var data = confirm("Confirm deletion?");
@@ -756,7 +657,6 @@ function deleteComment(obj) {
                     });
                 }
             });
-
         } else { //PC端
             var timeout;
             obj.mousedown(function () {
@@ -786,16 +686,8 @@ function deleteComment(obj) {
                 clearTimeout(timeout);
             });
         }
-        ;
     }
 }
-
-//停止默认事件
-function preventDefault(event) {
-    var e = event || window.event;
-    if (e.preventDefault) e.preventDefault();
-    e.returnValue = false;
-};
 
 // 异步加载信息
 function loadMessages() {
@@ -809,9 +701,8 @@ function loadMessages() {
         },
         success: function (data) {
             var html = "";
-            // html += "<div id='location' name='location'></div> <!-- 设定一个location.hash位置 -->";
-            html += "<div id='search'>"
-            html += "<input type='text' id='search_box' placeholder='Follow New Friends' maxlength=140 required/>"
+            html += "<div id='search'>";
+            html += "<input type='text' id='search_box' placeholder='Follow New Friends' maxlength=140 required/>";
             html += "</div>";
             for (var i = 0; i < data.length; i++) {
                 html += "<div class='message-flow' name=" + data[i].moment_id + ">";
@@ -829,116 +720,7 @@ function loadMessages() {
             $("#slidebar").empty().append(html);
         }
     });
-};
-
-// 查看一条moment
-function getOneMoment(moment_id) {
-    $.ajax({
-        url: './getOneMoment',
-        type: 'POST',
-        data: {
-            "moment_id": moment_id
-        },
-        dataType: 'JSON',
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            //alert("信息加载错误，错误原因：\n"+errorThrown);
-        },
-        success: function (data) {
-            var result = '';
-            result += "<div class='info-flow' id='the_one_moment'>";
-            result += "<div class='info-flow-left'>";
-            result += '<img src=' + '../../avatar_img/' + data[0]['avatar'] + '>';
-            result += "</div>";
-            result += "<div class='info-flow-right' id=" + data[0]['moment_id'] + ">";
-            result += "<div class='info-flow-right-user-name'>" + data[0]['user_name'] + "</div>";
-            if (data[0]['text_box']) {
-                result += "<div class='info-flow-right-text'>" + data[0]['text_box'] + "</div>";
-            }
-            if (data[0]['photo']) {
-                result += "<div class='info-flow-right-img'>";
-                result += "<a href=../../moment_img/" + data[0]['photo'] + " data-lightbox=" + data[0]['moment_id'] + ">";
-                result += '<img src=' + '../../moment_img/' + data[0]['photo'] + " onload='formatImg(this)'>";
-                result += "</a></div>";
-            }
-            result += "<div class='info-flow-right-time'>" + data[0]['time'] + "</div>";
-            if (data[0]['user_name'] == data[0]['my_name']) {
-                result += "<div class='delete-moment'>Delete</div>";
-            }
-            result += "<div class='info-flow-right-button'>";
-            result += "<img name='button' class='button-img' src='../../Public/Home/img/default/feed_comment.png' />";
-            result += "<div class='divPop'>";
-            result += "<img class='like-png' src='../../Public/Home/img/default/logout_like.png' />";
-            result += "<img class='comment-png' src='../../Public/Home/img/default/logout_comment.png' />";
-            result += "</div>";
-            result += "</div>";
-            result += "<div class='info-flow-right-like'></div>";
-            result += "<div class='info-flow-right-comment' ></div>";
-            result += "<div class='info-flow-right-input' name='div_comment'>";
-            result += "<input type='text' class='comment-box' placeholder='Comment' maxlength=140 required/>";
-            result += "</div>";
-            result += "</div>";
-            result += "</div>";
-            $("#top~div").remove();
-            $("#top").after(result);
-            $(".comment-box").attr("id", global_user_name); //将我的名字赋值给输入框作为id属性
-            divPop($(".info-flow-right-button .button-img").first()); //给新载入的按钮元素绑定事件
-            $(".delete-moment").first().bind("click", function () { //给新载入的删除朋友圈元素绑定事件
-                deleteMoment($(this).parent());
-            });
-            refresh();
-        }
-    });
-};
-
-// 加载好友添加请求
-function loadFriendRequest() {
-    $.ajax({
-        type: "POST",
-        data: {},
-        dataType: "json",
-        url: "./loadFriendRequest",
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            //alert("好友请求加载错误，错误原因：\n"+errorThrown);
-        },
-        success: function (data) {
-            var html = "";
-            for (var i = 0; i < data.length; i++) {
-                html += "<div class='request-flow' name=" + data[i].id + ">";
-                html += "<div class='request-flow-left'>";
-                html += "<img src=../../avatar_img/" + data[i].avatar + " alt=''>";
-                html += "</div>";
-                html += "<div class='request-flow-right'>";
-                html += "<div class='line1'>";
-                html += "<div class='request-flow-right-user-name'><span>" + data[i].request_name + "</span> wants to add you.</div>";
-                html += "<div class='request-flow-right-time'>" + data[i].time + "</div>";
-                html += "</div>";
-                html += "<div class='request-flow-right-text'>remark：" + data[i].remark + "</div>";
-                html += "<div class='request-agree'>agree</div>";
-                html += "</div></div>";
-            }
-            $("#search").after(html);
-        }
-    });
-};
-
-// 处理好友请求
-function agreeRequest(id, request_name) {
-    $.ajax({
-        type: "POST",
-        data: {
-            "id": id,
-            "request_name": request_name
-        },
-        dataType: "json",
-        url: "./agreeRequest",
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            // alert("好友添加错误，错误原因：\n"+errorThrown);
-        },
-        success: function (data) {
-            alert("已添加对方为好友");
-        }
-    });
-};
+}
 
 // 修改资料
 function modifyProfile() {
@@ -974,7 +756,7 @@ function loadNews() {
         success: function (data) {
             var html = "<span id='news'> +" + data['number'] + "</span>";
             $("#news").remove();
-            if (data['number'] != 0) {
+            if (data['number'] !== 0) {
                 $("#back").append(html);
             }
         }
@@ -992,7 +774,7 @@ function clickCamera() {
         html += "<div id='edit_box'>";
         html += "<form name='form_moment' id='form_moment'>";
         html += "<textarea id='text_box' name='text_box' placeholder='Say something ?' maxlength=280></textarea>";
-        html += "<div id='btn'><span>+</span>"
+        html += "<div id='btn'><span>+</span>";
         html += "<input type='file' name='upfile' id='photo'>";
         html += "</div>";
         html += "<div id='share'>Share</div>";
@@ -1002,24 +784,22 @@ function clickCamera() {
         $("#edit_box").hide().slideDown(mobile_speed, function () {
             $("#text_box").focus();
         });
-        $("#photo").on('change', function (e) { //若选择了图片则显示图片名 否则显示+
+        $("#photo").on('change', function (e) {
+            // 若选择了图片则显示图片名 否则显示+
             try {
-                var name = e.currentTarget.files[0].name;
+                // var name = e.currentTarget.files[0].name;
                 $("#btn span").text('-');
             } catch (err) {
                 $("#btn span").text("+");
             }
         });
-        // $("#photo").click();
-        // document.getElementById("photo").click();
     }
 }
 
-//处理各种页面返回
+// 处理各种页面返回
 function clickToBack() {
-    if ($("#current_location").text() == "SixChat") { //打开消息侧边栏
-        // loadMessages(); //异步加载消息
-        // loadFriendRequest();
+    if ($("#current_location").text() === "SixChat") {
+        //打开消息侧边栏
         $("#camera").hide();
         $("#current_location").text("Messages");
         $("#back").text("SixChat");
@@ -1032,13 +812,13 @@ function clickToBack() {
         }
         $("#slidebar_profile~div").remove();
         loadMessages(); //异步加载消息
-        // loadFriendRequest();
-        //location.hash = "#location"; //跳到消息界面位置
         document.body.scrollTop = document.documentElement.scrollTop = 0; //跳转顶部
-    } else if ($("#current_location").text() == "Messages") { //关闭消息侧边栏
+    } else if ($("#current_location").text() === "Messages") {
+        //关闭消息侧边栏
         self.location.href = "";
         return;
-    } else if ($("#current_location").text() == "Details" || $("#current_location").text() == "Profile") { //返回主页面
+    } else if ($("#current_location").text() === "Details" || $("#current_location").text() === "Profile") {
+        //返回主页面
         self.location.href = "";
     }
 }
