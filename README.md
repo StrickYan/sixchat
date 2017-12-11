@@ -27,6 +27,7 @@
 * ThinkPHP/ ThinkPHP框架核心文件，无须改动
 * sixchat.sql 应用的数据库与数据表结构，导入即可
 * vendor/ 通过composer安装模块的存放位置
+* logs/ 日志目录
 
 
 
