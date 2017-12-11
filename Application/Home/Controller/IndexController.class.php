@@ -11,6 +11,6 @@ class IndexController extends Controller
      */
     public function index()
     {
-        $this->success('Welcome To SixChat.', U('/login/index'), 1);
+        $this->success('Welcome To SixChat.', U('/auth/login'), 1);
     }
 }

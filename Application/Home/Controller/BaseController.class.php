@@ -40,7 +40,7 @@ class BaseController extends Controller
     {
         // 判断用户是否已经登录
         if (!isset($_SESSION['name'])) {
-            $this->error('', U('/login/index'), 1);
+            $this->error('', U('/auth/login'), 1);
         }
     }
 

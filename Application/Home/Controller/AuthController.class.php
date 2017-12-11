@@ -6,7 +6,7 @@
  **************************************************************************/
 
 /**
- * @file LoginController.class.php
+ * @file AuthController.class.php
  * @author 1275330626(com@qq.com)
  * @date 2017/08/06 03:22:39
  * @brief
@@ -17,12 +17,12 @@ namespace Home\Controller;
 
 use Think\Controller;
 
-class LoginController extends Controller
+class AuthController extends Controller
 {
     /**
-     * 登录函数
+     * 登录
      */
-    public function index()
+    public function login()
     {
         if (isset($_SESSION['name']) && !empty($_SESSION['name'])) {
             // 判断是否已经登录
@@ -91,7 +91,17 @@ class LoginController extends Controller
         $array['id'] = $id;
         $array['password'] = $password;
         $this->assign($array); // 模板赋值
-        $this->display(); // 模板渲染
+        $this->display("login/index"); // 模板渲染
+    }
+
+    /**
+     * 注销
+     */
+    public function logout()
+    {
+        $obj = new SixChatApi2016Controller();
+        $obj->logout();
+        header("Location:login");
     }
 
 }

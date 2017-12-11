@@ -541,15 +541,6 @@ class MomentsController extends BaseController
     }
 
     /**
-     * 注销
-     */
-    public function logout()
-    {
-        $this->obj->logout();
-        header("Location:index");
-    }
-
-    /**
      * moment详情页
      */
     public function details()

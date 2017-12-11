@@ -115,7 +115,7 @@ $(function () {
         document.body.scrollTop = document.documentElement.scrollTop = 0; //跳转顶部
     });
     $(document).on("click", "#logout", function () {
-        location.href = "./logout";
+        location.href = "../auth/logout";
     });
     // 替换文本内容
     $(".info-flow-right-text").each(function () {
