@@ -4,7 +4,7 @@ $(function() {
     refreshAtDetails(); //初始化：刷新评论 给朋友圈元素绑定事件
     initCommentEvent(); //初始化点赞和评论相关事件
     //双击或长按顶部中间栏刷新
-    if (isPC() === 0) { //移动端
+    if (isPC() === false) { //移动端
         $("#current_location").longPress(function() {
             self.location.href = "";
         });
@@ -165,7 +165,7 @@ function deleteMoment(obj) {
 // 删除评论函数
 function deleteComment(obj) {
     if (obj.children(".comment-user-name").first().text() === GLOBAL_USER_NAME) { //自己的评论才有权限删除
-        if (isPC() == 0) { //移动端
+        if (isPC() === false) { //移动端
             // obj.longPress(function() {
             //     var data = confirm("Confirm deletion?");
             //     if (data) {
