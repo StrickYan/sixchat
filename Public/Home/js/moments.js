@@ -352,7 +352,7 @@ function searchUser(search_name) {
             //alert("查找用户失败，失败原因：\n"+errorThrown);
         },
         success: function (data) {
-            if (data.user_name === undefined) {
+            if (data.user_name === undefined || data.user_name == null) {
                 alert("This user does not exist, please try again");
                 return;
             }
