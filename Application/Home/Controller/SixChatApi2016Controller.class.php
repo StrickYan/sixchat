@@ -60,7 +60,7 @@ class SixChatApi2016Controller extends Controller
             // 登录成功
             if ($userName) {
                 // 保存密码cookie
-                setcookie("password", "$password", time() + 60 * 60 * 24 * 7, "/auth", "six.classmateer.com");
+                setcookie("password", "$password", time() + 60 * 60 * 24 * 7, "/auth", "sixchat.classmateer.com");
                 session_start();
                 $_SESSION["name"] = $userName;
                 return 0;
@@ -77,7 +77,7 @@ class SixChatApi2016Controller extends Controller
     public function logout()
     {
         session_destroy();
-        setcookie("password", "", time() - 3600, "/auth", "six.classmateer.com");
+        setcookie("password", "", time() - 3600, "/auth", "sixchat.classmateer.com");
     }
 
     /**
