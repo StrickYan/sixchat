@@ -49,6 +49,7 @@ class SixChatApi2016Controller extends Controller
     {
         $condition['user_name'] = $id;
         $userName = $this->userModel->getUserName($condition);
+        $userId = $this->userModel->getUserId($condition);
         // 该用户不存在
         if (!$userName) {
             return -1;
@@ -63,6 +64,7 @@ class SixChatApi2016Controller extends Controller
                 setcookie("password", "$password", time() + 60 * 60 * 24 * 7, "/auth", "six.classmateer.com");
                 session_start();
                 $_SESSION["name"] = $userName;
+                $_SESSION["user_id"] = $userId;
                 return 0;
             } else {
                 return -2; //密码错误

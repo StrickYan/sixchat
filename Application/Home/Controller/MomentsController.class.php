@@ -22,7 +22,7 @@ class MomentsController extends BaseController
      */
     public function index()
     {
-        $script = "<script>const GLOBAL_USER_NAME = \"" . $_SESSION["name"] . "\";</script>";
+        $script = "<script>const GLOBAL_USER_NAME = \"" . $_SESSION["name"] . "\";const GLOBAL_USER_ID = \"" . $_SESSION["user_id"] . "\";</script>";
         $this->assign('script', $script);
         $this->display();
     }
@@ -187,7 +187,29 @@ class MomentsController extends BaseController
                     $data['comment'] = "赞了你";
                     $this->commentModel->addComment($data);
                 }
+
+                if ($replyId != $replyedId) {
+                    // 指明给谁推送，为空表示向所有在线用户推送
+                    $to_uid = $replyedId;
+                    // 推送的url地址
+                    $push_api_url = "http://localhost:2121/";
+                    $post_data = array(
+                        'type' => 'publish_new_msg_num',
+                        'content' => '你有新消息',
+                        'to' => $to_uid,
+                    );
+                    $ch = curl_init();
+                    curl_setopt($ch, CURLOPT_URL, $push_api_url);
+                    curl_setopt($ch, CURLOPT_POST, 1);
+                    curl_setopt($ch, CURLOPT_HEADER, 0);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+                    $return = curl_exec($ch);
+                    curl_close($ch);
+                    // var_export($return);
+                }
             }
+
             $list[0] = "点赞成功";
             echo json_encode($list);
         }
@@ -216,6 +238,27 @@ class MomentsController extends BaseController
                 $data['time'] = date("Y-m-d H:i:s");
                 $data['type'] = 2;
                 $this->commentModel->addComment($data);
+
+                if ($replyId != $replyedId) {
+                    // 指明给谁推送，为空表示向所有在线用户推送
+                    $to_uid = $replyedId;
+                    // 推送的url地址
+                    $push_api_url = "http://localhost:2121/";
+                    $post_data = array(
+                        'type' => 'publish_new_msg_num',
+                        'content' => '你有新消息',
+                        'to' => $to_uid,
+                    );
+                    $ch = curl_init();
+                    curl_setopt($ch, CURLOPT_URL, $push_api_url);
+                    curl_setopt($ch, CURLOPT_POST, 1);
+                    curl_setopt($ch, CURLOPT_HEADER, 0);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+                    $return = curl_exec($ch);
+                    curl_close($ch);
+                    // var_export($return);
+                }
             }
 
             // 获取新增评论的 comment_id
@@ -547,6 +590,7 @@ class MomentsController extends BaseController
     {
         session_start();
         $userName = $_SESSION["name"];
+        $userId = $_SESSION["user_id"];
         $momentId = $_REQUEST['id'];
         $result = $this->momentModel->getOneMoment($momentId);
 
@@ -556,7 +600,7 @@ class MomentsController extends BaseController
             $value['info'] = htmlspecialchars($value['info']);
         }
 
-        $script = "<script>const GLOBAL_USER_NAME = \"" . $userName . "\";</script>";
+        $script = "<script>const GLOBAL_USER_NAME = \"" . $userName . "\"; const GLOBAL_USER_ID = \"" . $userId . "\";</script>";
 
         $this->assign('details', $result[0]);
         $this->assign('script', $script);

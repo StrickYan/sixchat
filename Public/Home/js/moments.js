@@ -24,6 +24,7 @@ var swiper = new Swiper('.swiper-container', {
 var page = 1; // 上拉加载更多全局页数
 var pc_speed = 1000; // pc动画速度
 var mobile_speed = 200; // 移动端动画速度
+
 $(function () {
     FastClick.attach(document.body); // 去除移动端click延迟300ms插件fastclick初始化
     getSessionUser(); // 获取登录用户信息
@@ -148,7 +149,8 @@ $(function () {
     });
 
     loadNews(); //加载未读提示
-    setInterval("loadNews()", 1000 * 60);
+    // setInterval("loadNews()", 1000 * 60);
+    Publish.newMsgNum();
 
 });
 
