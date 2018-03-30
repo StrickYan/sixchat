@@ -11,3 +11,7 @@ logs
 
 # mac files
 *.DS_Store
+
+# workerman files
+vendor/workerman/workerman.log
+vendor/workerman/_home_wwwroot_sixchat_web-msg-sender_start.php.pid

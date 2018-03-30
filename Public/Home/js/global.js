@@ -237,7 +237,7 @@ var HtmlUtil = {
 var Publish = {
     'newMsgNum': function () {
         // 初始化io对象
-        var socket = io('http://'+document.domain+':2120');
+        var socket = io('//'+document.domain+':2120');
         // uid 可以为网站用户的uid
         var uid = parseInt(GLOBAL_USER_ID);
         // 当socket连接后发送登录请求
