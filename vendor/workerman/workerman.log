@@ -1,0 +1,34 @@
+2018-03-30 18:50:24 pid:30733 Workerman[start.php] start in DAEMON mode
+2018-03-30 18:51:50 pid:31075 Workerman[start.php] stop 
+2018-03-30 18:51:50 pid:31075 Workerman[start.php] is stoping ...
+2018-03-30 18:51:50 pid:30735 Workerman[start.php] stopping ...
+2018-03-30 18:51:50 pid:30735 Workerman[start.php] has been stopped
+2018-03-30 18:51:50 pid:31075 Workerman[start.php] stop success
+2018-03-30 18:58:50 pid:31824 Workerman[start.php] start in DAEMON mode
+2018-03-30 19:01:23 pid:32004 Workerman[start.php] stop 
+2018-03-30 19:01:23 pid:32004 Workerman[start.php] is stoping ...
+2018-03-30 19:01:23 pid:31826 Workerman[start.php] stopping ...
+2018-03-30 19:01:23 pid:31826 Workerman[start.php] has been stopped
+2018-03-30 19:01:23 pid:32004 Workerman[start.php] stop success
+2018-03-30 19:37:07 pid:32126 Workerman[start.php] start in DAEMON mode
+2018-03-30 19:43:46 pid:32179 Workerman[start.php] start in DAEMON mode
+2018-03-30 19:43:46 pid:32179 Workerman[start.php] already running
+2018-03-30 19:43:52 pid:32219 Workerman[start.php] status 
+2018-03-30 19:43:59 pid:32259 Workerman[start.php] stop 
+2018-03-30 19:43:59 pid:32259 Workerman[start.php] is stoping ...
+2018-03-30 19:43:59 pid:32128 Workerman[start.php] stopping ...
+2018-03-30 19:43:59 pid:32128 Workerman[start.php] has been stopped
+2018-03-30 19:43:59 pid:32259 Workerman[start.php] stop success
+2018-03-30 19:44:03 pid:32299 Workerman[start.php] start in DAEMON mode
+2018-03-30 20:35:11 pid:32571 Workerman[start.php] stop 
+2018-03-30 20:35:11 pid:32571 Workerman[start.php] is stoping ...
+2018-03-30 20:35:11 pid:32301 Workerman[start.php] stopping ...
+2018-03-30 20:35:11 pid:32301 Workerman[start.php] has been stopped
+2018-03-30 20:35:11 pid:32571 Workerman[start.php] stop success
+2018-03-30 20:35:16 pid:32611 Workerman[start.php] start in DAEMON mode
+2018-03-30 20:40:38 pid:32656 Workerman[start.php] stop 
+2018-03-30 20:40:38 pid:32656 Workerman[start.php] is stoping ...
+2018-03-30 20:40:38 pid:32613 Workerman[start.php] stopping ...
+2018-03-30 20:40:38 pid:32613 Workerman[start.php] has been stopped
+2018-03-30 20:40:38 pid:32656 Workerman[start.php] stop success
+2018-03-30 20:40:40 pid:32696 Workerman[start.php] start in DAEMON mode
