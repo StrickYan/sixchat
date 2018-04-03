@@ -3,26 +3,19 @@
 * 作者：StrickYan
 * 转载请标明出处，谢谢
 
-
-
-# 效果图（最新版可能不同）
+## 效果图（最新版可能不同）
 
 * PC端：  
-  ![](https://raw.githubusercontent.com/sk1275330626/sixchat/master/md_img/pc.png)  
+  ![](https://raw.githubusercontent.com/StrickYan/sixchat/master/md_img/pc.png)  
 * Mobile端：  
+  <img src="https://raw.githubusercontent.com/StrickYan/sixchat/master/md_img/mobile.png" width="300px" />
 
-<div align="center">
-<img src="https://raw.githubusercontent.com/sk1275330626/sixchat/master/md_img/mobile.png"/>
- </div>
-
-
-
-# 目录说明
+## 目录说明
 
 * Application/ 存放后台PHP代码
-* avatar_img/ 存放头像文件
+* avatar_img/ 存放头像图片
 * md_img/ 存放README.md中引用的图片文件
-* moment_img/ 存放内容图片
+* moment_img/ 存放信息流图片
 * Public/ 存放相关JS，CSS文件和默认的图片资源
 * ThinkPHP/ ThinkPHP框架核心文件，无须改动
 * sixchat.sql 应用的数据库与数据表结构，导入即可
@@ -31,7 +24,7 @@
 
 
 
-# 配置nginx.conf
+## 配置nginx.conf
 
 ```
 # ThnkPHP URL_MODEL=>2 rewrite
@@ -45,7 +38,7 @@ location /sixchat/ {
 
 
 
-# 代码规范
+## 代码规范
 
 * id关键词用下划线（_）连接，class关键词用中划线（-）连接
 
@@ -57,7 +50,7 @@ location /sixchat/ {
 
 
 
-# TODO
+## TODO
 
 1. 个人主页
 2. 好友列表
