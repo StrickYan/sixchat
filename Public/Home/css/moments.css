@@ -342,10 +342,10 @@ a {
     line-height: 20px;
     border: 0 solid red;
     margin: 5px 0;
-    padding: 0 5px;
+    // padding: 0 5px;
     color: #333;
-    background-color: #f0f0f0;
-    border-radius: 5px;
+    // background-color: #f0f0f0;
+    // border-radius: 5px;
 }
 
 .only-text {
@@ -361,7 +361,7 @@ a {
     border: 0 solid red;
     cursor: zoom-in;
     width: 100%;
-    border-radius: 5px;
+    border-radius: 10px;
 }
 
 .info-flow-right-time {
@@ -435,7 +435,7 @@ a {
 
 .info-flow-right-comment {
     margin: 0 0 0 0;
-    padding: 0 5px;
+    padding: 0px 5px;
     color: #333;
     border: 0 solid red;
     background-color: #f0f0f0;
@@ -448,6 +448,7 @@ a {
     word-break: break-all;
     -webkit-tap-highlight-color: rgba(0, 0, 0, .2);
     cursor: pointer;
+    //padding: 2px 5px;
 }
 
 .one-comment:hover {

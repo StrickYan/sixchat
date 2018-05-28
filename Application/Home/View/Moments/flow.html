@@ -5,16 +5,19 @@
 				<img class="lazy" data-original="__ROOT__/avatar_img/{$vo.avatar}" alt="">
 			</div>
 			<div class="info-flow-right-user-name">{$vo.user_name}</div>								
-			<if condition="$vo.img_url neq ''">
+			
+            <if condition="$vo.img_url neq ''">
 				<div class="info-flow-right-img">
 					<a href="__ROOT__/moment_img/{$vo.img_url}" data-lightbox="{$vo.moment_id}">
 						<img class="lazy" data-original="__ROOT__/moment_img/{$vo.img_url}" />
 					</a>
 				</div>
-			<else/>
-			    <div class='info-flow-right-text only-text'>{$vo.info}</div>
 			</if>
-			<div class="info-flow-right-time">{$vo.time}</div>
+			<if condition="$vo.info neq ''">
+			    <div class="info-flow-right-text">{$vo.info}</div>
+			</if>
+
+            <div class="info-flow-right-time">{$vo.time}</div>
 			<if condition="$vo.user_name eq $_SESSION['name']">
 				<div class="delete-moment">Delete</div>
 			</if>
@@ -25,12 +28,9 @@
 			        <img class="comment-png" src="__PUBLIC__/Home/img/default/logout_comment.png" />  
 			    </div>  
 			</div>
-			<div class="info-flow-right-like"></div>
-			<if condition="$vo.info neq '' and $vo.img_url neq ''">
-			    <div class="info-flow-right-text">About : {$vo.info}</div>
-			</if>
 			
-			<div class="info-flow-right-comment" ></div>
+			<div class="info-flow-right-like"></div>
+            <div class="info-flow-right-comment" ></div>
 			<div class="info-flow-right-input" name="div_comment">
 				<input type="text" class="comment-box" placeholder="Comment" maxlength="140" required/>
 			</div>

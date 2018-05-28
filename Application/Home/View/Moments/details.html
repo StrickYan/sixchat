@@ -25,15 +25,15 @@
 				</div>
 				<div class="info-flow-right-user-name">{$details.user_name}</div>
 				<!-- <div class="info-flow-right-text">{$details.info}</div> -->
-				<if condition="$details.img_url eq ''">
-                    <div class="info-flow-right-text only-text">{$details.info}</div>
-				</if>	
 				<if condition="$details.img_url neq ''">
 					<div class="info-flow-right-img">
 						<a href="__ROOT__/moment_img/{$details.img_url}" data-lightbox="{$details.moment_id}">
 							<img class="lazy" data-original="__ROOT__/moment_img/{$details.img_url}" />
 						</a>
 					</div>
+				</if>
+                <if condition="$details.info neq ''">
+				    <div class="info-flow-right-text">{$details.info}</div>
 				</if>
 				<div class="info-flow-right-time">{$details.time}</div>
 				<if condition="$details.user_name eq $_SESSION['name']">
@@ -47,9 +47,6 @@
 				    </div>  
 				</div>
 				<div class="info-flow-right-like"></div>
-				<if condition="$details.info neq '' and $details.img_url neq ''">
-				    <div class="info-flow-right-text">About : {$details.info}</div>
-				</if>
 				<div class="info-flow-right-comment" ></div>
 				<div class="info-flow-right-input" name="div_comment">
 					<input type="text" class="comment-box" placeholder="Comment" maxlength="140" required/>
