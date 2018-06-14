@@ -1,5 +1,38 @@
 [
     {
+        "name": "beishanwen/php-libs",
+        "version": "v1.0.4",
+        "version_normalized": "1.0.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/beishanwen/php-libs.git",
+            "reference": "911bdf4b6e2d7b9f86916bd924c0537a920309b8"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/beishanwen/php-libs/911bdf4b6e2d7b9f86916bd924c0537a920309b8.zip",
+            "reference": "911bdf4b6e2d7b9f86916bd924c0537a920309b8",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=7.0"
+        },
+        "time": "2018-06-14T06:58:28+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache-2.0"
+        ],
+        "authors": [
+            {
+                "name": "StrickYan",
+                "email": "beishanwen@gmail.com"
+            }
+        ],
+        "description": "The PHP lib of beishanwen, Inc."
+    },
+    {
         "name": "monolog/monolog",
         "version": "1.23.0",
         "version_normalized": "1.23.0.0",
@@ -130,24 +163,24 @@
     },
     {
         "name": "workerman/channel",
-        "version": "v1.0.3",
-        "version_normalized": "1.0.3.0",
+        "version": "v1.0.4",
+        "version_normalized": "1.0.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/walkor/Channel.git",
-            "reference": "1425baf00f6342bfee89b726326225a8b6a8ea80"
+            "reference": "73def8e86fe8912b0822b9ffc6b28647ace94172"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/walkor/Channel/zipball/1425baf00f6342bfee89b726326225a8b6a8ea80",
-            "reference": "1425baf00f6342bfee89b726326225a8b6a8ea80",
+            "url": "https://files.phpcomposer.com/files/walkor/Channel/73def8e86fe8912b0822b9ffc6b28647ace94172.zip",
+            "reference": "73def8e86fe8912b0822b9ffc6b28647ace94172",
             "shasum": ""
         },
         "require": {
             "workerman/workerman": ">=3.3.0"
         },
-        "time": "2016-04-07T07:26:43+00:00",
-        "type": "project",
+        "time": "2018-04-28T05:31:12+00:00",
+        "type": "library",
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
@@ -162,24 +195,24 @@
     },
     {
         "name": "workerman/phpsocket.io",
-        "version": "v1.1.6",
-        "version_normalized": "1.1.6.0",
+        "version": "v1.1.9",
+        "version_normalized": "1.1.9.0",
         "source": {
             "type": "git",
             "url": "https://github.com/walkor/phpsocket.io.git",
-            "reference": "b7a7136ee73c6d6defea6ee8e315d9747146d704"
+            "reference": "8ee5fd56ea364e99c6428dd5df04b730f92e7d91"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/walkor/phpsocket.io/zipball/b7a7136ee73c6d6defea6ee8e315d9747146d704",
-            "reference": "b7a7136ee73c6d6defea6ee8e315d9747146d704",
+            "url": "https://files.phpcomposer.com/files/walkor/phpsocket.io/8ee5fd56ea364e99c6428dd5df04b730f92e7d91.zip",
+            "reference": "8ee5fd56ea364e99c6428dd5df04b730f92e7d91",
             "shasum": ""
         },
         "require": {
             "workerman/channel": ">=1.0.0",
             "workerman/workerman": ">=3.1.8"
         },
-        "time": "2018-03-30T07:02:49+00:00",
+        "time": "2018-04-15T14:03:37+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -198,17 +231,17 @@
     },
     {
         "name": "workerman/workerman",
-        "version": "v3.5.4",
-        "version_normalized": "3.5.4.0",
+        "version": "v3.5.11",
+        "version_normalized": "3.5.11.0",
         "source": {
             "type": "git",
             "url": "https://github.com/walkor/Workerman.git",
-            "reference": "f6e129079e5f5398bffc218024f2dd95678fc564"
+            "reference": "c83e189b5855d91f99a7d01ac58f5bbc7161b5e5"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/walkor/Workerman/zipball/f6e129079e5f5398bffc218024f2dd95678fc564",
-            "reference": "f6e129079e5f5398bffc218024f2dd95678fc564",
+            "url": "https://files.phpcomposer.com/files/walkor/Workerman/c83e189b5855d91f99a7d01ac58f5bbc7161b5e5.zip",
+            "reference": "c83e189b5855d91f99a7d01ac58f5bbc7161b5e5",
             "shasum": ""
         },
         "require": {
@@ -217,7 +250,7 @@
         "suggest": {
             "ext-event": "For better performance. "
         },
-        "time": "2017-12-06T04:17:52+00:00",
+        "time": "2018-06-07T09:36:14+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
