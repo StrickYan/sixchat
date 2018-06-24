@@ -12,23 +12,26 @@
  * @brief 工具包
  */
 
-namespace beishanwen\php\libs\session;
+namespace beishanwen\phplib\session;
 
-use beishanwen\php\libs\eds\EdsUtils;
+use beishanwen\phplib\eds\EdsUtils;
 
 class SessionUtils
 {
-    const SESSION_COOKIE_EXPIRE = 86400;
+    const SESSION_COOKIE_EXPIRE = 6400;
     const SESSION_COOKIE_NAME = '_beishanwen_';
 
     /**
-     * @desc 根据session生成分布式cookie，用户从一台机器A登录后，请求到另外一台机器B时需要用到这个cookie然后解密，然后把解密的session设置成B机器
+     * @desc 根据session生成分布式cookie，用户从一台机器A登录后，请求到另外一台机器B时需要用到这个cookie然后解密，然后把解密的session设置到B机器
      * @author strickyan@beishanwen.com
+     * @param $session_info
      * @return string $cookieStr
      */
-    public static function sessionInfo2cookieString()
+    public static function sessionInfo2cookieString($session_info)
     {
-        $str = $_SESSION['user_id'] . '#' . $_SESSION['user_name'];
+        $user_id = $session_info['user_id'];
+        $user_name = $session_info['user_name'];
+        $str = $user_id . '#' . $user_name;
         $new_str = EdsUtils::authCode($str, "ENCODE", EdsUtils::KEY, self::SESSION_COOKIE_EXPIRE);
         return $new_str;
     }
@@ -37,7 +40,7 @@ class SessionUtils
      * @desc 根据算法把cookie string 解密成session 对应的用户信息
      * @author strickyan@beishanwen.com
      * @param string $str_cookie
-     * @return boolean $session_info
+     * @return boolean | array $session_info
      */
     public static function cookieString2sessionInfo($str_cookie)
     {
@@ -50,10 +53,18 @@ class SessionUtils
         if (count($arr) != 2) {
             return false;
         }
-        $_SESSION['user_id'] = $arr[0];
-        $_SESSION['user_name'] = $arr[1];
 
-        return true;
+        $user_id = $arr[0];
+        $user_name = $arr[1];
+        if (empty($user_id) || empty($user_name)) {
+            return false;
+        }
+
+        $session_info = array(
+            'user_id' => $user_id,
+            'user_name' => $user_name,
+        );
+        return $session_info;
     }
 
     /**
@@ -64,10 +75,11 @@ class SessionUtils
      */
     public static function getSessionUserId()
     {
-        if (empty($_SESSION['user_id']) && false === self::cookieString2sessionInfo($_COOKIE[self::SESSION_COOKIE_NAME])) {
+        $session_info = self::cookieString2sessionInfo($_COOKIE[self::SESSION_COOKIE_NAME]);
+        if (false === $session_info) {
             return null;
         }
-        return $_SESSION['user_id'];
+        return $session_info['user_id'];
     }
 
     /**
@@ -78,20 +90,22 @@ class SessionUtils
      */
     public static function getSessionUserName()
     {
-        if (empty($_SESSION['user_name']) && false === self::cookieString2sessionInfo($_COOKIE[self::SESSION_COOKIE_NAME])) {
+        $session_info = self::cookieString2sessionInfo($_COOKIE[self::SESSION_COOKIE_NAME]);
+        if (false === $session_info) {
             return null;
         }
-        return $_SESSION['user_name'];
+        return $session_info['user_name'];
     }
 
     /**
      * @brief 检查是否登录
      * @author strickyan@beishanwen.com
+     * @param $user_id
      * @return boolean
      */
-    public static function checkUserIfLogin()
+    public static function checkUserIfLogin($user_id = '')
     {
-        if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
+        if (!empty($user_id)) {
             return true;
         }
         return false;

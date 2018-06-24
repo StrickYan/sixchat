@@ -12,7 +12,7 @@
  * @brief 工具包
  */
 
-namespace beishanwen\php\libs\dt;
+namespace beishanwen\phplib\dt;
 
 class StringUtils
 {

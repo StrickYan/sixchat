@@ -1,23 +1,23 @@
 [
     {
-        "name": "beishanwen/php-libs",
-        "version": "v1.0.4",
-        "version_normalized": "1.0.4.0",
+        "name": "beishanwen/phplib",
+        "version": "v1.0.7",
+        "version_normalized": "1.0.7.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/beishanwen/php-libs.git",
-            "reference": "911bdf4b6e2d7b9f86916bd924c0537a920309b8"
+            "url": "https://github.com/beishanwen/phplib.git",
+            "reference": "ba2ef49dc3ae1c721d3633f8134b0f943f9c4fc9"
         },
         "dist": {
             "type": "zip",
-            "url": "https://files.phpcomposer.com/files/beishanwen/php-libs/911bdf4b6e2d7b9f86916bd924c0537a920309b8.zip",
-            "reference": "911bdf4b6e2d7b9f86916bd924c0537a920309b8",
+            "url": "https://files.phpcomposer.com/files/beishanwen/phplib/ba2ef49dc3ae1c721d3633f8134b0f943f9c4fc9.zip",
+            "reference": "ba2ef49dc3ae1c721d3633f8134b0f943f9c4fc9",
             "shasum": ""
         },
         "require": {
             "php": ">=7.0"
         },
-        "time": "2018-06-14T06:58:28+00:00",
+        "time": "2018-06-24T05:08:52+00:00",
         "type": "library",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",
@@ -30,7 +30,7 @@
                 "email": "beishanwen@gmail.com"
             }
         ],
-        "description": "The PHP lib of beishanwen, Inc."
+        "description": "The phplib of beishanwen, Inc."
     },
     {
         "name": "monolog/monolog",

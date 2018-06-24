@@ -1,6 +1,6 @@
 {
-  "name": "beishanwen/php-libs",
-  "description": "The PHP lib of beishanwen, Inc.",
+  "name": "beishanwen/phplib",
+  "description": "The phplib of beishanwen, Inc.",
   "license": "Apache-2.0",
   "authors": [
     {

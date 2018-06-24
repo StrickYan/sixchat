@@ -12,7 +12,7 @@
  * @brief 加密解密工具包
  */
 
-namespace beishanwen\php\libs\eds;
+namespace beishanwen\phplib\eds;
 
 class EdsUtils
 {

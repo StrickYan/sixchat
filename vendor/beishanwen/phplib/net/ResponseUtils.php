@@ -12,7 +12,7 @@
  * @brief
  */
 
-namespace beishanwen\php\libs\net;
+namespace beishanwen\phplib\net;
 
 class ResponseUtils
 {

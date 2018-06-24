@@ -13,7 +13,7 @@
  * 复用 TP 的验证码类，只是修改了 TP 的 session 方法为 $_SESSION
  */
 
-namespace beishanwen\php\libs\verify;
+namespace beishanwen\phplib\verify;
 
 // 定义当前请求的系统常量
 define('NOW_TIME', $_SERVER['REQUEST_TIME']);

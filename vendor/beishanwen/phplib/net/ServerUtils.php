@@ -12,7 +12,7 @@
  * @brief $_SERVER 工具包
  */
 
-namespace beishanwen\php\libs\net;
+namespace beishanwen\phplib\net;
 
 class ServerUtils
 {

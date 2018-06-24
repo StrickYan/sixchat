@@ -11,7 +11,7 @@
  * @date 2018/06/04
  */
 
-namespace beishanwen\php\libs\uuid;
+namespace beishanwen\phplib\uuid;
 
 class GuidUtils
 {
