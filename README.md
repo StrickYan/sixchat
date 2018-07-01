@@ -1,10 +1,11 @@
-# SIXCHAT
+# SixChat
 * 原文：https://github.com/StrickYan/sixchat
 * 作者：StrickYan
 * 转载请标明出处，谢谢
 
 ## 捐赠
-  <img src="https://raw.githubusercontent.com/StrickYan/sixchat/master/md_img/Alipay.jpeg" width="300px" />
+  <img src="https://raw.githubusercontent.com/StrickYan/sixchat/master/md_img/Alipay.jpeg" width="150px" />
+  <img src="https://raw.githubusercontent.com/StrickYan/sixchat/master/md_img/WePay.jpeg" width="150px" />
 
 ## 效果图（最新版可能不同）
 
