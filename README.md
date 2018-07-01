@@ -3,6 +3,9 @@
 * 作者：StrickYan
 * 转载请标明出处，谢谢
 
+## 捐赠
+  <img src="https://raw.githubusercontent.com/StrickYan/sixchat/master/md_img/Alipay.jpeg" width="300px" />
+
 ## 效果图（最新版可能不同）
 
 * Mobile：  
