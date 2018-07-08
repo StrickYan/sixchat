@@ -4,8 +4,7 @@
 * 转载请标明出处，谢谢
 
 ## 捐赠
-  <img src="https://raw.githubusercontent.com/StrickYan/sixchat/master/md_img/Alipay.jpeg" width="200px" />
-  <img src="https://raw.githubusercontent.com/StrickYan/sixchat/master/md_img/WePay.jpeg" width="200px" />
+  <img src="https://raw.githubusercontent.com/StrickYan/sixchat/master/md_img/IMG_0238.jpg" width="400px" />
 
 ## 效果图（最新版可能不同）
 
