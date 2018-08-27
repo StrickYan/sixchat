@@ -475,7 +475,7 @@ class MomentsController extends BaseController
      */
     public function modifyProfile()
     {
-        $profileNameBox = isset($_POST['profile_name_box']) ? htmlspecialchars($_POST['profile_name_box']) : ''; //获取文本内容
+        $profileNameBox = isset($_POST['profile_name_box']) ? htmlspecialchars(trim($_POST['profile_name_box'])) : ''; //获取文本内容
         $profileSexBox = isset($_POST['profile_sex_box']) ? htmlspecialchars($_POST['profile_sex_box']) : '';
         $profileRegionBox = isset($_POST['profile_region_box']) ? htmlspecialchars($_POST['profile_region_box']) : '';
         $profileWhatsupBox = isset($_POST['profile_whatsup_box']) ? htmlspecialchars($_POST['profile_whatsup_box']) : '';
