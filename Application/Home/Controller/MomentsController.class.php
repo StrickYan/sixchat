@@ -371,8 +371,6 @@ class MomentsController extends BaseController
         if ($uploadResult) {
             // 有图片上传且上传成功返回图片名
             $imageName = $uploadResult;
-        } else {
-            return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
         }
 
         $userName = $_SESSION["name"];
@@ -606,8 +604,6 @@ class MomentsController extends BaseController
             );
             D('User')->updateUser($map, $data);
             unset($map);
-        } else {
-            return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
         }
         $userName = $_SESSION["name"];
         foreach ($this->obj->getUserId($userName, $userName) as $k => $val) {
