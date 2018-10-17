@@ -18,11 +18,6 @@ namespace Home\Controller;
 class MomentsController extends BaseController
 {
     protected $obj;
-    protected $momentModel;
-    protected $userModel;
-    protected $commentModel;
-    protected $friendRequestModel;
-    protected $friendModel;
 
     /**
      * BaseController constructor.
@@ -31,11 +26,6 @@ class MomentsController extends BaseController
     {
         parent::__construct();
         $this->obj = new SixChatApi2016Controller();
-        $this->momentModel = D('Moment');
-        $this->userModel = D('User');
-        $this->commentModel = D('Comment');
-        $this->friendRequestModel = D("FriendRequest");
-        $this->friendModel = D("Friend");
     }
 
     /**
@@ -67,7 +57,7 @@ class MomentsController extends BaseController
         if (isset($_REQUEST['id'])) {
             $id = htmlspecialchars($_REQUEST['id']); // moment_id
             if (is_numeric($id)) {
-                $list = $this->commentModel->getLikes($id);
+                $list = D('Comment')->getLikes($id);
                 foreach ($list as $key => &$value) {
                     $value['reply_name'] = htmlspecialchars($value['reply_name']);
                 }
@@ -87,7 +77,7 @@ class MomentsController extends BaseController
             $userName = $_SESSION["name"]; //当前用户
 
             if (is_numeric($id)) {
-                $list = $this->commentModel->getLikesInAuth($id, $userName, $momentUserName);
+                $list = D('Comment')->getLikesInAuth($id, $userName, $momentUserName);
                 foreach ($list as $key => &$value) {
                     $value['reply_name'] = htmlspecialchars($value['reply_name']);
                 }
@@ -104,7 +94,7 @@ class MomentsController extends BaseController
         if (isset($_REQUEST['id'])) {
             $id = htmlspecialchars($_REQUEST['id']);
             if (is_numeric($id)) {
-                $list = $this->commentModel->getComments1($id);
+                $list = D('Comment')->getComments1($id);
                 foreach ($list as $key => &$value) {
                     $value = array(
                         "reply_name" => htmlspecialchars($value['reply_name']),
@@ -123,7 +113,7 @@ class MomentsController extends BaseController
      */
     public function getAllLikes()
     {
-        $list = $this->commentModel->getAllLikes();
+        $list = D('Comment')->getAllLikes();
         foreach ($list as $key => &$value) {
             $value['reply_names'] = htmlspecialchars($value['reply_names']);
         }
@@ -135,7 +125,7 @@ class MomentsController extends BaseController
      */
     public function getAllComments()
     {
-        $list = $this->commentModel->getAllComments();
+        $list = D('Comment')->getAllComments();
         foreach ($list as $key => &$value) {
             $value = array(
                 "reply_name" => htmlspecialchars($value['reply_name']),
@@ -162,13 +152,13 @@ class MomentsController extends BaseController
                 $list = array();
                 if (!strcmp($userName, $momentUserName)) {
                     // 相等，浏览自己的帖子可以看到所有评论包括好友与非好友
-                    $list = $this->commentModel->getComments1($id);
+                    $list = D('Comment')->getComments1($id);
                 } else {
                     // 浏览他人的帖子时只能看到互为好友的评论或者 自己与该用户的对话
                     foreach ($this->obj->getUserId($userName, $momentUserName) as $k => $val) {
                         $userId = $val["reply_id"];
                         $momentUserId = $val["replyed_id"];
-                        $list = $this->commentModel->getComments2($id, $userId, $momentUserId); //好友关系可见
+                        $list = D('Comment')->getComments2($id, $userId, $momentUserId); //好友关系可见
                     }
                 }
                 foreach ($list as $key => &$value) {
@@ -203,12 +193,12 @@ class MomentsController extends BaseController
                 $condition['replyed_id'] = $replyedId;
                 $condition['state'] = 1;
                 $condition['type'] = 1;
-                $result = $this->commentModel->getCommentId($condition);
+                $result = D('Comment')->getCommentId($condition);
 
                 if ($result) {
                     // 已点赞 则删除赞记录
                     $data['comment_id'] = $result;
-                    $this->commentModel->updateCommentState($data);
+                    D('Comment')->updateCommentState($data);
                 } else {
                     // 没有点赞记录 则增加点赞
                     $data['moment_id'] = $momentId;
@@ -217,7 +207,7 @@ class MomentsController extends BaseController
                     $data['time'] = date("Y-m-d H:i:s");
                     $data['type'] = 1;
                     $data['comment'] = "赞了你";
-                    $this->commentModel->addComment($data);
+                    D('Comment')->addComment($data);
                 }
 
                 if ($replyId != $replyedId) {
@@ -269,7 +259,7 @@ class MomentsController extends BaseController
                 $data['comment'] = $commentVal;
                 $data['time'] = date("Y-m-d H:i:s");
                 $data['type'] = 2;
-                $this->commentModel->addComment($data);
+                D('Comment')->addComment($data);
 
                 if ($replyId != $replyedId) {
                     // 指明给谁推送，为空表示向所有在线用户推送
@@ -294,7 +284,7 @@ class MomentsController extends BaseController
             }
 
             // 获取新增评论的 comment_id
-            $commentId = $this->commentModel->getMaxCommentId();
+            $commentId = D('Comment')->getMaxCommentId();
 
             // 返回json数据
             $list[] = array(
@@ -339,15 +329,15 @@ class MomentsController extends BaseController
             $data['info'] = $textBox;
             $data['img_url'] = $imageName;
             $data['time'] = date("Y-m-d H:i:s");
-            $this->momentModel->addMoment($data);
+            D('Moment')->addMoment($data);
         }
 
         // 获取自己头像
         $map['user_name'] = $userName;
-        $avatar = $this->userModel->getUserAvatar($map);
+        $avatar = D('User')->getUserAvatar($map);
 
         // 获取新增朋友圈的 moment_id
-        $moment_id = $this->momentModel->getMaxMomentId();
+        $moment_id = D('Moment')->getMaxMomentId();
 
         $response['isSuccess'] = true;
         $response['moment_id'] = $moment_id;
@@ -364,7 +354,7 @@ class MomentsController extends BaseController
      */
     public function getRollingWall()
     {
-        $list = $this->momentModel->getRollingWall();
+        $list = D('Moment')->getRollingWall();
 
         //返回json数据
         $response[] = array(
@@ -385,8 +375,8 @@ class MomentsController extends BaseController
     {
         $momentId = htmlspecialchars($_REQUEST['moment_id']);
         $condition['moment_id'] = $momentId;
-        $this->momentModel->updateMomentState($condition);
-        $this->commentModel->updateCommentState($condition); // 删除moment的时候连带删除其下所有评论
+        D('Moment')->updateMomentState($condition);
+        D('Comment')->updateCommentState($condition); // 删除moment的时候连带删除其下所有评论
         $list[0] = "Delete moment is success.";
         echo json_encode($list);
     }
@@ -398,7 +388,7 @@ class MomentsController extends BaseController
     {
         $commentId = htmlspecialchars($_REQUEST['comment_id']);
         $condition['comment_id'] = $commentId;
-        $this->commentModel->updateCommentState($condition);
+        D('Comment')->updateCommentState($condition);
         $list[0] = "Delete comment is success.";
         echo json_encode($list);
     }
@@ -410,12 +400,12 @@ class MomentsController extends BaseController
     {
         $userName = $_SESSION["name"];
         $map['user_name'] = $userName;
-        $userId = $this->userModel->getUserId($map);
-        $list = $this->commentModel->getUnreadMessagesViaUserId($userId);
+        $userId = D('User')->getUserId($map);
+        $list = D('Comment')->getUnreadMessagesViaUserId($userId);
         foreach ($list as $key => &$value) {
             $value['time'] = $this->obj->tranTime(strtotime($value['time']));
         }
-        $this->commentModel->updateNewsViaUserId($userId);
+        D('Comment')->updateNewsViaUserId($userId);
         echo json_encode($list);
     }
 
@@ -426,7 +416,7 @@ class MomentsController extends BaseController
     {
         $momentId = htmlspecialchars($_POST['moment_id']);
         $myName = $_SESSION["name"];
-        $list = $this->momentModel->getOneMoment($momentId);
+        $list = D('Moment')->getOneMoment($momentId);
         foreach ($list as $key => &$value) {
             //$value['my_name'] = $myName;
             $value['user_name'] = $value['user_name'];
@@ -447,7 +437,7 @@ class MomentsController extends BaseController
         $searchName = htmlspecialchars($_REQUEST['search_name']);
         $userName = $_SESSION['name'];
         $map['user_name'] = $searchName;
-        $list = $this->userModel->searchUser($map);
+        $list = D('User')->searchUser($map);
 
         $data = array(
             'avatar' => $list['avatar'],
@@ -464,7 +454,7 @@ class MomentsController extends BaseController
 
             $map1['user_id'] = $userId;
             $map1['friend_id'] = $friendId;
-            $result = $this->friendModel->where($map1)->find();
+            $result = D('Friend')->where($map1)->find();
             if ($result) {
                 $data['is_follow'] = 1; // 已关注
             }
@@ -490,13 +480,13 @@ class MomentsController extends BaseController
         $ret = false;
 
         if ($operationFollow == 1) {
-            $ret = $this->friendModel->addFriend($data); // 添加关注记录
+            $ret = D('Friend')->addFriend($data); // 添加关注记录
         } else if ($operationFollow == 0) {
             $where = array(
                 'user_id' => $data['user_id'],
                 'friend_id' => $data['friend_id'],
             );
-            $ret = $this->friendModel->deleteFriend($where); // 取消关注
+            $ret = D('Friend')->deleteFriend($where); // 取消关注
         }
 
         echo json_encode(array("is_success" => ($ret === false ? 0 : 1)));
@@ -531,7 +521,7 @@ class MomentsController extends BaseController
             $data = array(
                 'avatar' => $image_name,
             );
-            $this->userModel->updateUser($map, $data);
+            D('User')->updateUser($map, $data);
             unset($map);
         }
         $userName = $_SESSION["name"];
@@ -542,7 +532,7 @@ class MomentsController extends BaseController
                 'user_name' => array('eq', $profileNameBox),
                 'user_id' => array('neq', $userId),
             );
-            $ret = $this->userModel->searchUser($condition);
+            $ret = D('User')->searchUser($condition);
             if (!empty($ret)) {
                 $response['isSuccess'] = false;
                 $response['msg'] = '该用户名已存在';
@@ -557,7 +547,7 @@ class MomentsController extends BaseController
                 'region' => $profileRegionBox,
                 'whatsup' => $profileWhatsupBox,
             );
-            $this->userModel->updateUser($map, $data);
+            D('User')->updateUser($map, $data);
         }
         $_SESSION["name"] = $profileNameBox;
         $response['isSuccess'] = true;
@@ -570,7 +560,7 @@ class MomentsController extends BaseController
     public function loadNextPage()
     {
         $page = htmlspecialchars($_REQUEST['page']);
-        $list = $this->momentModel->getNextPage($page);
+        $list = D('Moment')->getNextPage($page);
 
         foreach ($list as $key => &$value) {
             $value['user_name'] = htmlspecialchars($value['user_name']);
@@ -586,7 +576,7 @@ class MomentsController extends BaseController
     public function loadNextPageViaHtml()
     {
         $page = htmlspecialchars($_REQUEST['page']);
-        $list = $this->momentModel->getNextPage($page);
+        $list = D('Moment')->getNextPage($page);
 
         foreach ($list as $key => &$value) {
             $value['user_name'] = htmlspecialchars($value['user_name']);
@@ -606,11 +596,11 @@ class MomentsController extends BaseController
     {
         $user_name = $_SESSION["name"];
         $map['user_name'] = $user_name;
-        $user_id = $this->userModel->getUserId($map);
-        $list = $this->momentModel->getNews($user_id);
+        $user_id = D('User')->getUserId($map);
+        $list = D('Moment')->getNews($user_id);
         $map1['requested_id'] = $user_id;
         $map1['state'] = 1;
-        $result = $this->friendRequestModel->getFriendRequest($map1);
+        $result = D('FriendRequest')->getFriendRequest($map1);
         $num = count($list) + count($result);
         echo json_encode(array("number" => $num));
     }
@@ -624,7 +614,7 @@ class MomentsController extends BaseController
         $userName = $_SESSION["name"];
         $userId = $_SESSION["user_id"];
         $momentId = $_REQUEST['id'];
-        $result = $this->momentModel->getOneMoment($momentId);
+        $result = D('Moment')->getOneMoment($momentId);
 
         foreach ($result as $key => &$value) {
             $value['user_name'] = htmlspecialchars($value['user_name']);

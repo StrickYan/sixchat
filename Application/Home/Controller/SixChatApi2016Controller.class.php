@@ -17,25 +17,6 @@ namespace Home\Controller;
 
 class SixChatApi2016Controller extends BaseController
 {
-    protected $momentModel;
-    protected $userModel;
-    protected $commentModel;
-    protected $friendRequestModel;
-    protected $friendModel;
-
-    /**
-     * SixChatApi2016Controller constructor.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->momentModel = D('Moment');
-        $this->userModel = D('User');
-        $this->commentModel = D('comment');
-        $this->friendRequestModel = D("FriendRequest");
-        $this->friendModel = D("Friend");
-    }
-
     /**
      * 登录API
      * @param string $id 用户名
@@ -45,8 +26,8 @@ class SixChatApi2016Controller extends BaseController
     public function login($id, $password)
     {
         $condition['user_name'] = $id;
-        $userName = $this->userModel->getUserName($condition);
-        $userId = $this->userModel->getUserId($condition);
+        $userName = D('User')->getUserName($condition);
+        $userId = D('User')->getUserId($condition);
         // 该用户不存在
         if (!$userName) {
             return -1;
@@ -54,7 +35,7 @@ class SixChatApi2016Controller extends BaseController
             // 用户存在，保存用户名cookie
             setcookie("id", "$id", time() + 60 * 60 * 24 * 7);
             $condition['password'] = md5($password);
-            $userName = $this->userModel->getUserName($condition);
+            $userName = D('User')->getUserName($condition);
             // 登录成功
             if ($userName) {
                 // 保存密码cookie
@@ -88,7 +69,7 @@ class SixChatApi2016Controller extends BaseController
     public function register($id, $password)
     {
         $condition['user_name'] = $id;
-        $userName = $this->userModel->getUserName($condition);
+        $userName = D('User')->getUserName($condition);
         //该账号已存在
         if ($userName) {
             return -1;
@@ -97,25 +78,25 @@ class SixChatApi2016Controller extends BaseController
             $data['user_name'] = $id;
             $data['password'] = MD5($password);
             $data['register_time'] = date("Y-m-d H:i:s");
-            $this->userModel->addUser($data);
+            D('User')->addUser($data);
 
             //查询该新用户的user_id
-            $userId = $this->userModel->getUserId($condition);
+            $userId = D('User')->getUserId($condition);
 
             $saveData['time'] = date("Y-m-d H:i:s");
 
             //注册时自动关注自己
             $saveData['user_id'] = $userId;
             $saveData['friend_id'] = $userId;
-            $this->friendModel->addFriend($saveData);
+            D('Friend')->addFriend($saveData);
 
             //注册时自动和官方账号建立双向关系
             $saveData['user_id'] = $userId;
             $saveData['friend_id'] = 18;
-            $this->friendModel->addFriend($saveData);
+            D('Friend')->addFriend($saveData);
             $saveData['user_id'] = 18;
             $saveData['friend_id'] = $userId;
-            $this->friendModel->addFriend($saveData);
+            D('Friend')->addFriend($saveData);
 
             return 0;
         }
@@ -165,7 +146,7 @@ class SixChatApi2016Controller extends BaseController
     {
         $condition['u1.user_name'] = $replyName;
         $condition['u2.user_name'] = $replyedName;
-        $result = $this->userModel->getUserIdViaUserName($condition);
+        $result = D('User')->getUserIdViaUserName($condition);
         return $result;
     }
 
@@ -179,7 +160,7 @@ class SixChatApi2016Controller extends BaseController
     {
         $condition['u1.user_id'] = $replyId;
         $condition['u2.user_id'] = $replyedId;
-        $result = $this->userModel->getUserNameViaUserId($condition);
+        $result = D('User')->getUserNameViaUserId($condition);
         return $result;
     }
 
