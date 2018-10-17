@@ -2,9 +2,7 @@
 
 namespace Home\Model;
 
-use Think\Model;
-
-class CommentModel extends Model
+class CommentModel extends BaseModel
 {
 
     // 获取moment的点赞人

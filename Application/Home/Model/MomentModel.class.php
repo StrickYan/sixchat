@@ -16,9 +16,8 @@
 namespace Home\Model;
 
 use util\SKUtility;
-use Think\Model;
 
-class MomentModel extends Model
+class MomentModel extends BaseModel
 {
 
     //获取朋友圈信息流

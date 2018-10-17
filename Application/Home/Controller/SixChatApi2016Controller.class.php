@@ -15,11 +15,8 @@
 
 namespace Home\Controller;
 
-use Think\Controller;
-
-class SixChatApi2016Controller extends Controller
+class SixChatApi2016Controller extends BaseController
 {
-
     protected $momentModel;
     protected $userModel;
     protected $commentModel;

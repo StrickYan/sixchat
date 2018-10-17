@@ -15,9 +15,7 @@
 
 namespace Home\Model;
 
-use Think\Model;
-
-class FriendModel extends Model
+class FriendModel extends BaseModel
 {
     public function addFriend($data)
     {

@@ -2,9 +2,7 @@
 
 namespace Home\Controller;
 
-use Think\Controller;
-
-class IndexController extends Controller
+class IndexController extends BaseController
 {
     /**
      * 登录成功，跳转主页面

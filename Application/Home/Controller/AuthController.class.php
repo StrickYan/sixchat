@@ -15,9 +15,7 @@
 
 namespace Home\Controller;
 
-use Think\Controller;
-
-class AuthController extends Controller
+class AuthController extends BaseController
 {
     /**
      * 登录

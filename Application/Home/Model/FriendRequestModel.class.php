@@ -2,9 +2,7 @@
 
 namespace Home\Model;
 
-use Think\Model;
-
-class FriendRequestModel extends Model
+class FriendRequestModel extends BaseModel
 {
     public function getFriendRequest($map)
     {

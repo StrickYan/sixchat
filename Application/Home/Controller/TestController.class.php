@@ -5,12 +5,11 @@ namespace Home\Controller;
 use util\SKErrorCode;
 use util\SKUtility;
 use util\SKLog;
-use Think\Controller;
 
 use Monolog\Logger;
 use Monolog\Handler\RotatingFileHandler;
 
-class TestController extends Controller
+class TestController extends BaseController
 {
     public function index()
     {

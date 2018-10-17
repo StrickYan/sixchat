@@ -6,10 +6,10 @@
  * Time: 16:59
  */
 
-namespace Home\Controller;
+namespace Home\Model;
 
-use Think\Controller;
+use Think\Model;
 
-class BaseController extends Controller
+class BaseModel extends Model
 {
 }

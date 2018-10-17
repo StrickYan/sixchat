@@ -17,6 +17,38 @@ namespace Home\Controller;
 
 class MomentsController extends BaseController
 {
+    protected $obj;
+    protected $momentModel;
+    protected $userModel;
+    protected $commentModel;
+    protected $friendRequestModel;
+    protected $friendModel;
+
+    /**
+     * BaseController constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->obj = new SixChatApi2016Controller();
+        $this->momentModel = D('Moment');
+        $this->userModel = D('User');
+        $this->commentModel = D('Comment');
+        $this->friendRequestModel = D("FriendRequest");
+        $this->friendModel = D("Friend");
+    }
+
+    /**
+     * 登录状态验证
+     */
+    public function _initialize()
+    {
+        // 判断用户是否已经登录
+        if (!isset($_SESSION['name'])) {
+            $this->error('', U('/auth/login'), 1);
+        }
+    }
+
     /**
      * 显示信息流
      */

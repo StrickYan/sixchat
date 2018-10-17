@@ -14,11 +14,10 @@
 
 namespace Home\Controller;
 
-use Think\Controller;
 use util\SKErrorCode;
 use util\SKUtility;
 
-class UserController extends Controller
+class UserController extends BaseController
 {
     public function getSessionUser()
     {
