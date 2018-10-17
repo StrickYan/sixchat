@@ -22,7 +22,7 @@ class TestController extends BaseController
             'name' => "kobe",
             'age' => 22,
         );
-        ResponseUtils::json(ErrCodeUtils::SUCCESS, $data, $msg = '');
+        return ResponseUtils::json(ErrCodeUtils::SUCCESS, $data, $msg = '');
     }
 
     public function testMonolog()

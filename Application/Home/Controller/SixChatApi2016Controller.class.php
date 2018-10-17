@@ -47,7 +47,6 @@ class SixChatApi2016Controller extends BaseController
             } else {
                 return -2; //密码错误
             }
-
         }
     }
 
@@ -322,5 +321,4 @@ class SixChatApi2016Controller extends BaseController
             }
         }
     }
-
 }

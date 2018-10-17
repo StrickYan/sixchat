@@ -28,9 +28,9 @@ class UserController extends BaseController
         // var_dump($retData);exit;
 
         if (false === $retData || count($retData) != 1) {
-            ResponseUtils::json(ErrCodeUtils::FAILED);
+            return ResponseUtils::json(ErrCodeUtils::FAILED);
         }
-        ResponseUtils::json(ErrCodeUtils::SUCCESS, $retData[0]);
+        return ResponseUtils::json(ErrCodeUtils::SUCCESS, $retData[0]);
     }
 
     public function getUser()
@@ -40,8 +40,8 @@ class UserController extends BaseController
         // var_dump($retData);exit;
 
         if ($retData === false) {
-            ResponseUtils::json(ErrCodeUtils::FAILED);
+            return ResponseUtils::json(ErrCodeUtils::FAILED);
         }
-        ResponseUtils::json(ErrCodeUtils::SUCCESS, $retData);
+        return ResponseUtils::json(ErrCodeUtils::SUCCESS, $retData);
     }
 }

@@ -1,20 +1,21 @@
 var mobile_speed = 200; //移动端动画速度
-$(function() {
+$(function () {
     FastClick.attach(document.body); //去除移动端click延迟300ms插件fastclick初始化
     refreshAtDetails(); //初始化：刷新评论 给朋友圈元素绑定事件
     initCommentEvent(); //初始化点赞和评论相关事件
     //双击或长按顶部中间栏刷新
     if (isPC() === false) { //移动端
-        $("#current_location").longPress(function() {
+        $("#current_location").longPress(function () {
             self.location.href = "";
         });
     } else {
-        $(document).on("dblclick", "#current_location", function() {
+        $(document).on("dblclick", "#current_location", function () {
             self.location.href = "";
         });
-    };
+    }
+    ;
     // 替换文本内容
-    $(".info-flow-right-text").each(function() {
+    $(".info-flow-right-text").each(function () {
         var str = $(this).text();
         $(this).html(replace_str(str));
     });
@@ -22,7 +23,7 @@ $(function() {
         effect: "fadeIn",
         threshold: 200
     }); //图片延迟加载
-    $("#return").bind("click", function() {
+    $("#return").bind("click", function () {
         location.href = "../../index";
     }); //点击左上角导航返回
     $("body").fadeIn('slow');
@@ -47,11 +48,18 @@ function getLikesForAjax(moment_id, moment_user_name) {
             "moment_user_name": moment_user_name
         },
         dataType: "json",
-        url: "../../getLikes",
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        // url: "../../getLikes",
+        url: reFormatUrl("Moments/getLikes"),
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
             //alert("加载错误，错误原因：\n"+errorThrown);
         },
-        success: function(data) {
+        success: function (ret) {
+            if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
+                console.log(ret[PARAM_RET_MSG]);
+                return;
+            }
+            let data = ret[PARAM_RET_DATA];
+
             var html = "";
             var i = 0;
             if (data.length) {
@@ -69,6 +77,7 @@ function getLikesForAjax(moment_id, moment_user_name) {
         }
     });
 }
+
 // jquery $.ajax() 异步加载每条朋友圈下面的所有评论
 function getCommentsForAjax(moment_id, moment_user_name) {
     $.ajax({
@@ -79,11 +88,18 @@ function getCommentsForAjax(moment_id, moment_user_name) {
             "moment_user_name": moment_user_name
         },
         dataType: "json",
-        url: "../../getComments",
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        // url: "../../getComments",
+        url: reFormatUrl("Moments/getComments"),
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
             //alert("加载错误，错误原因：\n"+errorThrown);
         },
-        success: function(data) {
+        success: function (ret) {
+            if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
+                console.log(ret[PARAM_RET_MSG]);
+                return;
+            }
+            let data = ret[PARAM_RET_DATA];
+
             var html = "";
             for (var i = 0; i < data.length; i++) {
                 html += "<div class='one-comment' id=" + data[i].comment_id + " ontouchstart='return false'>";
@@ -101,6 +117,7 @@ function getCommentsForAjax(moment_id, moment_user_name) {
         }
     });
 }
+
 // 点赞
 function addLike(moment_id, moment_user_name) {
     $.ajax({
@@ -110,15 +127,23 @@ function addLike(moment_id, moment_user_name) {
             "moment_user_name": moment_user_name
         },
         dataType: "json",
-        url: "../../addLike",
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        // url: "../../addLike",
+        url: reFormatUrl("Moments/addLike"),
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
             //alert("加载错误，错误原因：\n"+errorThrown);
         },
-        success: function(data) { //当addLike后执行reFresh(),重新加载所有赞,所以下面单条添加可以省略
+        success: function (ret) { //当addLike后执行reFresh(),重新加载所有赞,所以下面单条添加可以省略
+            if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
+                console.log(ret[PARAM_RET_MSG]);
+                return;
+            }
+            let data = ret[PARAM_RET_DATA];
+
             refreshAtDetails();
         }
     });
 }
+
 // 评论
 function addComment() {
     $.ajax({
@@ -129,17 +154,25 @@ function addComment() {
             "comment_val": $(".comment-box:focus").val()
         },
         dataType: "json",
-        url: "../../addComment",
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        // url: "../../addComment",
+        url: reFormatUrl("Moments/addComment"),
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
             //alert("加载错误，错误原因：\n"+errorThrown);
         },
-        success: function(data) { //当addComment后执行reFresh(),重新加载所有评论,所以下面单条添加可以省略
+        success: function (ret) { //当addComment后执行reFresh(),重新加载所有评论,所以下面单条添加可以省略
+            if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
+                console.log(ret[PARAM_RET_MSG]);
+                return;
+            }
+            let data = ret[PARAM_RET_DATA];
+
             $(".comment-box:focus").val("");
             $(".comment-box:focus").parent().hide();
             refreshAtDetails();
         }
     });
 }
+
 // 删除moment
 function deleteMoment(obj) {
     var data = confirm("Confirm deletion?");
@@ -150,18 +183,26 @@ function deleteMoment(obj) {
                 "moment_id": obj.attr("id")
             },
             dataType: "json",
-            url: "../../deleteMoment",
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
+            // url: "../../deleteMoment",
+            url: reFormatUrl("Moments/deleteMoment"),
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
                 //alert("加载错误，错误原因：\n"+errorThrown);
             },
-            success: function(data) {
-                obj.parent().slideUp(500, function() {
+            success: function (ret) {
+                if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
+                    console.log(ret[PARAM_RET_MSG]);
+                    return;
+                }
+                let data = ret[PARAM_RET_DATA];
+
+                obj.parent().slideUp(500, function () {
                     obj.parent().remove();
                 })
             }
         });
     }
 }
+
 // 删除评论函数
 function deleteComment(obj) {
     if (obj.children(".comment-user-name").first().text() === GLOBAL_USER_NAME) { //自己的评论才有权限删除
@@ -188,7 +229,7 @@ function deleteComment(obj) {
             //     }
             // });
 
-            touch.on(obj, 'hold', function(ev){
+            touch.on(obj, 'hold', function (ev) {
                 //console.log("you have done", ev.type);
                 var data = confirm("Confirm deletion?");
                 if (data) {
@@ -198,12 +239,19 @@ function deleteComment(obj) {
                             "comment_id": obj.attr("id")
                         },
                         dataType: "json",
-                        url: "../../deleteComment",
-                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        // url: "../../deleteComment",
+                        url: reFormatUrl("Moments/deleteComment"),
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
                             //alert("加载错误，错误原因：\n"+errorThrown);
                         },
-                        success: function(data) {
-                            obj.slideUp(500, function() {
+                        success: function (ret) {
+                            if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
+                                console.log(ret[PARAM_RET_MSG]);
+                                return;
+                            }
+                            let data = ret[PARAM_RET_DATA];
+
+                            obj.slideUp(500, function () {
                                 obj.remove();
                             })
                         }
@@ -212,8 +260,8 @@ function deleteComment(obj) {
             });
         } else { //PC端
             var timeout;
-            obj.mousedown(function() {
-                timeout = setTimeout(function() {
+            obj.mousedown(function () {
+                timeout = setTimeout(function () {
                     var data = confirm("Confirm deletion?");
                     if (data) {
                         $.ajax({
@@ -222,12 +270,19 @@ function deleteComment(obj) {
                                 "comment_id": obj.attr("id")
                             },
                             dataType: "json",
-                            url: "../../deleteComment",
-                            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            // url: "../../deleteComment",
+                            url: reFormatUrl("Moments/deleteComment"),
+                            error: function (XMLHttpRequest, textStatus, errorThrown) {
                                 //alert("加载错误，错误原因：\n"+errorThrown);
                             },
-                            success: function(data) {
-                                obj.slideUp(500, function() {
+                            success: function (ret) {
+                                if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
+                                    console.log(ret[PARAM_RET_MSG]);
+                                    return;
+                                }
+                                let data = ret[PARAM_RET_DATA];
+
+                                obj.slideUp(500, function () {
                                     obj.remove();
                                 })
                             }
@@ -235,7 +290,7 @@ function deleteComment(obj) {
                     }
                 }, 500);
             });
-            obj.mouseup(function() {
+            obj.mouseup(function () {
                 clearTimeout(timeout);
             });
         }
