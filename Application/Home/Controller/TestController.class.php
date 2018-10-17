@@ -2,8 +2,8 @@
 
 namespace Home\Controller;
 
-use util\SKErrorCode;
-use util\SKUtility;
+use util\ErrCodeUtils;
+use util\ResponseUtils;
 use util\SKLog;
 
 use Monolog\Logger;
@@ -22,7 +22,7 @@ class TestController extends BaseController
             'name' => "kobe",
             'age' => 22,
         );
-        SKUtility::returnData(SKErrorCode::SUCCESS, $data, $msg = '');
+        ResponseUtils::json(ErrCodeUtils::SUCCESS, $data, $msg = '');
     }
 
     public function testMonolog()

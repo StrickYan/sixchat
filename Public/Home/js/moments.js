@@ -158,7 +158,7 @@ $(function () {
 function getSessionUser() {
     $.ajax({
         type: "POST",
-        url: reFormatUrl("User/getSessionUser"),
+        url: reFormatUrl("user/getSessionUser"),
         dataType: "json",
         data: {},
         error: function (XMLHttpRequest, textStatus, errorThrown) {

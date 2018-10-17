@@ -14,8 +14,8 @@
 
 namespace Home\Controller;
 
-use util\SKErrorCode;
-use util\SKUtility;
+use util\ErrCodeUtils;
+use util\ResponseUtils;
 
 class UserController extends BaseController
 {
@@ -27,10 +27,10 @@ class UserController extends BaseController
         $retData = D('User')->getUser($map);
         // var_dump($retData);exit;
 
-        if ($retData === false) {
-            SKUtility::returnData(SKErrorCode::FAILED);
+        if (false === $retData || count($retData) != 1) {
+            ResponseUtils::json(ErrCodeUtils::FAILED);
         }
-        SKUtility::returnData(SKErrorCode::SUCCESS, $retData[0]);
+        ResponseUtils::json(ErrCodeUtils::SUCCESS, $retData[0]);
     }
 
     public function getUser()
@@ -40,9 +40,8 @@ class UserController extends BaseController
         // var_dump($retData);exit;
 
         if ($retData === false) {
-            SKUtility::returnData(SKErrorCode::FAILED);
+            ResponseUtils::json(ErrCodeUtils::FAILED);
         }
-        SKUtility::returnData(SKErrorCode::SUCCESS, $retData);
+        ResponseUtils::json(ErrCodeUtils::SUCCESS, $retData);
     }
-
 }
