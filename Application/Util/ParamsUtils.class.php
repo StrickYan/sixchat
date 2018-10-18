@@ -41,24 +41,24 @@ class ParamsUtils
                 break;
 
             case "User/getUser":
-                $params['user_id'] = $_REQUEST['user_id'];
+                $params['user_id'] = $_POST['user_id'];
                 break;
 
             case "User/searchUser":
-                $params['search_name'] = $_REQUEST['search_name'];
+                $params['search_name'] = $_POST['search_name'];
                 break;
 
             case "User/follow":
-                $params['operation_follow'] = $_REQUEST['operation_follow'];
-                $params['follow_id'] = $_REQUEST['follow_id'];
-                $params['followed_id'] = $_REQUEST['followed_id'];
+                $params['operation_follow'] = $_POST['operation_follow'];
+                $params['follow_id'] = $_POST['follow_id'];
+                $params['followed_id'] = $_POST['followed_id'];
                 break;
 
             case "User/modifyProfile":
-                $params['profile_name'] = $_REQUEST['profile_name_box'];
-                $params['profile_sex'] = $_REQUEST['profile_sex_box'];
-                $params['profile_region'] = $_REQUEST['profile_region_box'];
-                $params['profile_whatsup'] = $_REQUEST['profile_whatsup_box'];
+                $params['profile_name'] = $_POST['profile_name_box'];
+                $params['profile_sex'] = $_POST['profile_sex_box'];
+                $params['profile_region'] = $_POST['profile_region_box'];
+                $params['profile_whatsup'] = $_POST['profile_whatsup_box'];
                 break;
 
             default:
