@@ -19,6 +19,17 @@ use util\ResponseUtils;
 
 class UserController extends BaseController
 {
+    protected $obj;
+
+    /**
+     * BaseController constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->obj = new SixChatApi2016Controller();
+    }
+
     public function getSessionUser()
     {
         $map = array(
