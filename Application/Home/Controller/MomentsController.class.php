@@ -24,7 +24,10 @@ use Util\UploadImgUtils;
 class MomentsController extends BaseController
 {
     /**
-     * 登录状态验证
+     * @brief 登录状态验证
+     * @author strick@beishanwen.com
+     * @param void
+     * @return void
      */
     public function _initialize()
     {
@@ -35,7 +38,10 @@ class MomentsController extends BaseController
     }
 
     /**
-     * 显示信息流
+     * @brief 显示信息流
+     * @author strick@beishanwen.com
+     * @param void
+     * @return void
      */
     public function index()
     {
@@ -45,7 +51,10 @@ class MomentsController extends BaseController
     }
 
     /**
-     * 获取某条moment的所有赞
+     * @brief 获取某条moment的所有赞
+     * @author strick@beishanwen.com
+     * @param void
+     * @return string
      */
     public function getLikes()
     {
@@ -69,7 +78,10 @@ class MomentsController extends BaseController
     }
 
     /**
-     * 获取某条moment的权限内可以看到的赞
+     * @brief 获取某条moment的权限内可以看到的赞
+     * @author strick@beishanwen.com
+     * @param void
+     * @return string
      */
     public function getLikesInAuth()
     {
@@ -93,7 +105,10 @@ class MomentsController extends BaseController
     }
 
     /**
-     * 获取某条moment的所有评论
+     * @brief 获取某条moment的所有评论
+     * @author strick@beishanwen.com
+     * @param void
+     * @return string
      */
     public function getComments()
     {
@@ -122,7 +137,10 @@ class MomentsController extends BaseController
     }
 
     /**
-     * 获取所有的赞
+     * @brief 获取所有的赞
+     * @author strick@beishanwen.com
+     * @param void
+     * @return string
      */
     public function getAllLikes()
     {
@@ -142,7 +160,10 @@ class MomentsController extends BaseController
     }
 
     /**
-     * 获取所有的评论
+     * @brief 获取所有的评论
+     * @author strick@beishanwen.com
+     * @param void
+     * @return string
      */
     public function getAllComments()
     {
@@ -168,7 +189,10 @@ class MomentsController extends BaseController
     }
 
     /**
-     * 获取每条朋友圈下面权限内可阅的评论
+     * @brief 获取每条朋友圈下面权限内可阅的评论
+     * @author strick@beishanwen.com
+     * @param void
+     * @return string
      */
     public function getCommentsInAuth()
     {
@@ -214,7 +238,10 @@ class MomentsController extends BaseController
     }
 
     /**
-     * 点赞
+     * @brief 点赞
+     * @author strick@beishanwen.com
+     * @param void
+     * @return string
      */
     public function addLike()
     {
@@ -298,7 +325,10 @@ class MomentsController extends BaseController
     }
 
     /**
-     * 发布评论
+     * @brief 发布评论
+     * @author strick@beishanwen.com
+     * @param void
+     * @return string
      */
     public function addComment()
     {
@@ -341,11 +371,6 @@ class MomentsController extends BaseController
         // 获取新增评论的 comment_id
         $newCommentId = $ret;
 
-//        $newCommentId = D('Comment')->getMaxCommentId();
-//        if (false === $newCommentId) {
-//            return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
-//        }
-
         if ($replyId != $replyedId) {
             // 指明给谁推送，为空表示向所有在线用户推送
             $to_uid = $replyedId;
@@ -381,7 +406,10 @@ class MomentsController extends BaseController
     }
 
     /**
-     * 发送 moment
+     * @brief 发送 moment
+     * @author strick@beishanwen.com
+     * @param void
+     * @return string
      */
     public function addMoment()
     {
@@ -436,7 +464,10 @@ class MomentsController extends BaseController
     }
 
     /**
-     * 选取随机三图做滚动墙纸
+     * @brief 选取随机三图做滚动墙纸
+     * @author strick@beishanwen.com
+     * @param void
+     * @return string
      */
     public function getRollingWall()
     {
@@ -461,7 +492,10 @@ class MomentsController extends BaseController
     }
 
     /**
-     * 删除 moment
+     * @brief 删除 moment
+     * @author strick@beishanwen.com
+     * @param void
+     * @return string
      */
     public function deleteMoment()
     {
@@ -476,14 +510,14 @@ class MomentsController extends BaseController
         $ret = D('Moment')->updateMomentState($condition);
         if (false === $ret) {
             $model->rollback();
-            return ResponseUtils::arrayRet(ErrCodeUtils::SYSTEM_ERROR);
+            return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
         }
 
         // 删除moment的时候连带删除其下所有评论
         $ret = D('Comment')->updateCommentState($condition);
         if (false === $ret) {
             $model->rollback();
-            return ResponseUtils::arrayRet(ErrCodeUtils::SYSTEM_ERROR);
+            return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
         }
 
         $model->commit();
@@ -492,7 +526,10 @@ class MomentsController extends BaseController
     }
 
     /**
-     * 删除 comment
+     * @brief 删除 comment
+     * @author strick@beishanwen.com
+     * @param void
+     * @return string
      */
     public function deleteComment()
     {
@@ -503,14 +540,17 @@ class MomentsController extends BaseController
         );
         $ret = D('Comment')->updateCommentState($condition);
         if (false === $ret) {
-            return ResponseUtils::arrayRet(ErrCodeUtils::SYSTEM_ERROR);
+            return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
         }
 
         return ResponseUtils::json(ErrCodeUtils::SUCCESS);
     }
 
     /**
-     * 显示赞与评论
+     * @brief 显示赞与评论
+     * @author strick@beishanwen.com
+     * @param void
+     * @return string
      */
     public function loadMessages()
     {
@@ -518,7 +558,7 @@ class MomentsController extends BaseController
 
         $list = D('Comment')->getUnreadMessagesViaUserId($params['session_user_id']);
         if (false === $list) {
-            return ResponseUtils::arrayRet(ErrCodeUtils::SYSTEM_ERROR);
+            return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
         }
 
         foreach ($list as $key => &$value) {
@@ -528,14 +568,17 @@ class MomentsController extends BaseController
 
         $ret = D('Comment')->updateNewsViaUserId($params['session_user_id']);
         if (false === $ret) {
-            return ResponseUtils::arrayRet(ErrCodeUtils::SYSTEM_ERROR);
+            return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
         }
 
         return ResponseUtils::json(ErrCodeUtils::SUCCESS, $list);
     }
 
     /**
-     * 查看一条朋友圈
+     * @brief 查看一条朋友圈
+     * @author strick@beishanwen.com
+     * @param void
+     * @return string
      */
     public function getOneMoment()
     {
@@ -557,7 +600,10 @@ class MomentsController extends BaseController
     }
 
     /**
-     * 加载下一页moments
+     * @brief 加载下一页moments
+     * @author strick@beishanwen.com
+     * @param void
+     * @return string
      */
     public function loadNextPage()
     {
@@ -579,7 +625,10 @@ class MomentsController extends BaseController
     }
 
     /**
-     * 加载下一页moments
+     * @brief 加载下一页moments
+     * @author strick@beishanwen.com
+     * @param void
+     * @return void
      */
     public function loadNextPageViaHtml()
     {
@@ -587,7 +636,7 @@ class MomentsController extends BaseController
 
         $list = D('Moment')->getNextPage($params['page']);
         if (false === $list) {
-            return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
+            $list = array();
         }
 
         foreach ($list as $key => &$value) {
@@ -603,7 +652,10 @@ class MomentsController extends BaseController
     }
 
     /**
-     * 加载未读消息数量
+     * @brief 加载未读消息数量
+     * @author strick@beishanwen.com
+     * @param void
+     * @return string
      */
     public function loadNews()
     {
@@ -631,7 +683,10 @@ class MomentsController extends BaseController
     }
 
     /**
-     * moment详情页
+     * @brief moment详情页
+     * @author strick@beishanwen.com
+     * @param void
+     * @return void
      */
     public function details()
     {
@@ -642,7 +697,7 @@ class MomentsController extends BaseController
         $momentId = $params['moment_id'];
         $result = D('Moment')->getOneMoment($momentId);
         if (false === $result) {
-            return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
+            $result = array();
         }
 
         foreach ($result as $key => &$value) {
@@ -654,7 +709,7 @@ class MomentsController extends BaseController
 
         $script = "<script>const GLOBAL_USER_NAME = \"" . $userName . "\"; const GLOBAL_USER_ID = \"" . $userId . "\";</script>";
 
-        $this->assign('details', $result[0]);
+        $this->assign('details', $result[0] ?? array());
         $this->assign('script', $script);
         $this->display();
     }

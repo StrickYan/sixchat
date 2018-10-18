@@ -5,7 +5,10 @@ namespace Home\Controller;
 class IndexController extends BaseController
 {
     /**
-     * 登录成功，跳转主页面
+     * @brief 登录成功，跳转主页面
+     * @author strick@beishanwen.com
+     * @param void
+     * @return void
      */
     public function index()
     {

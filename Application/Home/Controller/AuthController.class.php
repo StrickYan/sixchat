@@ -22,7 +22,10 @@ use Util\ParamsUtils;
 class AuthController extends BaseController
 {
     /**
-     * 登录
+     * @brief 登录
+     * @author strick@beishanwen.com
+     * @param void
+     * @return void
      */
     public function login()
     {
@@ -97,7 +100,10 @@ class AuthController extends BaseController
     }
 
     /**
-     * 注销
+     * @brief 注销
+     * @author strick@beishanwen.com
+     * @param void
+     * @return void
      */
     public function logout()
     {
@@ -109,7 +115,10 @@ class AuthController extends BaseController
     }
 
     /**
-     * 注册
+     * @brief 注册
+     * @author strick@beishanwen.com
+     * @param void
+     * @return void
      */
     public function register()
     {

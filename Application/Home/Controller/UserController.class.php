@@ -21,6 +21,12 @@ use Util\UploadImgUtils;
 
 class UserController extends BaseController
 {
+    /**
+     * @brief 获取当前登录用户信息
+     * @author strick@beishanwen.com
+     * @param void
+     * @return string
+     */
     public function getSessionUser()
     {
         $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
@@ -37,6 +43,12 @@ class UserController extends BaseController
         return ResponseUtils::json(ErrCodeUtils::SUCCESS, $retData[0]);
     }
 
+    /**
+     * @brief 获取用户信息
+     * @author strick@beishanwen.com
+     * @param void
+     * @return string
+     */
     public function getUser()
     {
         $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
@@ -51,7 +63,10 @@ class UserController extends BaseController
     }
 
     /**
-     * 查找用户资料
+     * @brief 查找特定某个用户信息
+     * @author strick@beishanwen.com
+     * @param void
+     * @return string
      */
     public function searchUser()
     {
@@ -95,8 +110,11 @@ class UserController extends BaseController
     }
 
     /**
-     * 关注或者取消关注
-     **/
+     * @brief 关注或者取消关注
+     * @author strick@beishanwen.com
+     * @param void
+     * @return string
+     */
     public function follow()
     {
         $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
@@ -125,7 +143,10 @@ class UserController extends BaseController
     }
 
     /**
-     * 修改资料
+     * @brief 修改资料
+     * @author strick@beishanwen.com
+     * @param void
+     * @return string
      */
     public function modifyProfile()
     {
