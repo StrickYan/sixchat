@@ -1,7 +1,7 @@
 <?php
 /***************************************************************************
  *
- * Copyright (c) 2017 classmateer.com, Inc. All Rights Reserved
+ * Copyright (c) 2017 beishanwen.com, Inc. All Rights Reserved
  *
  **************************************************************************/
 
@@ -62,7 +62,10 @@ class UserService extends BaseService
     }
 
     /**
-     * 注销
+     * @brief 注销
+     * @author strick@beishanwen.com
+     * @param void
+     * @return void
      */
     public function logout()
     {
@@ -74,7 +77,7 @@ class UserService extends BaseService
      * 注册
      * @param $id
      * @param $password
-     * @return int | array
+     * @return array
      */
     public function register($id, $password)
     {

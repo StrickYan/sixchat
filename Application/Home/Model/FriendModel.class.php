@@ -1,7 +1,7 @@
 <?php
 /***************************************************************************
  *
- * Copyright (c) 2017 classmateer.com, Inc. All Rights Reserved
+ * Copyright (c) 2017 beishanwen.com, Inc. All Rights Reserved
  *
  **************************************************************************/
 
