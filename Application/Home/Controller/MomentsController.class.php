@@ -17,6 +17,7 @@ namespace Home\Controller;
 
 use Util\ErrCodeUtils;
 use Util\ResponseUtils;
+use Util\ParamsUtils;
 
 class MomentsController extends BaseController
 {
@@ -57,12 +58,13 @@ class MomentsController extends BaseController
      */
     public function getLikes()
     {
-        $id = intval($_REQUEST['id']); // moment_id
-        if (empty($id)) {
+        $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
+
+        if (empty($params['moment_id'])) {
             return ResponseUtils::json(ErrCodeUtils::PARAMS_INVALID);
         }
 
-        $list = D('Comment')->getLikes($id);
+        $list = D('Comment')->getLikes($params['moment_id']);
         if (false === $list) {
             return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
         }
@@ -70,6 +72,7 @@ class MomentsController extends BaseController
         foreach ($list as $key => &$value) {
             $value['reply_name'] = htmlspecialchars($value['reply_name']);
         }
+        unset($value);
 
         return ResponseUtils::json(ErrCodeUtils::SUCCESS, $list);
     }
@@ -79,14 +82,13 @@ class MomentsController extends BaseController
      */
     public function getLikesInAuth()
     {
-        $id = intval($_REQUEST['id']); // moment_id
-        if (empty($id)) {
+        $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
+
+        if (empty($params['moment_id'])) {
             return ResponseUtils::json(ErrCodeUtils::PARAMS_INVALID);
         }
-        $momentUserName = htmlspecialchars($_REQUEST['moment_user_name']); // 获取该条朋友圈的用户名
-        $userName = $_SESSION['user_name']; //当前用户
 
-        $list = D('Comment')->getLikesInAuth($id, $userName, $momentUserName);
+        $list = D('Comment')->getLikesInAuth($params['moment_id'], $params['session_user_name'], $params['moment_user_name']);
         if (false === $list) {
             return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
         }
@@ -94,6 +96,7 @@ class MomentsController extends BaseController
         foreach ($list as $key => &$value) {
             $value['reply_name'] = htmlspecialchars($value['reply_name']);
         }
+        unset($value);
 
         return ResponseUtils::json(ErrCodeUtils::SUCCESS, $list);
     }
@@ -103,12 +106,13 @@ class MomentsController extends BaseController
      */
     public function getComments()
     {
-        $id = intval($_REQUEST['id']);
-        if (empty($id)) {
+        $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
+
+        if (empty($params['moment_id'])) {
             return ResponseUtils::json(ErrCodeUtils::PARAMS_INVALID);
         }
 
-        $list = D('Comment')->getComments1($id);
+        $list = D('Comment')->getComments1($params['moment_id']);
         if (false === $list) {
             return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
         }
@@ -121,6 +125,7 @@ class MomentsController extends BaseController
                 "comment" => htmlspecialchars($value['comment']),
                 "time" => $value['time']);
         }
+        unset($value);
 
         return ResponseUtils::json(ErrCodeUtils::SUCCESS, $list);
     }
@@ -130,6 +135,8 @@ class MomentsController extends BaseController
      */
     public function getAllLikes()
     {
+        $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
+
         $list = D('Comment')->getAllLikes();
         if (false === $list) {
             return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
@@ -138,6 +145,7 @@ class MomentsController extends BaseController
         foreach ($list as $key => &$value) {
             $value['reply_names'] = htmlspecialchars($value['reply_names']);
         }
+        unset($value);
 
         return ResponseUtils::json(ErrCodeUtils::SUCCESS, $list);
     }
@@ -147,6 +155,8 @@ class MomentsController extends BaseController
      */
     public function getAllComments()
     {
+        $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
+
         $list = D('Comment')->getAllComments();
         if (false === $list) {
             return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
@@ -161,6 +171,7 @@ class MomentsController extends BaseController
                 "comment" => htmlspecialchars($value['comment']),
                 "time" => $value['time']);
         }
+        unset($value);
 
         return ResponseUtils::json(ErrCodeUtils::SUCCESS, $list);
     }
@@ -170,24 +181,29 @@ class MomentsController extends BaseController
      */
     public function getCommentsInAuth()
     {
-        $id = intval($_REQUEST['id']);
-        if (empty($id)) {
+        $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
+
+        if (empty($params['moment_id'])) {
             return ResponseUtils::json(ErrCodeUtils::PARAMS_INVALID);
         }
-        $momentUserName = htmlspecialchars($_REQUEST['moment_user_name']); // 获取该条朋友圈的用户名
-        $userName = $_SESSION['user_name']; //当前用户
 
-        $list = array();
-        if (!strcmp($userName, $momentUserName)) {
+        if (!strcmp($params['session_user_name'], $params['moment_user_name'])) {
             // 相等，浏览自己的帖子可以看到所有评论包括好友与非好友
-            $list = D('Comment')->getComments1($id);
+            $list = D('Comment')->getComments1($params['moment_id']);
         } else {
             // 浏览他人的帖子时只能看到互为好友的评论或者 自己与该用户的对话
-            foreach ($this->obj->getUserId($userName, $momentUserName) as $k => $val) {
-                $userId = $val["reply_id"];
-                $momentUserId = $val["replyed_id"];
-                $list = D('Comment')->getComments2($id, $userId, $momentUserId); //好友关系可见
+            $map = array(
+                'user_name' => $params['moment_user_name'],
+            );
+            $userInfo = D('User')->searchUser($map);
+            if (false === $userInfo) {
+                return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
+            } else if (empty($userInfo)) {
+                return ResponseUtils::json(ErrCodeUtils::SUCCESS, array());
             }
+            $momentUserId = $userInfo["user_id"];
+
+            $list = D('Comment')->getComments2($params['moment_id'], $params['session_user_id'], $momentUserId); //好友关系可见
         }
         if (false === $list) {
             return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
@@ -201,6 +217,7 @@ class MomentsController extends BaseController
                 "comment" => htmlspecialchars($value['comment']),
                 "time" => $value['time']);
         }
+        unset($value);
 
         return ResponseUtils::json(ErrCodeUtils::SUCCESS, $list);
     }
@@ -210,74 +227,83 @@ class MomentsController extends BaseController
      */
     public function addLike()
     {
-        $momentId = intval($_REQUEST['moment_id']);
-        $momentUserName = htmlspecialchars($_REQUEST['moment_user_name']);
+        $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
+
+        $momentId = $params['moment_id'];
+        $momentUserName = $params['moment_user_name'];
         if (empty($momentId) || empty($momentUserName)) {
             return ResponseUtils::json(ErrCodeUtils::PARAMS_INVALID);
         }
-        $replyName = $_SESSION['user_name'];
-        $replyedName = $momentUserName;
 
-        foreach ($this->obj->getUserId($replyName, $replyedName) as $k => $val) {
-            $replyId = $val["reply_id"];
-            $replyedId = $val["replyed_id"];
+        $replyId = $params['session_user_id'];
 
-            $condition['moment_id'] = $momentId;
-            $condition['reply_id'] = $replyId;
-            $condition['replyed_id'] = $replyedId;
-            $condition['state'] = 1;
-            $condition['type'] = 1;
-            $result = D('Comment')->getCommentId($condition);
-            if (false === $result) {
+        $map = array(
+            'user_name' => $momentUserName,
+        );
+        $userInfo = D('User')->searchUser($map);
+        if (false === $userInfo) {
+            return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
+        } else if (empty($userInfo)) {
+            return ResponseUtils::json(ErrCodeUtils::SUCCESS, array());
+        }
+        $replyedId = $userInfo["user_id"];
+
+        $condition = array(
+            'moment_id' => $momentId,
+            'reply_id' => $replyId,
+            'replyed_id' => $replyedId,
+            'state' => 1,
+            'type' => 1,
+        );
+        $result = D('Comment')->getCommentId($condition);
+        if (false === $result) {
+            return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
+        } else if (count($result)) {
+            // 已点赞 则删除赞记录
+            $updateData = array(
+                'comment_id' => $result,
+            );
+            $ret = D('Comment')->updateCommentState($updateData);
+            if (false === $ret) {
                 return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
             }
-
-            if ($result) {
-                // 已点赞 则删除赞记录
-                $data['comment_id'] = $result;
-                $ret = D('Comment')->updateCommentState($data);
-                if (false === $ret) {
-                    return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
-                }
-            } else {
-                // 没有点赞记录 则增加点赞
-                $data['moment_id'] = $momentId;
-                $data['reply_id'] = $replyId;
-                $data['replyed_id'] = $replyedId;
-                $data['time'] = date("Y-m-d H:i:s");
-                $data['type'] = 1;
-                $data['comment'] = "赞了你";
-                $ret = D('Comment')->addComment($data);
-                if (false === $ret) {
-                    return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
-                }
-            }
-
-            if ($replyId != $replyedId) {
-                // 指明给谁推送，为空表示向所有在线用户推送
-                $to_uid = $replyedId;
-                // 推送的url地址
-                $push_api_url = "http://localhost:2121/";
-                $post_data = array(
-                    'type' => 'publish_new_msg_num',
-                    'content' => '你有新消息',
-                    'to' => $to_uid,
-                );
-                $ch = curl_init();
-                curl_setopt($ch, CURLOPT_URL, $push_api_url);
-                curl_setopt($ch, CURLOPT_POST, 1);
-                curl_setopt($ch, CURLOPT_HEADER, 0);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
-                $return = curl_exec($ch);
-                curl_close($ch);
-                // var_export($return);
+        } else {
+            // 没有点赞记录 则增加点赞
+            $insertData = array(
+                'moment_id' => $momentId,
+                'reply_id' => $replyId,
+                'replyed_id' => $replyedId,
+                'time' => date("Y-m-d H:i:s"),
+                'type' => 1,
+                'comment' => '赞了你',
+            );
+            $ret = D('Comment')->addComment($insertData);
+            if (false === $ret) {
+                return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
             }
         }
 
-        $list[0] = "点赞成功";
+        if ($replyId != $replyedId) {
+            // 指明给谁推送，为空表示向所有在线用户推送
+            $to_uid = $replyedId;
+            // 推送的url地址
+            $push_api_url = "http://localhost:2121/";
+            $post_data = array(
+                'type' => 'publish_new_msg_num',
+                'content' => '你有新消息',
+                'to' => $to_uid,
+            );
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $push_api_url);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+            curl_exec($ch);
+            curl_close($ch);
+        }
 
-        return ResponseUtils::json(ErrCodeUtils::SUCCESS, $list);
+        return ResponseUtils::json(ErrCodeUtils::SUCCESS, array());
     }
 
     /**
@@ -285,61 +311,75 @@ class MomentsController extends BaseController
      */
     public function addComment()
     {
-        $momentId = intval($_REQUEST['moment_id']);
-        $replyedName = htmlspecialchars($_REQUEST['replyed_name']);
-        $commentVal = htmlspecialchars(trim($_REQUEST['comment_val']));
+        $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
+
+        $momentId = $params['moment_id'];
+        $replyedName = $params['replyed_name'];
+        $commentVal = $params['comment_val'];
         if (empty($momentId) || empty($replyedName) || empty($commentVal)) {
             return ResponseUtils::json(ErrCodeUtils::PARAMS_INVALID);
         }
-        $replyName = $_SESSION['user_name'];
+        $replyName = $params['session_user_name'];
+        $replyId = $params['session_user_id'];
 
-        foreach ($this->obj->getUserId($replyName, $replyedName) as $k => $val) {
-            $replyId = $val["reply_id"];
-            $replyedId = $val["replyed_id"];
-
-            // 插入评论
-            $data['moment_id'] = $momentId;
-            $data['reply_id'] = $replyId;
-            $data['replyed_id'] = $replyedId;
-            $data['comment'] = $commentVal;
-            $data['time'] = date("Y-m-d H:i:s");
-            $data['type'] = 2;
-            $ret = D('Comment')->addComment($data);
-            if (false === $ret) {
-                return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
-            }
-
-            if ($replyId != $replyedId) {
-                // 指明给谁推送，为空表示向所有在线用户推送
-                $to_uid = $replyedId;
-                // 推送的url地址
-                $push_api_url = "http://localhost:2121/";
-                $post_data = array(
-                    'type' => 'publish_new_msg_num',
-                    'content' => '你有新消息',
-                    'to' => $to_uid,
-                );
-                $ch = curl_init();
-                curl_setopt($ch, CURLOPT_URL, $push_api_url);
-                curl_setopt($ch, CURLOPT_POST, 1);
-                curl_setopt($ch, CURLOPT_HEADER, 0);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
-                $return = curl_exec($ch);
-                curl_close($ch);
-                // var_export($return);
-            }
+        $map = array(
+            'user_name' => $replyedName,
+        );
+        $userInfo = D('User')->searchUser($map);
+        if (false === $userInfo) {
+            return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
+        } else if (empty($userInfo)) {
+            return ResponseUtils::json(ErrCodeUtils::SUCCESS, array());
         }
+        $replyedId = $userInfo["user_id"];
 
-        // 获取新增评论的 comment_id
-        $commentId = D('Comment')->getMaxCommentId();
-        if (false === $commentId) {
+        // 插入评论
+        $insertData = array(
+            'moment_id' => $momentId,
+            'reply_id' => $replyId,
+            'replyed_id' => $replyedId,
+            'comment' => $commentVal,
+            'time' => date("Y-m-d H:i:s"),
+            'type' => 2,
+        );
+        $ret = D('Comment')->addComment($insertData);
+        if (false === $ret) {
             return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
         }
 
+        // 获取新增评论的 comment_id
+        $newCommentId = $ret;
+
+//        $newCommentId = D('Comment')->getMaxCommentId();
+//        if (false === $newCommentId) {
+//            return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
+//        }
+
+        if ($replyId != $replyedId) {
+            // 指明给谁推送，为空表示向所有在线用户推送
+            $to_uid = $replyedId;
+            // 推送的url地址
+            $push_api_url = "http://localhost:2121/";
+            $post_data = array(
+                'type' => 'publish_new_msg_num',
+                'content' => '你有新消息',
+                'to' => $to_uid,
+            );
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $push_api_url);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+            curl_exec($ch);
+            curl_close($ch);
+            // var_export($return);
+        }
+
+
         // 返回json数据
         $list[] = array(
-            "comment_id" => $commentId,
+            "comment_id" => $newCommentId,
             "moment_id" => $momentId,
             "reply_name" => $replyName,
             "replyed_name" => $replyedName,

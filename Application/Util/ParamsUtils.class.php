@@ -61,6 +61,32 @@ class ParamsUtils
                 $params['profile_whatsup'] = $_POST['profile_whatsup_box'];
                 break;
 
+            case "Moments/getLikes":
+            case "Moments/getComments":
+                $params['moment_id'] = $_POST['id'];
+                break;
+
+            case "Moments/getLikesInAuth":
+            case "Moments/getCommentsInAuth":
+                $params['moment_id'] = $_POST['id'];
+                $params['moment_user_name'] = $_POST['moment_user_name'];
+                break;
+
+            case "Moments/getAllLikes":
+            case "Moments/getAllComments":
+                break;
+
+            case "Moments/addLike":
+                $params['moment_id'] = $_POST['moment_id'];
+                $params['moment_user_name'] = $_POST['moment_user_name'];
+                break;
+
+            case "Moments/addComment":
+                $params['moment_id'] = $_POST['moment_id'];
+                $params['replyed_name'] = $_POST['replyed_name'];
+                $params['comment_val'] = $_POST['comment_val'];
+                break;
+
             default:
                 break;
         }
