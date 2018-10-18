@@ -18,7 +18,7 @@
             </if>
 
             <div class="info-flow-right-time">{$vo.time}</div>
-            <if condition="$vo.user_name eq $_SESSION['name']">
+            <if condition="$vo.user_name eq $_SESSION['user_name']">
                 <div class="delete-moment">Delete</div>
             </if>
             <div class="info-flow-right-button">
