@@ -3,7 +3,6 @@ A server side alternative implementation of [socket.io](https://github.com/socke
 
 # Notice
 Only support socket.io v1.3.0 or greater. <br>
-Namespace temporarily not implemented.<br>
 This project is just translate socket.io by [workerman](https://github.com/walkor/Workerman).<br>
 More api just see http://socket.io/docs/server-api/ 
 
@@ -29,7 +28,7 @@ Worker::runAll();
 
 ## Another chat demo
 
-https://github.com/walkor/phpsocket.io/blob/master/examples/chat/server.php
+https://github.com/walkor/phpsocket.io/blob/master/examples/chat/start_io.php
 ```php
 use Workerman\Worker;
 use PHPSocketIO\SocketIO;
@@ -106,8 +105,9 @@ use PHPSocketIO\SocketIO;
 // ssl context
 $context = array(
     'ssl' => array(
-        'local_cert' => '/your/path/of/server.pem',
-        'local_pk'   => '/your/path/of/server.key',
+        'local_cert'  => '/your/path/of/server.pem',
+        'local_pk'    => '/your/path/of/server.key',
+        'verify_peer' => false,
     )
 );
 $io = new SocketIO(2021, $context);

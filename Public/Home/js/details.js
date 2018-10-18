@@ -43,15 +43,14 @@ document.onkeypress = function EnterPress(e) {
 function getLikesForAjax(moment_id, moment_user_name) {
     $.ajax({
         type: "POST",
+        url: reFormatUrl("Moments/getLikes"),
+        dataType: "json",
         data: {
             "id": moment_id,
             "moment_user_name": moment_user_name
         },
-        dataType: "json",
-        // url: "../../getLikes",
-        url: reFormatUrl("Moments/getLikes"),
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            //alert("加载错误，错误原因：\n"+errorThrown);
+            console.log("XMLHttpRequest: " + XMLHttpRequest + "\n" + "textStatus: " + textStatus + "\n" + "errorThrown: " + errorThrown);
         },
         success: function (ret) {
             if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
@@ -60,8 +59,8 @@ function getLikesForAjax(moment_id, moment_user_name) {
             }
             let data = ret[PARAM_RET_DATA];
 
-            var html = "";
-            var i = 0;
+            let html = "";
+            let i;
             if (data.length) {
                 html += "<img class='like-img' src='../../../Public/Home/img/default/like.png'/>";
             }
@@ -82,16 +81,15 @@ function getLikesForAjax(moment_id, moment_user_name) {
 function getCommentsForAjax(moment_id, moment_user_name) {
     $.ajax({
         type: "POST",
-        async: false,
+        url: reFormatUrl("Moments/getComments"),
+        dataType: "json",
         data: {
             "id": moment_id,
             "moment_user_name": moment_user_name
         },
-        dataType: "json",
-        // url: "../../getComments",
-        url: reFormatUrl("Moments/getComments"),
+        async: false,
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            //alert("加载错误，错误原因：\n"+errorThrown);
+            console.log("XMLHttpRequest: " + XMLHttpRequest + "\n" + "textStatus: " + textStatus + "\n" + "errorThrown: " + errorThrown);
         },
         success: function (ret) {
             if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
@@ -100,8 +98,8 @@ function getCommentsForAjax(moment_id, moment_user_name) {
             }
             let data = ret[PARAM_RET_DATA];
 
-            var html = "";
-            for (var i = 0; i < data.length; i++) {
+            let html = "";
+            for (let i = 0; i < data.length; i++) {
                 html += "<div class='one-comment' id=" + data[i].comment_id + " ontouchstart='return false'>";
                 html += "<span class='comment-user-name'>" + data[i].reply_name + "</span>"; //回复人名字
                 if (data[i].reply_name != data[i].replyed_name) {
@@ -122,17 +120,17 @@ function getCommentsForAjax(moment_id, moment_user_name) {
 function addLike(moment_id, moment_user_name) {
     $.ajax({
         type: "POST",
+        url: reFormatUrl("Moments/addLike"),
+        dataType: "json",
         data: {
             "moment_id": moment_id,
             "moment_user_name": moment_user_name
         },
-        dataType: "json",
-        // url: "../../addLike",
-        url: reFormatUrl("Moments/addLike"),
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            //alert("加载错误，错误原因：\n"+errorThrown);
+            console.log("XMLHttpRequest: " + XMLHttpRequest + "\n" + "textStatus: " + textStatus + "\n" + "errorThrown: " + errorThrown);
         },
-        success: function (ret) { //当addLike后执行reFresh(),重新加载所有赞,所以下面单条添加可以省略
+        success: function (ret) {
+            //当addLike后执行reFresh(),重新加载所有赞,所以下面单条添加可以省略
             if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
                 console.log(ret[PARAM_RET_MSG]);
                 return;
@@ -148,16 +146,15 @@ function addLike(moment_id, moment_user_name) {
 function addComment() {
     $.ajax({
         type: "POST",
+        url: reFormatUrl("Moments/addComment"),
+        dataType: "json",
         data: {
             "moment_id": $(".comment-box:focus").parent().parent().attr("id"),
             "replyed_name": $(".comment-box:focus").attr("id"),
             "comment_val": $(".comment-box:focus").val()
         },
-        dataType: "json",
-        // url: "../../addComment",
-        url: reFormatUrl("Moments/addComment"),
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            //alert("加载错误，错误原因：\n"+errorThrown);
+            console.log("XMLHttpRequest: " + XMLHttpRequest + "\n" + "textStatus: " + textStatus + "\n" + "errorThrown: " + errorThrown);
         },
         success: function (ret) { //当addComment后执行reFresh(),重新加载所有评论,所以下面单条添加可以省略
             if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
@@ -175,18 +172,17 @@ function addComment() {
 
 // 删除moment
 function deleteMoment(obj) {
-    var data = confirm("Confirm deletion?");
+    let data = confirm("Confirm deletion?");
     if (data) {
         $.ajax({
             type: "POST",
+            url: reFormatUrl("Moments/deleteMoment"),
+            dataType: "json",
             data: {
                 "moment_id": obj.attr("id")
             },
-            dataType: "json",
-            // url: "../../deleteMoment",
-            url: reFormatUrl("Moments/deleteMoment"),
             error: function (XMLHttpRequest, textStatus, errorThrown) {
-                //alert("加载错误，错误原因：\n"+errorThrown);
+                console.log("XMLHttpRequest: " + XMLHttpRequest + "\n" + "textStatus: " + textStatus + "\n" + "errorThrown: " + errorThrown);
             },
             success: function (ret) {
                 if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
@@ -206,7 +202,7 @@ function deleteMoment(obj) {
 // 删除评论函数
 function deleteComment(obj) {
     if (obj.children(".comment-user-name").first().text() === GLOBAL_USER_NAME) { //自己的评论才有权限删除
-        if (isPC() === false) { //移动端
+        if (isPC() === false) { // 移动端
             // obj.longPress(function() {
             //     var data = confirm("Confirm deletion?");
             //     if (data) {
@@ -231,18 +227,17 @@ function deleteComment(obj) {
 
             touch.on(obj, 'hold', function (ev) {
                 //console.log("you have done", ev.type);
-                var data = confirm("Confirm deletion?");
+                let data = confirm("Confirm deletion?");
                 if (data) {
                     $.ajax({
                         type: "POST",
+                        url: reFormatUrl("Moments/deleteComment"),
+                        dataType: "json",
                         data: {
                             "comment_id": obj.attr("id")
                         },
-                        dataType: "json",
-                        // url: "../../deleteComment",
-                        url: reFormatUrl("Moments/deleteComment"),
                         error: function (XMLHttpRequest, textStatus, errorThrown) {
-                            //alert("加载错误，错误原因：\n"+errorThrown);
+                            console.log("XMLHttpRequest: " + XMLHttpRequest + "\n" + "textStatus: " + textStatus + "\n" + "errorThrown: " + errorThrown);
                         },
                         success: function (ret) {
                             if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
@@ -258,22 +253,21 @@ function deleteComment(obj) {
                     });
                 }
             });
-        } else { //PC端
-            var timeout;
+        } else { // PC端
+            let timeout;
             obj.mousedown(function () {
                 timeout = setTimeout(function () {
-                    var data = confirm("Confirm deletion?");
+                    let data = confirm("Confirm deletion?");
                     if (data) {
                         $.ajax({
                             type: "POST",
+                            url: reFormatUrl("Moments/deleteComment"),
+                            dataType: "json",
                             data: {
                                 "comment_id": obj.attr("id")
                             },
-                            dataType: "json",
-                            // url: "../../deleteComment",
-                            url: reFormatUrl("Moments/deleteComment"),
                             error: function (XMLHttpRequest, textStatus, errorThrown) {
-                                //alert("加载错误，错误原因：\n"+errorThrown);
+                                console.log("XMLHttpRequest: " + XMLHttpRequest + "\n" + "textStatus: " + textStatus + "\n" + "errorThrown: " + errorThrown);
                             },
                             success: function (ret) {
                                 if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {

@@ -31,7 +31,7 @@ $(function () {
     getRollingWall(); // 异步加载随机滚动3图url
     loadNextPageViaHtml(0);
     initCommentEvent();
-    var isCommitted = false;// 表单是否已经提交标识，默认为false
+    let isCommitted = false;// 表单是否已经提交标识，默认为false
     $(document).on("click", "#share", function () {
         if (isCommitted === false && ($.trim($("#text_box").val()) || $("#photo").val())) {
             document.body.scrollTop = document.documentElement.scrollTop = 0; // 跳转顶部
@@ -51,15 +51,15 @@ $(function () {
     // 点击修改资料按钮事件
     $(document).on("click", "#modify_profile_button", function () {
         $(this).text("confirm").attr("id", "confirm_modify");
-        var input_2_val = $("#profile_name_val").text();
-        var input_3_val = $("#profile_sex_val").text();
-        var input_4_val = $("#profile_region_val").text();
-        var input_5_val = $("#profile_whatsup_val").text();
-        var input_1 = "<div id='new_avatar_btn'><span>+</span><input type='file' name='profile_upfile' id='profile_photo'></div>";
-        var input_2 = "<input id='profile_name_box' name='profile_name_box' type='text' placeholder='Name' value='' maxlength=140>";
-        var input_3 = "<input id='profile_sex_box' name='profile_sex_box' type='text' placeholder='Gender' value='' maxlength=140>";
-        var input_4 = "<input id='profile_region_box' name='profile_region_box' type='text' placeholder='Region' value='' maxlength=140>";
-        var input_5 = "<input id='profile_whatsup_box' name='profile_whatsup_box' type='text' placeholder='WhatsUp' value='' maxlength=140>";
+        let input_2_val = $("#profile_name_val").text();
+        let input_3_val = $("#profile_sex_val").text();
+        let input_4_val = $("#profile_region_val").text();
+        let input_5_val = $("#profile_whatsup_val").text();
+        let input_1 = "<div id='new_avatar_btn'><span>+</span><input type='file' name='profile_upfile' id='profile_photo'></div>";
+        let input_2 = "<input id='profile_name_box' name='profile_name_box' type='text' placeholder='Name' value='' maxlength=140>";
+        let input_3 = "<input id='profile_sex_box' name='profile_sex_box' type='text' placeholder='Gender' value='' maxlength=140>";
+        let input_4 = "<input id='profile_region_box' name='profile_region_box' type='text' placeholder='Region' value='' maxlength=140>";
+        let input_5 = "<input id='profile_whatsup_box' name='profile_whatsup_box' type='text' placeholder='WhatsUp' value='' maxlength=140>";
         $("#profile_avatar").empty().append(input_1);
         $("#profile_name").empty().append(input_2);
         $("#profile_sex").empty().append(input_3);
@@ -78,7 +78,7 @@ $(function () {
     // 若选择了图片则显示图片名 否则显示New Avatar Image
     $(document).on('change', "#profile_photo", function (e) {
         try {
-            var name = e.currentTarget.files[0].name;
+            let name = e.currentTarget.files[0].name;
             $("#new_avatar_btn span").text('-');
         } catch (err) {
             $("#new_avatar_btn span").text("+");
@@ -120,7 +120,7 @@ $(function () {
     });
     // 替换文本内容
     $(".info-flow-right-text").each(function () {
-        var str = $(this).text();
+        let str = $(this).text();
         $(this).html(replace_str(str));
     });
     //图片延迟加载
@@ -168,6 +168,7 @@ function getSessionUser() {
             let retData = ret[PARAM_RET_DATA];
             if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
                 console.log(ret[PARAM_RET_MSG]);
+                alert(ret[PARAM_RET_MSG]);
                 return;
             }
             $("#avatar img").attr("src", reFormatUrl("avatar_img/") + retData.avatar);
@@ -177,16 +178,16 @@ function getSessionUser() {
 
 // 加载更多moments 返回一整块html直接渲染页面
 function loadNextPageViaHtml(page) {
-    var start_time = new Date().getTime();
+    let start_time = new Date().getTime();
     $.ajax({
         type: "POST",
+        url: reFormatUrl("Moments/loadNextPageViaHtml"),
+        dataType: "html",
         data: {
             "page": page
         },
-        dataType: "html",
-        url: reFormatUrl("Moments/loadNextPageViaHtml"),
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            //alert("加载错误，错误原因：\n" + errorThrown);
+            console.log("XMLHttpRequest: " + XMLHttpRequest + "\n" + "textStatus: " + textStatus + "\n" + "errorThrown: " + errorThrown);
         },
         success: function (data) {
             $('#loading').before(data);
@@ -212,8 +213,8 @@ function loadNextPageViaHtml(page) {
             });
             refresh();
 
-            var end_time = new Date().getTime();
-            var run_time = end_time - start_time;
+            let end_time = new Date().getTime();
+            let run_time = end_time - start_time;
             if (page === 0 && run_time < 1200) {
                 sleep(1200);
             }
@@ -226,15 +227,14 @@ function loadNextPageViaHtml(page) {
 function getLikesForAjax(moment_id, moment_user_name) {
     $.ajax({
         type: "POST",
+        url: reFormatUrl("Moments/getLikes"),
+        dataType: "json",
         data: {
             "id": moment_id,
             "moment_user_name": moment_user_name
         },
-        dataType: "json",
-        // url: "./getLikes",
-        url: reFormatUrl("Moments/getLikes"),
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            //alert("加载错误，错误原因：\n"+errorThrown);
+            console.log("XMLHttpRequest: " + XMLHttpRequest + "\n" + "textStatus: " + textStatus + "\n" + "errorThrown: " + errorThrown);
         },
         success: function (ret) {
             if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
@@ -265,16 +265,15 @@ function getLikesForAjax(moment_id, moment_user_name) {
 function getCommentsForAjax(moment_id, moment_user_name) {
     $.ajax({
         type: "POST",
-        async: false,
+        url: reFormatUrl("Moments/getComments"),
+        dataType: "json",
         data: {
             "id": moment_id,
             "moment_user_name": moment_user_name
         },
-        dataType: "json",
-        // url: "./getComments",
-        url: reFormatUrl("Moments/getComments"),
+        async: false,
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            // alert("加载错误，错误原因：\n"+errorThrown);
+            console.log("XMLHttpRequest: " + XMLHttpRequest + "\n" + "textStatus: " + textStatus + "\n" + "errorThrown: " + errorThrown);
         },
         success: function (ret) {
             if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
@@ -284,8 +283,7 @@ function getCommentsForAjax(moment_id, moment_user_name) {
             let data = ret[PARAM_RET_DATA];
 
             let html = "";
-            let i;
-            for (i = 0; i < data.length; i++) {
+            for (let i = 0; i < data.length; i++) {
                 html += "<div class='one-comment' id=" + data[i].comment_id + " ontouchstart='return false'>";
                 html += "<span class='comment-user-name'>" + data[i].reply_name + "</span>"; //回复人名字
                 if (data[i].reply_name != data[i].replyed_name) {
@@ -306,12 +304,11 @@ function getCommentsForAjax(moment_id, moment_user_name) {
 function getAllLikes() {
     $.ajax({
         type: "POST",
-        data: {},
-        dataType: "json",
-        // url: "./getAllLikes",
         url: reFormatUrl("Moments/getAllLikes"),
+        dataType: "json",
+        data: {},
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            //alert("加载错误，错误原因：\n"+errorThrown);
+            console.log("XMLHttpRequest: " + XMLHttpRequest + "\n" + "textStatus: " + textStatus + "\n" + "errorThrown: " + errorThrown);
         },
         success: function (ret) {
             if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
@@ -321,9 +318,8 @@ function getAllLikes() {
             let data = ret[PARAM_RET_DATA];
 
             $(".info-flow-right-like").empty();
-            var i = 0;
-            for (i = 0; i < data.length; i++) {
-                var html = "";
+            for (let i = 0; i < data.length; i++) {
+                let html = "";
                 html += "<img class='like-img' src='../Public/Home/img/default/like.png'/>";
                 html += "<span class='like-user-name'>" + data[i].reply_names + "</span>"; //点赞人名字
                 $("div.info-flow-right[id=" + data[i].moment_id + "]").children(".info-flow-right-like").append(html);
@@ -336,12 +332,11 @@ function getAllLikes() {
 function getAllComments() {
     $.ajax({
         type: "POST",
-        data: {},
-        dataType: "json",
-        // url: "./getAllComments",
         url: reFormatUrl("Moments/getAllComments"),
+        dataType: "json",
+        data: {},
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            //alert("加载错误，错误原因：\n"+errorThrown);
+            console.log("XMLHttpRequest: " + XMLHttpRequest + "\n" + "textStatus: " + textStatus + "\n" + "errorThrown: " + errorThrown);
         },
         success: function (ret) {
             if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
@@ -351,8 +346,8 @@ function getAllComments() {
             let data = ret[PARAM_RET_DATA];
 
             $(".info-flow-right-comment").empty();
-            for (var i = 0; i < data.length; i++) {
-                var html = "";
+            for (let i = 0; i < data.length; i++) {
+                let html = "";
                 html += "<div class='one-comment' id=" + data[i].comment_id + " ontouchstart='return false'>";
                 html += "<span class='comment-user-name'>" + data[i].reply_name + "</span>"; //回复人名字
                 if (data[i].reply_name != data[i].replyed_name) {
@@ -374,13 +369,13 @@ function getAllComments() {
 function searchUser(search_name) {
     $.ajax({
         type: "POST",
+        url: reFormatUrl("User/searchUser"),
+        dataType: "json",
         data: {
             "search_name": search_name
         },
-        dataType: "json",
-        url: reFormatUrl("User/searchUser"),
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            //alert("查找用户失败，失败原因：\n"+errorThrown);
+            console.log("XMLHttpRequest: " + XMLHttpRequest + "\n" + "textStatus: " + textStatus + "\n" + "errorThrown: " + errorThrown);
         },
         success: function (ret) {
             if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
@@ -389,11 +384,12 @@ function searchUser(search_name) {
             }
             let data = ret[PARAM_RET_DATA];
 
-            if (data.user_name === undefined || data.user_name == null) {
+            if (!data) {
                 alert("This user does not exist, please try again");
                 return;
             }
-            var html = '';
+
+            let html = '';
             html += "<form name='form_profile' id='form_profile'>";
             html += "<div id=profile_avatar><img src=" + "../avatar_img/" + data.avatar + "></div>";
             html += "<div id='profile_name' ><span class='profile-span'>Name：</span><span id='profile_name_val' class='profile-val'>" + data.user_name + "</span></div><hr>";
@@ -427,7 +423,7 @@ function searchUser(search_name) {
             }
 
             // 绑定关注按钮点击事件
-            var operation_follow = data.is_follow;
+            let operation_follow = data.is_follow;
             $("#follow_button").bind("click", function () {
                 operation_follow = 1 - operation_follow;
                 follow(data.follow_id, data.followed_id, operation_follow);
@@ -446,26 +442,23 @@ function searchUser(search_name) {
 function follow(follow_id, followed_id, operation_follow) {
     $.ajax({
         type: "POST",
+        url: reFormatUrl("User/follow"),
+        dataType: "json",
         data: {
             "follow_id": follow_id,
             "followed_id": followed_id,
             "operation_follow": operation_follow
         },
-        dataType: "json",
-        url: reFormatUrl("User/follow"),
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            console.log(XMLHttpRequest + "\n" + textStatus + "\n" + errorThrown);
+            console.log("XMLHttpRequest: " + XMLHttpRequest + "\n" + "textStatus: " + textStatus + "\n" + "errorThrown: " + errorThrown);
         },
         success: function (ret) {
             if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
                 console.log(ret[PARAM_RET_MSG]);
+                alert(ret[PARAM_RET_MSG]);
                 return;
             }
-            let data = ret[PARAM_RET_DATA];
-
-            if (data.is_success) {
-                $("#follow_button").text(operation_follow ? "Following" : "Follow");
-            }
+            $("#follow_button").text(operation_follow ? "Following" : "Follow");
         }
     });
 }
@@ -474,19 +467,19 @@ function follow(follow_id, followed_id, operation_follow) {
 function friendRequest(remark, requested_name) {
     $.ajax({
         type: "POST",
+        url: reFormatUrl("Moments/friendRequest"),
+        dataType: "json",
         data: {
             "remark": remark,
             "requested_name": requested_name
         },
-        dataType: "json",
-        // url: "./friendRequest",
-        url: reFormatUrl("Moments/friendRequest"),
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            //alert("好友请求发送失败，失败原因：\n"+errorThrown);
+            console.log("XMLHttpRequest: " + XMLHttpRequest + "\n" + "textStatus: " + textStatus + "\n" + "errorThrown: " + errorThrown);
         },
         success: function (ret) {
             if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
                 console.log(ret[PARAM_RET_MSG]);
+                alert(ret[PARAM_RET_MSG]);
                 return;
             }
             let data = ret[PARAM_RET_DATA];
@@ -501,17 +494,17 @@ function friendRequest(remark, requested_name) {
 function addLike(moment_id, moment_user_name) {
     $.ajax({
         type: "POST",
+        url: reFormatUrl("Moments/addLike"),
+        dataType: "json",
         data: {
             "moment_id": moment_id,
             "moment_user_name": moment_user_name
         },
-        dataType: "json",
-        // url: "./addLike",
-        url: reFormatUrl("Moments/addLike"),
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            //alert("加载错误，错误原因：\n"+errorThrown);
+            console.log("XMLHttpRequest: " + XMLHttpRequest + "\n" + "textStatus: " + textStatus + "\n" + "errorThrown: " + errorThrown);
         },
-        success: function (ret) { //当addLike后执行reFresh(),重新加载所有赞,所以下面单条添加可以省略
+        success: function (ret) {
+            // 当addLike后执行reFresh(),重新加载所有赞,所以下面单条添加可以省略
             if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
                 console.log(ret[PARAM_RET_MSG]);
                 return;
@@ -527,16 +520,15 @@ function addLike(moment_id, moment_user_name) {
 function addComment() {
     $.ajax({
         type: "POST",
+        url: reFormatUrl("Moments/addComment"),
+        dataType: "json",
         data: {
             "moment_id": $(".comment-box:focus").parent().parent().attr("id"),
             "replyed_name": $(".comment-box:focus").attr("id"),
             "comment_val": $(".comment-box:focus").val()
         },
-        dataType: "json",
-        // url: "./addComment",
-        url: reFormatUrl("Moments/addComment"),
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            //alert("加载错误，错误原因：\n"+errorThrown);
+            console.log("XMLHttpRequest: " + XMLHttpRequest + "\n" + "textStatus: " + textStatus + "\n" + "errorThrown: " + errorThrown);
         },
         success: function (ret) {
             if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
@@ -555,26 +547,26 @@ function addComment() {
 
 // 发送moment
 function addMoment() {
-    var data = new FormData($('#form_moment')[0]);
+    let data = new FormData($('#form_moment')[0]);
     $("#camera").click();
     $.ajax({
-        // url: './addMoment',
-        url: reFormatUrl("Moments/addMoment"),
         type: 'POST',
-        data: data,
+        url: reFormatUrl("Moments/addMoment"),
         dataType: 'JSON',
+        data: data,
         cache: false,
         processData: false,
         contentType: false
     }).done(function (ret) {
         if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
             console.log(ret[PARAM_RET_MSG]);
+            alert(ret[PARAM_RET_MSG]);
             return;
         }
         ret = ret[PARAM_RET_DATA];
 
         if (ret['isSuccess']) {
-            var result = '';
+            let result = '';
             result += "<div class='info-flow' >";
             result += "<div class='info-flow-right' id=" + ret['moment_id'] + ">";
             result += "<div class='info-flow-right-avatar'>";
@@ -629,12 +621,11 @@ function addMoment() {
 function getRollingWall() {
     $.ajax({
         type: "POST",
-        data: {},
-        dataType: "json",
-        // url: "./getRollingWall",
         url: reFormatUrl("Moments/getRollingWall"),
+        dataType: "json",
+        data: {},
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            //alert("加载错误，错误原因：\n"+errorThrown);
+            console.log("XMLHttpRequest: " + XMLHttpRequest + "\n" + "textStatus: " + textStatus + "\n" + "errorThrown: " + errorThrown);
         },
         success: function (ret) {
             if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
@@ -643,9 +634,9 @@ function getRollingWall() {
             }
             let data = ret[PARAM_RET_DATA];
 
-            var html_1 = "<a href=./details/id/" + data[0].moment_id_1 + "><img name=" + data[0].moment_id_1 + " class='lazy' data-original=../moment_img/" + data[0].img_url_1 + "></a>";
-            var html_2 = "<a href=./details/id/" + data[0].moment_id_2 + "><img name=" + data[0].moment_id_2 + " class='lazy' data-original=../moment_img/" + data[0].img_url_2 + "></a>";
-            var html_3 = "<a href=./details/id/" + data[0].moment_id_3 + "><img name=" + data[0].moment_id_3 + " class='lazy' data-original=../moment_img/" + data[0].img_url_3 + "></a>";
+            let html_1 = "<a href=./details/id/" + data[0].moment_id_1 + "><img name=" + data[0].moment_id_1 + " class='lazy' data-original=../moment_img/" + data[0].img_url_1 + "></a>";
+            let html_2 = "<a href=./details/id/" + data[0].moment_id_2 + "><img name=" + data[0].moment_id_2 + " class='lazy' data-original=../moment_img/" + data[0].img_url_2 + "></a>";
+            let html_3 = "<a href=./details/id/" + data[0].moment_id_3 + "><img name=" + data[0].moment_id_3 + " class='lazy' data-original=../moment_img/" + data[0].img_url_3 + "></a>";
             $(".swiper-slide").first().append(html_1);
             $(".swiper-slide").first().next().append(html_2);
             $(".swiper-slide").last().append(html_3);
@@ -674,14 +665,13 @@ function deleteMoment(obj) {
     if (data) {
         $.ajax({
             type: "POST",
+            url: reFormatUrl("Moments/deleteMoment"),
+            dataType: "json",
             data: {
                 "moment_id": obj.attr("id")
             },
-            dataType: "json",
-            // url: "./deleteMoment",
-            url: reFormatUrl("Moments/deleteMoment"),
             error: function (XMLHttpRequest, textStatus, errorThrown) {
-                //alert("加载错误，错误原因：\n"+errorThrown);
+                console.log("XMLHttpRequest: " + XMLHttpRequest + "\n" + "textStatus: " + textStatus + "\n" + "errorThrown: " + errorThrown);
             },
             success: function (ret) {
                 if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
@@ -725,18 +715,17 @@ function deleteComment(obj) {
             // });
             touch.on(obj, 'hold', function (ev) {
                 // console.log("you have done", ev.type);
-                var data = confirm("Confirm deletion?");
+                let data = confirm("Confirm deletion?");
                 if (data) {
                     $.ajax({
                         type: "POST",
+                        url: reFormatUrl("Moments/deleteComment"),
+                        dataType: "json",
                         data: {
                             "comment_id": obj.attr("id")
                         },
-                        dataType: "json",
-                        // url: "./deleteComment",
-                        url: reFormatUrl("Moments/deleteComment"),
                         error: function (XMLHttpRequest, textStatus, errorThrown) {
-                            //alert("加载错误，错误原因：\n"+errorThrown);
+                            console.log("XMLHttpRequest: " + XMLHttpRequest + "\n" + "textStatus: " + textStatus + "\n" + "errorThrown: " + errorThrown);
                         },
                         success: function (ret) {
                             if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
@@ -753,21 +742,20 @@ function deleteComment(obj) {
                 }
             });
         } else { //PC端
-            var timeout;
+            let timeout;
             obj.mousedown(function () {
                 timeout = setTimeout(function () {
-                    var data = confirm("Confirm deletion?");
+                    let data = confirm("Confirm deletion?");
                     if (data) {
                         $.ajax({
                             type: "POST",
+                            url: reFormatUrl("Moments/deleteComment"),
+                            dataType: "json",
                             data: {
                                 "comment_id": obj.attr("id")
                             },
-                            dataType: "json",
-                            // url: "./deleteComment",
-                            url: reFormatUrl("Moments/deleteComment"),
                             error: function (XMLHttpRequest, textStatus, errorThrown) {
-                                //alert("加载错误，错误原因：\n"+errorThrown);
+                                console.log("XMLHttpRequest: " + XMLHttpRequest + "\n" + "textStatus: " + textStatus + "\n" + "errorThrown: " + errorThrown);
                             },
                             success: function (ret) {
                                 if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
@@ -795,12 +783,11 @@ function deleteComment(obj) {
 function loadMessages() {
     $.ajax({
         type: "POST",
-        data: {},
-        dataType: "json",
-        // url: "./loadMessages",
         url: reFormatUrl("Moments/loadMessages"),
+        dataType: "json",
+        data: {},
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            //alert("信息加载错误，错误原因：\n"+errorThrown);
+            console.log("XMLHttpRequest: " + XMLHttpRequest + "\n" + "textStatus: " + textStatus + "\n" + "errorThrown: " + errorThrown);
         },
         success: function (ret) {
             if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
@@ -809,11 +796,11 @@ function loadMessages() {
             }
             let data = ret[PARAM_RET_DATA];
 
-            var html = "";
+            let html = "";
             html += "<div id='search'>";
             html += "<input type='text' id='search_box' placeholder='Follow New Friends' maxlength=140 required/>";
             html += "</div>";
-            for (var i = 0; i < data.length; i++) {
+            for (let i = 0; i < data.length; i++) {
                 html += "<div class='message-flow' name=" + data[i].moment_id + ">";
                 html += "<div class='message-flow-left'>";
                 html += "<img src=../avatar_img/" + data[i].avatar + " alt=''>";
@@ -833,12 +820,12 @@ function loadMessages() {
 
 // 修改资料
 function modifyProfile() {
-    var data = new FormData($('#form_profile')[0]);
+    let data = new FormData($('#form_profile')[0]);
     $.ajax({
-        url: reFormatUrl("User/modifyProfile"),
         type: 'POST',
-        data: data,
+        url: reFormatUrl("User/modifyProfile"),
         dataType: 'JSON',
+        data: data,
         cache: false,
         processData: false,
         contentType: false
@@ -862,12 +849,11 @@ function modifyProfile() {
 function loadNews() {
     $.ajax({
         type: "POST",
-        data: {},
-        dataType: "json",
-        // url: "./loadNews",
         url: reFormatUrl("Moments/loadNews"),
+        dataType: "json",
+        data: {},
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            // alert("查询错误，错误原因：\n"+errorThrown);
+            console.log("XMLHttpRequest: " + XMLHttpRequest + "\n" + "textStatus: " + textStatus + "\n" + "errorThrown: " + errorThrown);
         },
         success: function (ret) {
             if (ret[PARAM_RET_CODE] !== ERROR_CODE_SUCCESS) {
@@ -876,7 +862,7 @@ function loadNews() {
             }
             let data = ret[PARAM_RET_DATA];
 
-            var html = "<span id='news'> +" + data['number'] + "</span>";
+            let html = "<span id='news'> +" + data['number'] + "</span>";
             $("#news").remove();
             if (data['number'] !== 0) {
                 $("#back").append(html);
@@ -892,7 +878,7 @@ function clickCamera() {
             $("#edit_box").remove();
         });
     } else {
-        var html = "";
+        let html = "";
         html += "<div id='edit_box'>";
         html += "<form name='form_moment' id='form_moment'>";
         html += "<textarea id='text_box' name='text_box' placeholder='Say something ?' maxlength=280></textarea>";

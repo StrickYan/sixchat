@@ -4,7 +4,7 @@ namespace Home\Controller;
 
 use Util\ErrCodeUtils;
 use Util\ResponseUtils;
-use Util\SKLog;
+use Util\LogUtils;
 
 use Monolog\Logger;
 use Monolog\Handler\RotatingFileHandler;
@@ -45,9 +45,9 @@ class TestController extends BaseController
         $logger->emergency('My logger is now ready', array('username' => 'Seldaek'));
     }
 
-    public function testSKLog()
+    public function testLog()
     {
-        SKLog::warning("test log");
+        LogUtils::warning("test log");
     }
 
 }

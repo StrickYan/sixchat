@@ -41,8 +41,8 @@ class SixChatApi2016Controller extends BaseController
                 // 保存密码cookie
                 setcookie("password", "$password", time() + 60 * 60 * 24 * 7, "/auth", "sixchat.classmateer.com");
                 session_start();
-                $_SESSION["name"] = $userName;
                 $_SESSION["user_id"] = $userId;
+                $_SESSION["user_name"] = $userName;
                 return 0;
             } else {
                 return -2; //密码错误

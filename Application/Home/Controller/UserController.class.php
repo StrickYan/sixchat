@@ -16,24 +16,16 @@ namespace Home\Controller;
 
 use Util\ErrCodeUtils;
 use Util\ResponseUtils;
+use Util\ParamsUtils;
 
 class UserController extends BaseController
 {
-    protected $obj;
-
-    /**
-     * BaseController constructor.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->obj = new SixChatApi2016Controller();
-    }
-
     public function getSessionUser()
     {
+        $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
+
         $map = array(
-            "user_name" => $_SESSION["name"],
+            "user_name" => $_SESSION["user_name"],
         );
         $retData = D('User')->getUser($map);
         // var_dump($retData);exit;
@@ -46,8 +38,9 @@ class UserController extends BaseController
 
     public function getUser()
     {
-        $map = $_REQUEST;
-        $retData = D('User')->getUser($map);
+        $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
+
+        $retData = D('User')->getUser($params);
         // var_dump($retData);exit;
 
         if ($retData === false) {
@@ -61,39 +54,43 @@ class UserController extends BaseController
      */
     public function searchUser()
     {
-        $searchName = htmlspecialchars($_REQUEST['search_name']);
-        $userName = $_SESSION['name'];
-        $map['user_name'] = $searchName;
-        $list = D('User')->searchUser($map);
-        if (false === $list) {
+        $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
+
+        $map = array(
+            'user_name' => $params['search_name'],
+        );
+        $userInfo = D('User')->searchUser($map);
+        if (false === $userInfo) {
             return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
+        } else if (empty($userInfo)) {
+            return ResponseUtils::json(ErrCodeUtils::SUCCESS, array());
         }
 
-        $data = array(
-            'avatar' => $list['avatar'],
-            'user_name' => $list['user_name'],
-            'sex' => $list['sex'],
-            'region' => $list['region'],
-            'whatsup' => $list['whatsup'],
+        $ret = array(
+            'avatar' => $userInfo['avatar'],
+            'user_name' => $userInfo['user_name'],
+            'sex' => $userInfo['sex'],
+            'region' => $userInfo['region'],
+            'whatsup' => $userInfo['whatsup'],
+
             'is_follow' => 0,
+            'follow_id' => $params['session_user_id'],
+            'followed_id' => $userInfo['user_id'],
         );
 
-        foreach ($this->obj->getUserId($userName, $searchName) as $k => $val) {
-            $userId = $val["reply_id"];
-            $friendId = $val["replyed_id"];
-
-            $map1['user_id'] = $userId;
-            $map1['friend_id'] = $friendId;
-            $result = D('Friend')->where($map1)->find();
-            if ($result) {
-                $data['is_follow'] = 1; // 已关注
-            }
-
-            $data['follow_id'] = $userId;
-            $data['followed_id'] = $friendId;
+        // 查询是否关注
+        $condition = array(
+            'user_id' => $params['session_user_id'],
+            'friend_id' => $userInfo['user_id'],
+        );
+        $result = D('Friend')->where($condition)->find();
+        if (false === $result) {
+            return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
+        } else if (count($result)) {
+            $ret['is_follow'] = 1; // 已关注
         }
 
-        return ResponseUtils::json(ErrCodeUtils::SUCCESS, $data);
+        return ResponseUtils::json(ErrCodeUtils::SUCCESS, $ret);
     }
 
     /**
@@ -101,33 +98,29 @@ class UserController extends BaseController
      **/
     public function follow()
     {
-        $operationFollow = htmlspecialchars($_REQUEST['operation_follow']);
-        $data = array(
-            'user_id' => htmlspecialchars($_REQUEST['follow_id']),
-            'friend_id' => htmlspecialchars($_REQUEST['followed_id']),
-            'time' => date("Y-m-d H:i:s"),
-        );
+        $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
 
-        $ret = false;
-
-        if ($operationFollow == 1) {
-            $ret = D('Friend')->addFriend($data); // 添加关注记录
-        } else if ($operationFollow == 0) {
-            $where = array(
-                'user_id' => $data['user_id'],
-                'friend_id' => $data['friend_id'],
+        if (1 == $params['operation_follow']) {
+            $insertData = array(
+                'user_id' => $params['follow_id'],
+                'friend_id' => $params['followed_id'],
+                'time' => date("Y-m-d H:i:s"),
             );
-            $ret = D('Friend')->deleteFriend($where); // 取消关注
+            $ret = D('Friend')->addFriend($insertData); // 添加关注记录
+        } else if (0 == $params['operation_follow']) {
+            $condition = array(
+                'user_id' => $params['follow_id'],
+                'friend_id' => $params['followed_id'],
+            );
+            $ret = D('Friend')->deleteFriend($condition); // 取消关注
+        } else {
+            return ResponseUtils::json(ErrCodeUtils::PARAMS_INVALID);
         }
         if (false === $ret) {
             return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
         }
 
-        $ret = array(
-            "is_success" => ($ret === false ? 0 : 1),
-        );
-
-        return ResponseUtils::json(ErrCodeUtils::SUCCESS, $ret);
+        return ResponseUtils::json(ErrCodeUtils::SUCCESS, array());
     }
 
     /**
@@ -135,65 +128,64 @@ class UserController extends BaseController
      */
     public function modifyProfile()
     {
-        $profileNameBox = isset($_POST['profile_name_box']) ? htmlspecialchars(trim($_POST['profile_name_box'])) : ''; //获取文本内容
-        $profileSexBox = isset($_POST['profile_sex_box']) ? htmlspecialchars($_POST['profile_sex_box']) : '';
-        $profileRegionBox = isset($_POST['profile_region_box']) ? htmlspecialchars($_POST['profile_region_box']) : '';
-        $profileWhatsupBox = isset($_POST['profile_whatsup_box']) ? htmlspecialchars($_POST['profile_whatsup_box']) : '';
+        $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
 
-        if (!$profileNameBox && !$profileSexBox && !$profileRegionBox && !$profileWhatsupBox && empty($_FILES['profile_upfile']['tmp_name'])) {
+        if (empty($params['profile_name']) && empty($params['profile_sex'])
+            && empty($params['profile_region']) && empty($params['profile_whatsup'])
+            && empty($_FILES['profile_upfile']['tmp_name'])) {
             return ResponseUtils::json(ErrCodeUtils::PARAMS_INVALID);
         }
 
-        $response = array();
+        // 查询用户名是否存在
+        $condition = array(
+            'user_id' => array('neq', $params['session_user_id']),
+            'user_name' => array('eq', $params['profile_name']),
+        );
+        $ret = D('User')->searchUser($condition);
+        if (false === $ret) {
+            return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
+        } else if (!empty($ret)) {
+            $response = array(
+                'isSuccess' => false,
+                'msg' => '该用户名已存在',
+            );
+            return ResponseUtils::json(ErrCodeUtils::SUCCESS, $response);
+        }
+
+        // 更新用户信息
+        $map = array(
+            'user_id' => $params['session_user_id'],
+        );
+        $updateData = array(
+            'user_name' => $params['profile_name'],
+            'sex' => $params['profile_sex'],
+            'region' => $params['profile_region'],
+            'whatsup' => $params['profile_whatsup'],
+        );
+
+        // 头像上传
         $destinationFolder = "avatar_img/"; //上传文件路径
         $inputFileName = "profile_upfile";
         $maxWidth = 200;
         $maxHeight = 200;
-        $uploadResult = $this->obj->uploadImg($destinationFolder, $inputFileName, $maxWidth, $maxHeight); //上传头像
+        $uploadResult = $this->obj->uploadImg($destinationFolder, $inputFileName, $maxWidth, $maxHeight); // 上传头像
         if ($uploadResult) {
-            //有图片上传且上传成功返回图片名
-            $image_name = $uploadResult;
-            //上传成功后进行修改数据库图片路径操作
-            $map['user_name'] = $_SESSION['name'];
-            $data = array(
-                'avatar' => $image_name,
-            );
-            D('User')->updateUser($map, $data);
-            unset($map);
+            // 有图片上传且上传成功返回图片名
+            // 上传成功后进行修改数据库图片路径操作
+            $updateData['avatar'] = $uploadResult;
         }
-        $userName = $_SESSION["name"];
-        foreach ($this->obj->getUserId($userName, $userName) as $k => $val) {
-            $userId = $val["reply_id"];
 
-            $condition = array(
-                'user_name' => array('eq', $profileNameBox),
-                'user_id' => array('neq', $userId),
-            );
-            $ret = D('User')->searchUser($condition);
-            if (false === $ret) {
-                return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
-            }
-
-            if (!empty($ret)) {
-                $response['isSuccess'] = false;
-                $response['msg'] = '该用户名已存在';
-                return ResponseUtils::json(ErrCodeUtils::SUCCESS, $response);
-            }
-
-            $map['user_id'] = $userId;
-            $data = array(
-                'user_name' => $profileNameBox,
-                'sex' => $profileSexBox,
-                'region' => $profileRegionBox,
-                'whatsup' => $profileWhatsupBox,
-            );
-            $ret = D('User')->updateUser($map, $data);
-            if (false === $ret) {
-                return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
-            }
+        $ret = D('User')->updateUser($map, $updateData);
+        if (false === $ret) {
+            return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
         }
-        $_SESSION["name"] = $profileNameBox;
-        $response['isSuccess'] = true;
+
+        // 更新 session name
+        $_SESSION["user_name"] = $params['profile_name'];
+
+        $response = array(
+            'isSuccess' => true,
+        );
 
         return ResponseUtils::json(ErrCodeUtils::SUCCESS, $response);
     }

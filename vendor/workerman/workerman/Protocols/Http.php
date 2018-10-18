@@ -38,7 +38,7 @@ class Http
     {
         if (!strpos($recv_buffer, "\r\n\r\n")) {
             // Judge whether the package length exceeds the limit.
-            if (strlen($recv_buffer) >= TcpConnection::$maxPackageSize) {
+            if (strlen($recv_buffer) >= $connection::$maxPackageSize) {
                 $connection->close();
                 return 0;
             }
@@ -73,7 +73,7 @@ class Http
             $content_length = isset($match[1]) ? $match[1] : 0;
             return $content_length + strlen($header) + 4;
         }
-        return 0;
+        return $method === 'DELETE' ? strlen($header) + 4 : 0;
     }
 
     /**
@@ -159,9 +159,17 @@ class Http
                 case 'CONTENT_LENGTH':
                     $_SERVER['CONTENT_LENGTH'] = $value;
                     break;
+                case 'UPGRADE':
+					if($value=='websocket'){
+						$connection->protocol = "\\Workerman\\Protocols\\Websocket";
+						return \Workerman\Protocols\Websocket::input($recv_buffer,$connection);
+					}
+                    break;
             }
         }
-
+		if(isset($_SERVER['HTTP_ACCEPT_ENCODING']) && strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== FALSE){
+			HttpCache::$gzip = true;
+		}
         // Parse $_POST.
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (isset($_SERVER['CONTENT_TYPE'])) {
@@ -174,9 +182,6 @@ class Http
                         break;
                     case 'application/x-www-form-urlencoded':
                         parse_str($http_body, $_POST);
-                        break;
-                    case 'application/json':
-                        $_POST = json_decode($http_body, true);
                         break;
                 }
             }
@@ -205,8 +210,13 @@ class Http
             $_SERVER['QUERY_STRING'] = '';
         }
 
-        // REQUEST
-        $_REQUEST = array_merge($_GET, $_POST, $_REQUEST);
+        if (is_array($_POST)) {
+            // REQUEST
+            $_REQUEST = array_merge($_GET, $_POST, $_REQUEST);
+        } else {
+            // REQUEST
+            $_REQUEST = array_merge($_GET, $_REQUEST);
+        }
 
         // REMOTE_ADDR REMOTE_PORT
         $_SERVER['REMOTE_ADDR'] = $connection->getRemoteIp();
@@ -247,7 +257,10 @@ class Http
                 $header .= $item . "\r\n";
             }
         }
-
+		if(HttpCache::$gzip && isset($connection->gzip) && $connection->gzip){
+			$header .= "Content-Encoding: gzip\r\n";
+			$content = gzencode($content,$connection->gzip);
+		}
         // header
         $header .= "Server: workerman/" . Worker::VERSION . "\r\nContent-Length: " . strlen($content) . "\r\n\r\n";
 
@@ -648,6 +661,7 @@ class HttpCache
      */
     public static $instance             = null;
     public static $header               = array();
+    public static $gzip                 = false;
     public static $sessionPath          = '';
     public static $sessionName          = '';
     public static $sessionGcProbability = 1;

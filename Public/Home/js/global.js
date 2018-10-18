@@ -70,7 +70,7 @@ function divPop(obj) {
         event.stopPropagation();
         //设置弹出层位置
         //var offset = obj.offset();
-        if (obj.siblings(".divPop").css("display") == "block") {
+        if ("block" === obj.siblings(".divPop").css("display")) {
             obj.siblings(".divPop").hide(mobile_speed);
         }
         else {
@@ -99,7 +99,7 @@ function replace_str(str) {
     str = str.replace(/\n/g, '<br>');
     //str = str.replace(/\[em_([0-9]*)\]/g,'<img src="face/$1.gif" border="0" />');
     //文本中url替换成可点击的链接 target='_blank'指明打开新窗口
-    var regexp = /((http|ftp|https|file):[^'"\s]+)/ig;
+    let regexp = /((http|ftp|https|file):[^'"\s]+)/ig;
     str = str.replace(regexp, "<a target='_blank' href='$1'>$1</a>");
     return str;
 }
@@ -148,10 +148,10 @@ document.onkeypress = function EnterPress(e) {
 
 // 自定义判定设备类型函数
 function isPC() {
-    var userAgentInfo = navigator.userAgent;
-    var Agents = ["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"];
-    var flag = true;
-    for (var v = 0; v < Agents.length; v++) {
+    let userAgentInfo = navigator.userAgent;
+    let Agents = ["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"];
+    let flag = true;
+    for (let v = 0; v < Agents.length; v++) {
         if (userAgentInfo.indexOf(Agents[v]) > 0) {
             flag = false;
             break;
@@ -162,9 +162,9 @@ function isPC() {
 
 // 自定义移动端长按函数
 $.fn.longPress = function (fn) {
-    var timeout = undefined;
-    var $this = this;
-    for (var i = 0; i < $this.length; i++) {
+    let timeout = undefined;
+    let $this = this;
+    for (let i = 0; i < $this.length; i++) {
         $this[i].addEventListener('touchstart', function (event) {
             timeout = setTimeout(fn, 1000);
         }, false);
@@ -175,7 +175,7 @@ $.fn.longPress = function (fn) {
 };
 
 function sleep(n) {
-    var start = new Date().getTime();
+    let start = new Date().getTime();
     while (true) if (new Date().getTime() - start > n) break;
 }
 
@@ -237,9 +237,9 @@ var HtmlUtil = {
 var Publish = {
     'newMsgNum': function () {
         // 初始化io对象
-        var socket = io('//' + document.domain + ':2120');
+        let socket = io('//' + document.domain + ':2120');
         // uid 可以为网站用户的uid
-        var uid = parseInt(GLOBAL_USER_ID);
+        let uid = parseInt(GLOBAL_USER_ID);
         // 当socket连接后发送登录请求
         socket.on('connect', function () {
             socket.emit('login', uid);
@@ -247,8 +247,8 @@ var Publish = {
         // 当服务端推送来消息时触发，这里简单的alert出来，用户可做成自己的展示效果
         socket.on('publish_new_msg_num', function (content) {
             alert(content);
-            var newNum = Number($("#news").text().substring(1)) + 1;
-            var html = "<span id='news'> +" + newNum + "</span>";
+            let newNum = Number($("#news").text().substring(1)) + 1;
+            let html = "<span id='news'> +" + newNum + "</span>";
             $("#news").remove();
             $("#back").append(html);
         });

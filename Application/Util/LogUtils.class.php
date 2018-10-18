@@ -18,7 +18,7 @@ namespace Util;
 use Monolog\Logger;
 use Monolog\Handler\RotatingFileHandler;
 
-class SKLog
+class LogUtils
 {
     /*
      * Log Levels
@@ -81,5 +81,4 @@ class SKLog
     {
         self::_log("emergency", $msg, $data);
     }
-
 }

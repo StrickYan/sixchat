@@ -38,9 +38,8 @@ class SKUtility
             'retData' => $retData,
             'retMsg' => $retMsg,
         ));
-        SKLog::info($result);
+        LogUtils::info($result);
         echo $result . "\n";
         exit;
     }
-
 }
