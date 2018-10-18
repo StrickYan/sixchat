@@ -129,6 +129,7 @@ class MomentsController extends BaseController
                 "replyed_name" => htmlspecialchars($value['replyed_name']),
                 "comment_id" => $value['comment_id'],
                 "comment" => htmlspecialchars($value['comment']),
+                "comment_level" => $value['comment_level'],
                 "time" => $value['time']);
         }
         unset($value);

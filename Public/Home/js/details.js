@@ -102,13 +102,19 @@ function getCommentsForAjax(moment_id, moment_user_name) {
             for (let i = 0; i < data.length; i++) {
                 html += "<div class='one-comment' id=" + data[i].comment_id + " ontouchstart='return false'>";
                 html += "<span class='comment-user-name'>" + data[i].reply_name + "</span>"; //回复人名字
-                if (data[i].reply_name != data[i].replyed_name) {
+
+                if (data[i].comment_level == 1 || data[i].reply_name == data[i].replyed_name) {
+                    html += "<span>：</span>"
+                    html += "<span>" + data[i].comment + "</span>"; //评论
+                    html += "</div>";
+                } else {
                     html += "<span> @ </span>";
                     html += "<span class='comment-user-name'>" + data[i].replyed_name + "</span>"; //被回复人名
+
+                    html += "<span>：</span>"
+                    html += "<span>" + data[i].comment + "</span>"; //评论
+                    html += "</div>";
                 }
-                html += "<span>：</span>"
-                html += "<span>" + data[i].comment + "</span>"; //评论
-                html += "</div>";
             }
             $("div.info-flow-right[id=" + moment_id + "]").children(".info-flow-right-comment").children().remove();
             $("div.info-flow-right[id=" + moment_id + "]").children(".info-flow-right-comment").append(html);
@@ -151,7 +157,8 @@ function addComment() {
         data: {
             "moment_id": $(".comment-box:focus").parent().parent().attr("id"),
             "replyed_name": $(".comment-box:focus").attr("id"),
-            "comment_val": $(".comment-box:focus").val()
+            "comment_val": $(".comment-box:focus").val(),
+            "comment_level": $(".comment-box:focus").attr("placeholder") === "Comment" ? 1 : 2, // 评论层级，直接评论为1层，点击他人评论进行回复则为2层
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             console.log("XMLHttpRequest: " + XMLHttpRequest + "\n" + "textStatus: " + textStatus + "\n" + "errorThrown: " + errorThrown);
