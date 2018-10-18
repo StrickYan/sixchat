@@ -28,6 +28,15 @@ class ParamsUtils
         $params['session_user_name'] = $_SESSION['user_name'];
 
         switch ($actionName) {
+            case "Auth/register":
+            case "Auth/login":
+                $params['id'] = $_REQUEST['id'];
+                $params['password'] = $_REQUEST['password'];
+                break;
+
+            case "Auth/logout":
+                break;
+
             case "User/getSessionUser":
                 break;
 

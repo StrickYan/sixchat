@@ -15,6 +15,8 @@
 
 namespace Home\Controller;
 
+use Util\ParamsUtils;
+
 class AuthController extends BaseController
 {
     /**
@@ -22,7 +24,9 @@ class AuthController extends BaseController
      */
     public function login()
     {
-        if (isset($_SESSION['user_name']) && !empty($_SESSION['user_name'])) {
+        $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
+
+        if (!empty($params['session_user_name'])) {
             // 判断是否已经登录
             $this->redirect('/moments/index');
             return;
@@ -32,30 +36,26 @@ class AuthController extends BaseController
         $passwordPlaceholder = "Password";
         $headImage = "default_head.jpg"; //默认头像
 
-        $cookieId = null; // 存放cookie获取的id
-        $cookiePassword = null; // 存放cookie获取的password
         // 获取cookie
         if (isset($_COOKIE["id"])) {
-            $cookieId = $_COOKIE["id"];
+            $cookieId = $_COOKIE["id"]; // 存放cookie获取的id
         }
         if (isset($_COOKIE["password"])) {
-            $cookiePassword = $_COOKIE["password"];
+            $cookiePassword = $_COOKIE["password"]; // 存放cookie获取的password
         }
 
-        $id = null;
-        $password = null;
-        $id = trim($_POST['id']);
+        $id = $params['id'];
         // 为空则读入cookie值
-        if ($id == null) {
+        if (empty($id) && !empty($cookieId)) {
             $id = $cookieId;
         }
-        $password = trim($_POST['password']);
-        if ($password == null) {
+        $password = $params['password'];
+        if (empty($password) && !empty($cookiePassword)) {
             $password = $cookiePassword;
         }
 
         // 验证登录
-        if ($id != null && $password != null) {
+        if (!empty($id) && !empty($password)) {
             $obj = new SixChatApi2016Controller();
             $result = $obj->login($id, $password);
             if ($result == -1) {
@@ -74,8 +74,8 @@ class AuthController extends BaseController
             }
         }
 
-        if ($id != null) {
-            //加载用户头像
+        if (!empty($id)) {
+            // 加载用户头像
             $condition['user_name'] = $id;
             $avatar = D('User')->getUserAvatar($condition);
             if ($avatar) {
@@ -97,6 +97,8 @@ class AuthController extends BaseController
      */
     public function logout()
     {
+        $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
+
         $obj = new SixChatApi2016Controller();
         $obj->logout();
         header("Location:login");
@@ -107,8 +109,10 @@ class AuthController extends BaseController
      */
     public function register()
     {
-        $id = trim($_POST['id']);
-        $password = trim($_POST['password']);
+        $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
+
+        $id = $params['id'];
+        $password = $params['password'];
         $idPlaceholder = "新的账号";
         if (!empty($id) && !empty($password)) {
             $obj = new SixChatApi2016Controller();
