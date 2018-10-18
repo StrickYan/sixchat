@@ -30,8 +30,8 @@ class ParamsUtils
         switch ($actionName) {
             case "Auth/register":
             case "Auth/login":
-                $params['id'] = $_REQUEST['id'];
-                $params['password'] = $_REQUEST['password'];
+                $params['id'] = $_POST['id'];
+                $params['password'] = $_POST['password'];
                 break;
 
             case "Auth/logout":
