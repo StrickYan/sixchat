@@ -90,8 +90,11 @@ class ParamsUtils
                 break;
 
             case "Moments/deleteMoment":
-            case "Moments/getOneMoment":
                 $params['moment_id'] = $_POST['moment_id'];
+                break;
+
+            case "Moments/getOneMoment":
+                $params['moment_id'] = $_GET['moment_id'];
                 break;
 
             case "Moments/deleteComment":
