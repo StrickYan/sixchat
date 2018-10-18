@@ -25,7 +25,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `proc_CommentByFields1Select`(
     COMMENT '获取所有评论'
 BEGIN
 	set @sqlcmd = "
-		select u1.user_name as reply_name,u2.user_name as replyed_name,c.comment_id,c.comment,c.time 
+		select u1.user_name as reply_name,u2.user_name as replyed_name,c.comment_id,c.comment,c.time,c.comment_level
 	   	from think_comment c,think_user u1,think_user u2 
 	        	where c.reply_id=u1.user_id and c.replyed_id=u2.user_id and c.state=1 and c.type=2 and c.moment_id=? 
 					order by c.time asc";  
@@ -128,6 +128,7 @@ CREATE TABLE IF NOT EXISTS `think_comment` (
   `comment_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'comment id',
   `moment_id` int(11) NOT NULL DEFAULT '0' COMMENT 'moment id',
   `comment` varchar(280) NOT NULL DEFAULT '' COMMENT '评论内容',
+  `comment_level` tinyint(4) NOT NULL DEFAULT '0' COMMENT '评论层级，1为第一层，2为第二层',
   `reply_id` int(11) NOT NULL DEFAULT '0' COMMENT '评论人id',
   `replyed_id` int(11) NOT NULL DEFAULT '0' COMMENT '被评论人id',
   `type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '类型，1为点赞，2为评论',
