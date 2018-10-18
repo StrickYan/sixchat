@@ -13,7 +13,10 @@ return array(
     'DB_CHARSET' => 'utf8mb4', // 字符集
 
     'URL_MODEL' => '2', //url省略index.php
-
     'URL_HTML_SUFFIX' => '',  // URL伪静态后缀设置
 
+    // 自定义全局模板变量
+    'TMPL_PARSE_STRING' => array(
+        '__DEPLOY_VERSION__' => '2018101800',
+    ),
 );

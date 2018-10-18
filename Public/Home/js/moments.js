@@ -378,8 +378,7 @@ function searchUser(search_name) {
             "search_name": search_name
         },
         dataType: "json",
-        // url: "./searchUser",
-        url: reFormatUrl("Moments/searchUser"),
+        url: reFormatUrl("User/searchUser"),
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             //alert("查找用户失败，失败原因：\n"+errorThrown);
         },
@@ -453,8 +452,7 @@ function follow(follow_id, followed_id, operation_follow) {
             "operation_follow": operation_follow
         },
         dataType: "json",
-        // url: "./follow",
-        url: reFormatUrl("Moments/follow"),
+        url: reFormatUrl("User/follow"),
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             console.log(XMLHttpRequest + "\n" + textStatus + "\n" + errorThrown);
         },
@@ -837,8 +835,7 @@ function loadMessages() {
 function modifyProfile() {
     var data = new FormData($('#form_profile')[0]);
     $.ajax({
-        // url: './modifyProfile',
-        url: reFormatUrl("Moments/modifyProfile"),
+        url: reFormatUrl("User/modifyProfile"),
         type: 'POST',
         data: data,
         dataType: 'JSON',

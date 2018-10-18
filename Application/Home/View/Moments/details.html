@@ -1,61 +1,64 @@
 <!doctype html>
 <html>
-	<head>
-		<title>SixChat</title>
-        <include file="./Public/header.html" />
-		<link rel="stylesheet" href="__PUBLIC__/Home/css/lib/lightbox.min.css" />
-		<link rel="stylesheet" href="__PUBLIC__/Home/css/moments.css?v=18033000" />
-    	<link rel="stylesheet" type="text/css" media="screen and (min-device-width: 1200px)" href="__PUBLIC__/Home/css/pc.css?v=17052600" />
-	</head>
-	<body style="display: none;">
-		<div id="top" data-role="header">
-			<div id="return">
-				<img id="back_img" src="__PUBLIC__/Home/img/default/icon_back.png" alt="" >
-				<span id="back">SixChat</span>
-			</div>
-			<span id="current_location" ontouchstart='return false'>Details</span>
-		</div>
-		<div class="info-flow" id='the_one_moment'>
-<!-- 			<div class="info-flow-left">
-				<img src="__ROOT__/avatar_img/{$details.avatar}" alt="">
-			</div> -->
-			<div class="info-flow-right" id="{$details.moment_id}">
-		        <div class="info-flow-right-avatar">
-					<img src="__ROOT__/avatar_img/{$details.avatar}" alt="">
-				</div>
-				<div class="info-flow-right-user-name">{$details.user_name}</div>
-				<!-- <div class="info-flow-right-text">{$details.info}</div> -->
-				<if condition="$details.img_url neq ''">
-					<div class="info-flow-right-img">
-						<a href="__ROOT__/moment_img/{$details.img_url}" data-lightbox="{$details.moment_id}">
-							<img class="lazy" data-original="__ROOT__/moment_img/{$details.img_url}" />
-						</a>
-					</div>
-				</if>
-                <if condition="$details.info neq ''">
-				    <div class="info-flow-right-text">{$details.info}</div>
-				</if>
-				<div class="info-flow-right-time">{$details.time}</div>
-				<if condition="$details.user_name eq $_SESSION['name']">
-					<div class="delete-moment">Delete</div>
-				</if>
-				<div class="info-flow-right-button">
-					<img name="button" class="button-img" src="__PUBLIC__/Home/img/default/feed_comment.png" />
-				    <div class="divPop">  
-				        <img class="like-png" src="__PUBLIC__/Home/img/default/logout_like.png" />
-				        <img class="comment-png" src="__PUBLIC__/Home/img/default/logout_comment.png" />  
-				    </div>  
-				</div>
-				<div class="info-flow-right-like"></div>
-				<div class="info-flow-right-comment" ></div>
-				<div class="info-flow-right-input" name="div_comment">
-					<input type="text" class="comment-box" placeholder="Comment" maxlength="140" required/>
-				</div>
-			</div>
-		</div>
-        {$script}
-		<script src="__PUBLIC__/Home/js/lib/jquery-3.1.0.min.js"></script>	
-        <include file="./Public/footer.html" />
-		<script src="__PUBLIC__/Home/js/details.js?v=17121100"></script>
-	</body>	
+<head>
+    <title>SixChat</title>
+    <include file="./Public/header.html"/>
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/lib/lightbox.min.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/moments.css?v=__DEPLOY_VERSION__"/>
+    <link rel="stylesheet" type="text/css" media="screen and (min-device-width: 1200px)"
+          href="__PUBLIC__/Home/css/pc.css?v=__DEPLOY_VERSION__"/>
+</head>
+<body style="display: none;">
+<div id="top" data-role="header">
+    <div id="return">
+        <img id="back_img" src="__PUBLIC__/Home/img/default/icon_back.png" alt="">
+        <span id="back">SixChat</span>
+    </div>
+    <span id="current_location" ontouchstart='return false'>Details</span>
+</div>
+<div class="info-flow" id='the_one_moment'>
+    <!--
+    <div class="info-flow-left">
+        <img src="__ROOT__/avatar_img/{$details.avatar}" alt="">
+    </div>
+    -->
+    <div class="info-flow-right" id="{$details.moment_id}">
+        <div class="info-flow-right-avatar">
+            <img src="__ROOT__/avatar_img/{$details.avatar}" alt="">
+        </div>
+        <div class="info-flow-right-user-name">{$details.user_name}</div>
+        <!-- <div class="info-flow-right-text">{$details.info}</div> -->
+        <if condition="$details.img_url neq ''">
+            <div class="info-flow-right-img">
+                <a href="__ROOT__/moment_img/{$details.img_url}" data-lightbox="{$details.moment_id}">
+                    <img class="lazy" data-original="__ROOT__/moment_img/{$details.img_url}"/>
+                </a>
+            </div>
+        </if>
+        <if condition="$details.info neq ''">
+            <div class="info-flow-right-text">{$details.info}</div>
+        </if>
+        <div class="info-flow-right-time">{$details.time}</div>
+        <if condition="$details.user_name eq $_SESSION['name']">
+            <div class="delete-moment">Delete</div>
+        </if>
+        <div class="info-flow-right-button">
+            <img name="button" class="button-img" src="__PUBLIC__/Home/img/default/feed_comment.png"/>
+            <div class="divPop">
+                <img class="like-png" src="__PUBLIC__/Home/img/default/logout_like.png"/>
+                <img class="comment-png" src="__PUBLIC__/Home/img/default/logout_comment.png"/>
+            </div>
+        </div>
+        <div class="info-flow-right-like"></div>
+        <div class="info-flow-right-comment"></div>
+        <div class="info-flow-right-input" name="div_comment">
+            <input type="text" class="comment-box" placeholder="Comment" maxlength="140" required/>
+        </div>
+    </div>
+</div>
+{$script}
+<script src="__PUBLIC__/Home/js/lib/jquery-3.1.0.min.js"></script>
+<include file="./Public/footer.html"/>
+<script src="__PUBLIC__/Home/js/details.js?v=__DEPLOY_VERSION__"></script>
+</body>
 </html>
