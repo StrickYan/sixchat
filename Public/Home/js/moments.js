@@ -384,7 +384,7 @@ function searchUser(search_name) {
             }
             let data = ret[PARAM_RET_DATA];
 
-            if (!data) {
+            if (isEmpty(data)) {
                 alert("This user does not exist, please try again");
                 return;
             }
