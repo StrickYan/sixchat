@@ -72,7 +72,7 @@ class CommentModel extends BaseModel
     {
         $sql = '
             SELECT 
-                u1.user_name as reply_name,u2.user_name as replyed_name,c.moment_id,c.comment_id,c.comment,c.time 
+                u1.user_name as reply_name,u2.user_name as replyed_name,c.moment_id,c.comment_id,c.comment,c.time,c.comment_level 
             from 
                 think_comment c,think_user u1,think_user u2 
             where 
