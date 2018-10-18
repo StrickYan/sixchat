@@ -30,8 +30,6 @@ class ParamsUtils
         switch ($actionName) {
             case "Auth/register":
             case "Auth/login":
-            case "auth/register":
-            case "auth/login":
                 $params['id'] = $_REQUEST['id'];
                 $params['password'] = $_REQUEST['password'];
                 break;
@@ -70,7 +68,7 @@ class ParamsUtils
         // 参数类型转换
         self::$_params = array_map("self::checkInputString", $params);
 
-        LogUtils::info("$actionName params", self::$_params);
+        LogUtils::info("uri=$actionName params=" . serialize(self::$_params));
         return self::$_params;
     }
 
