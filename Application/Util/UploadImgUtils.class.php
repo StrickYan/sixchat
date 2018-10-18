@@ -13,167 +13,20 @@
  *
  **/
 
-namespace Home\Controller;
+namespace Util;
 
-class SixChatApi2016Controller extends BaseController
+class UploadImgUtils
 {
-    /**
-     * 登录API
-     * @param string $id 用户名
-     * @param string $password 密码
-     * @return int
-     */
-    public function login($id, $password)
-    {
-        $condition['user_name'] = $id;
-        $userName = D('User')->getUserName($condition);
-        $userId = D('User')->getUserId($condition);
-        // 该用户不存在
-        if (!$userName) {
-            return -1;
-        } else {
-            // 用户存在，保存用户名cookie
-            setcookie("id", "$id", time() + 60 * 60 * 24 * 7);
-            $condition['password'] = md5($password);
-            $userName = D('User')->getUserName($condition);
-            // 登录成功
-            if ($userName) {
-                // 保存密码cookie
-                setcookie("password", "$password", time() + 60 * 60 * 24 * 7, "/auth", "sixchat.classmateer.com");
-                session_start();
-                $_SESSION["user_id"] = $userId;
-                $_SESSION['user_name'] = $userName;
-                return 0;
-            } else {
-                return -2; //密码错误
-            }
-        }
-    }
-
-    /**
-     * 注销
-     */
-    public function logout()
-    {
-        session_destroy();
-        setcookie("password", "", time() - 3600, "/auth", "sixchat.classmateer.com");
-    }
-
-    /**
-     * 注册
-     * @param $id
-     * @param $password
-     * @return int
-     */
-    public function register($id, $password)
-    {
-        $condition['user_name'] = $id;
-        $userName = D('User')->getUserName($condition);
-        //该账号已存在
-        if ($userName) {
-            return -1;
-        } else {
-            //注册成功添加新用户
-            $data['user_name'] = $id;
-            $data['password'] = MD5($password);
-            $data['register_time'] = date("Y-m-d H:i:s");
-            D('User')->addUser($data);
-
-            //查询该新用户的user_id
-            $userId = D('User')->getUserId($condition);
-
-            $saveData['time'] = date("Y-m-d H:i:s");
-
-            //注册时自动关注自己
-            $saveData['user_id'] = $userId;
-            $saveData['friend_id'] = $userId;
-            D('Friend')->addFriend($saveData);
-
-            //注册时自动和官方账号建立双向关系
-            $saveData['user_id'] = $userId;
-            $saveData['friend_id'] = 18;
-            D('Friend')->addFriend($saveData);
-            $saveData['user_id'] = 18;
-            $saveData['friend_id'] = $userId;
-            D('Friend')->addFriend($saveData);
-
-            return 0;
-        }
-    }
-
-    /**
-     * 时间转换函数
-     * @param $time
-     * @return false|string
-     */
-    public function tranTime($time)
-    {
-        $fullTime = date("M j, Y H:i", $time);
-        $time = time() - $time;
-        if ($time < 60 * 2) {
-            $str = '1 min ago ';
-        } elseif ($time < 60 * 60) {
-            $min = floor($time / 60);
-            $str = $min . ' mins ago ';
-        } elseif ($time < 60 * 60 * 24) {
-            $h = floor($time / (60 * 60));
-            if ($h == 1) {
-                $str = '1 hour ago ';
-            } else {
-                $str = $h . ' hours ago ';
-            }
-        } elseif ($time < 60 * 60 * 24 * 7) {
-            $d = floor($time / (60 * 60 * 24));
-            if ($d == 1) {
-                $str = 'yesterday ';
-            } else {
-                $str = $d . ' day(s) ago ';
-            }
-        } else {
-            $str = $fullTime;
-        }
-        return $str;
-    }
-
-    /**
-     * 以user_name匹配用户user_id
-     * @param $replyName
-     * @param $replyedName
-     * @return mixed
-     */
-    public function getUserId($replyName, $replyedName)
-    {
-        $condition['u1.user_name'] = $replyName;
-        $condition['u2.user_name'] = $replyedName;
-        $result = D('User')->getUserIdViaUserName($condition);
-        return $result;
-    }
-
-    /**
-     * 以user_id匹配用户user_name
-     * @param $replyId
-     * @param $replyedId
-     * @return mixed
-     */
-    public function getUserName($replyId, $replyedId)
-    {
-        $condition['u1.user_id'] = $replyId;
-        $condition['u2.user_id'] = $replyedId;
-        $result = D('User')->getUserNameViaUserId($condition);
-        return $result;
-    }
-
     /**
      * 图片上传函数
      * @param $destinationFolder
      * @param $inputFileName
      * @param $maxWidth
      * @param $maxHeight
-     * @return bool|string
+     * @return array
      */
-    public function uploadImg($destinationFolder, $inputFileName, $maxWidth, $maxHeight)
+    public static function uploadImg($destinationFolder, $inputFileName, $maxWidth, $maxHeight)
     {
-
         /******************************************************************************
          * 参数说明:
          * $maxFileSize  : 上传文件大小限制, 单位BYTE
@@ -197,24 +50,26 @@ class SixChatApi2016Controller extends BaseController
             'image/x-png',
         );
         $maxFileSize = 8000000; // 上传文件大小限制, 单位BYTE
-        if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_FILES["$inputFileName"]['tmp_name'])) // 已选择图片才执行下面
-        {
-            if (!is_uploaded_file($_FILES["$inputFileName"]['tmp_name'])) // 判断指定的文件是否是通过 HTTP POST 上传的
-            {
-                echo "post出错，尝试修改服务器post文件大小限制，默认2M";
-                exit;
+
+        // 已选择图片才执行下面
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_FILES["$inputFileName"]['tmp_name'])) {
+            // 判断指定的文件是否是通过 HTTP POST 上传
+            if (!is_uploaded_file($_FILES["$inputFileName"]['tmp_name'])) {
+                return ResponseUtils::arrayRet(ErrCodeUtils::FAILED, array(), 'post出错，尝试修改服务器post文件大小限制，默认2M');
             }
+
             $file = $_FILES["$inputFileName"];
-            if ($maxFileSize < $file["size"]) // 检查文件大小
-            {
-                echo "文件太大!";
-                exit;
+
+            // 检查文件大小
+            if ($maxFileSize < $file["size"]) {
+                return ResponseUtils::arrayRet(ErrCodeUtils::FAILED, array(), '文件太大');
             }
-            if (!in_array($file["type"], $upTypes)) // 检查文件类型
-            {
-                echo "文件类型不符!" . $file["type"];
-                exit;
+
+            // 检查文件类型
+            if (!in_array($file["type"], $upTypes)) {
+                return ResponseUtils::arrayRet(ErrCodeUtils::FAILED, array(), "文件类型不符!" . $file["type"]);
             }
+
             if (!file_exists($destinationFolder)) {
                 mkdir($destinationFolder);
             }
@@ -225,13 +80,11 @@ class SixChatApi2016Controller extends BaseController
             $image_name = $current_time . "." . $ftype;
             $destination = $destinationFolder . $image_name;
             if (file_exists($destination)) {
-                echo "同名文件已经存在了";
-                exit;
+                return ResponseUtils::arrayRet(ErrCodeUtils::FAILED, array(), '存在同名文件');
             }
 
             if (!move_uploaded_file($filename, $destination)) {
-                echo "移动文件出错";
-                exit;
+                return ResponseUtils::arrayRet(ErrCodeUtils::FAILED, array(), '移动文件出错');
             }
 
             // 图片压缩并写回原位置替代原文件
@@ -239,9 +92,14 @@ class SixChatApi2016Controller extends BaseController
             $name = $destinationFolder . $current_time; // 压缩图片存放路径加名称，不带后缀
             $filetype = $ftype; // 图片类型
             self::resizeImage($route, $maxWidth, $maxHeight, $name, $filetype); // 调用函数
-            return $image_name;
+
+            $ret = array(
+                'image_name' => $image_name,
+            );
+            return ResponseUtils::arrayRet(ErrCodeUtils::SUCCESS, $ret);
         }
-        return false;
+
+        return ResponseUtils::arrayRet(ErrCodeUtils::FAILED);
     }
 
     /**
@@ -252,7 +110,7 @@ class SixChatApi2016Controller extends BaseController
      * @param string $name 压缩图片存放路径加名称，不带后缀
      * @param string $fileType 图片类型
      */
-    public function resizeImage($route, $maxWidth, $maxHeight, $name, $fileType)
+    public static function resizeImage($route, $maxWidth, $maxHeight, $name, $fileType)
     {
         $im = '';
         if (!strcasecmp($fileType, "jpg") || !strcasecmp($fileType, "jpeg")) {

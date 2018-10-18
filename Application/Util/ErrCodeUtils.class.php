@@ -23,6 +23,9 @@ class ErrCodeUtils
     const UN_DEFINED_ERR_CODE = 999; // 错误码不存在
 
     // 项目错误码从1000开始，之前为系统保留错误码
+    const USER_NAME_EXIST = 1001;
+    const USER_NOT_EXIST = 1002;
+    const ERR_PASSWORD = 1003;
 
     /**
      * 错误码对应的错误信息变量
@@ -33,6 +36,10 @@ class ErrCodeUtils
         self::PARAMS_INVALID => 'params invalid, check it please',
         self::SYSTEM_ERROR => 'system busy',
         self::UN_DEFINED_ERR_CODE => 'undefined error code',
+
+        self::USER_NAME_EXIST => 'user name exist',
+        self::USER_NOT_EXIST => 'user not exist',
+        self::ERR_PASSWORD => 'password error',
     );
 
     /**

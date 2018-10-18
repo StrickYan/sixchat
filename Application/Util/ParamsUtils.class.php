@@ -26,6 +26,7 @@ class ParamsUtils
         $params['time'] = time();
         $params['session_user_id'] = $_SESSION['user_id'];
         $params['session_user_name'] = $_SESSION['user_name'];
+        $params['session_user_avatar'] = $_SESSION['avatar'];
 
         switch ($actionName) {
             case "Auth/register":
@@ -63,6 +64,7 @@ class ParamsUtils
 
             case "Moments/getLikes":
             case "Moments/getComments":
+            case "Moments/details":
                 $params['moment_id'] = $_POST['id'];
                 break;
 
@@ -70,10 +72,6 @@ class ParamsUtils
             case "Moments/getCommentsInAuth":
                 $params['moment_id'] = $_POST['id'];
                 $params['moment_user_name'] = $_POST['moment_user_name'];
-                break;
-
-            case "Moments/getAllLikes":
-            case "Moments/getAllComments":
                 break;
 
             case "Moments/addLike":
@@ -85,6 +83,31 @@ class ParamsUtils
                 $params['moment_id'] = $_POST['moment_id'];
                 $params['replyed_name'] = $_POST['replyed_name'];
                 $params['comment_val'] = $_POST['comment_val'];
+                break;
+
+            case "Moments/addMoment":
+                $params['text_box'] = $_POST['text_box'];
+                break;
+
+            case "Moments/deleteMoment":
+            case "Moments/getOneMoment":
+                $params['moment_id'] = $_POST['moment_id'];
+                break;
+
+            case "Moments/deleteComment":
+                $params['comment_id'] = $_POST['comment_id'];
+                break;
+
+            case "Moments/loadNextPage":
+            case "Moments/loadNextPageViaHtml":
+                $params['page'] = $_POST['page'];
+                break;
+
+            case "Moments/getAllLikes":
+            case "Moments/getAllComments":
+            case "Moments/getRollingWall":
+            case "Moments/loadMessages":
+            case "Moments/loadNews":
                 break;
 
             default:

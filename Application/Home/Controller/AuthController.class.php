@@ -15,6 +15,8 @@
 
 namespace Home\Controller;
 
+use Home\Service\UserService;
+use Util\ErrCodeUtils;
 use Util\ParamsUtils;
 
 class AuthController extends BaseController
@@ -56,19 +58,21 @@ class AuthController extends BaseController
 
         // 验证登录
         if (!empty($id) && !empty($password)) {
-            $obj = new SixChatApi2016Controller();
-            $result = $obj->login($id, $password);
-            if ($result == -1) {
-                //用户不存在
+            $obj = new UserService();
+            $ret = $obj->login($id, $password);
+            if (ErrCodeUtils::USER_NOT_EXIST === $ret['code']) {
+                // 用户不存在
                 $id = null;
                 $password = null;
-                $idPlaceholder = "该用户不存在";
-            } else if ($result == -2) {
-                //密码错误
+                // $idPlaceholder = "该用户不存在";
+                $idPlaceholder = $ret['msg'];
+            } else if (ErrCodeUtils::ERR_PASSWORD === $ret['code']) {
+                // 密码错误
                 $password = null;
-                $passwordPlaceholder = "密码错误";
-            } else if (!$result) {
-                //登录成功
+                // passwordPlaceholder = "密码错误";
+                $passwordPlaceholder = $ret['msg'];
+            } else if (ErrCodeUtils::SUCCESS === $ret['code']) {
+                // 登录成功
                 $this->redirect('/moments/index');
                 return;
             }
@@ -99,7 +103,7 @@ class AuthController extends BaseController
     {
         $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
 
-        $obj = new SixChatApi2016Controller();
+        $obj = new UserService();
         $obj->logout();
         header("Location:login");
     }
@@ -115,18 +119,18 @@ class AuthController extends BaseController
         $password = $params['password'];
         $idPlaceholder = "新的账号";
         if (!empty($id) && !empty($password)) {
-            $obj = new SixChatApi2016Controller();
-            $result = $obj->register($id, $password); //调用注册api
-            if (!$result) {
+            $obj = new UserService();
+            $ret = $obj->register($id, $password); // 调用注册api
+            if (ErrCodeUtils::SUCCESS === $ret['code']) {
                 //注册成功
                 echo "<script>window.alert('注册成功,现在登录>>');window.location.href='login';</script>";
             } else {
-                $idPlaceholder = "该账号已存在";
+                // $idPlaceholder = "该账号已存在";
+                $idPlaceholder = $ret['msg'];
             }
         }
         $array['id_placeholder'] = $idPlaceholder;
         $this->assign($array); //模板赋值
         $this->display("Register/index"); //模板渲染
     }
-
 }

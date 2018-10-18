@@ -57,7 +57,7 @@ class MomentModel extends BaseModel
 
     public function addMoment($data)
     {
-        $this->data($data)->add();
+        return $this->data($data)->add();
     }
 
     public function getMaxMomentId()
@@ -74,7 +74,7 @@ class MomentModel extends BaseModel
 
     public function updateMomentState($condition)
     {
-        $this->where($condition)->setField('state', 0);
+        return $this->where($condition)->setField('state', 0);
     }
 
     public function getOneMoment($momentId)

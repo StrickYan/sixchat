@@ -17,6 +17,7 @@ namespace Home\Controller;
 use Util\ErrCodeUtils;
 use Util\ResponseUtils;
 use Util\ParamsUtils;
+use Util\UploadImgUtils;
 
 class UserController extends BaseController
 {
@@ -164,15 +165,19 @@ class UserController extends BaseController
         );
 
         // 头像上传
-        $destinationFolder = "avatar_img/"; //上传文件路径
-        $inputFileName = "profile_upfile";
-        $maxWidth = 200;
-        $maxHeight = 200;
-        $uploadResult = $this->obj->uploadImg($destinationFolder, $inputFileName, $maxWidth, $maxHeight); // 上传头像
-        if ($uploadResult) {
+        if (!empty($_FILES['profile_upfile']['tmp_name'])) {
+            $destinationFolder = "avatar_img/"; //上传文件路径
+            $inputFileName = "profile_upfile";
+            $maxWidth = 200;
+            $maxHeight = 200;
+            $uploadResult = UploadImgUtils::uploadImg($destinationFolder, $inputFileName, $maxWidth, $maxHeight);
+            if (ErrCodeUtils::SUCCESS !== $uploadResult['code']) {
+                return ResponseUtils::json($uploadResult['code'], array(), $uploadResult['msg']);
+            }
+
             // 有图片上传且上传成功返回图片名
             // 上传成功后进行修改数据库图片路径操作
-            $updateData['avatar'] = $uploadResult;
+            $updateData['avatar'] = $uploadResult['data']['image_name'];
         }
 
         $ret = D('User')->updateUser($map, $updateData);

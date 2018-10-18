@@ -18,20 +18,11 @@ namespace Home\Controller;
 use Util\ErrCodeUtils;
 use Util\ResponseUtils;
 use Util\ParamsUtils;
+use Util\TimeUtils;
+use Util\UploadImgUtils;
 
 class MomentsController extends BaseController
 {
-    protected $obj;
-
-    /**
-     * BaseController constructor.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->obj = new SixChatApi2016Controller();
-    }
-
     /**
      * 登录状态验证
      */
@@ -394,60 +385,52 @@ class MomentsController extends BaseController
      */
     public function addMoment()
     {
-        $textBox = trim(isset($_POST['text_box'])) ? htmlspecialchars(trim($_POST['text_box'])) : ''; //获取朋友圈文本内容
+        $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
+
+        $textBox = $params['text_box'] ?? ''; //获取朋友圈文本内容
         $imageName = '';
-        $response = array();
 
-        if (!$textBox && empty($_FILES['upfile']['tmp_name'])) {
-            // echo $_FILES['upfile']['error'];
+        if (empty($textBox) && empty($_FILES['upfile']['tmp_name'])) {
             // echo "没有内容";
-            return ResponseUtils::json(ErrCodeUtils::PARAMS_INVALID);
-        }
-        $destinationFolder = "moment_img/"; //上传文件路径
-        $inputFileName = "upfile";
-        $maxWidth = 640;
-        $maxHeight = 1136;
-        $uploadResult = $this->obj->uploadImg($destinationFolder, $inputFileName, $maxWidth, $maxHeight); //调用上传函数
-        if ($uploadResult) {
-            // 有图片上传且上传成功返回图片名
-            $imageName = $uploadResult;
+            return ResponseUtils::json(ErrCodeUtils::PARAMS_INVALID, array(), $_FILES['upfile']['error']);
         }
 
-        $userName = $_SESSION['user_name'];
-        foreach ($this->obj->getUserId($userName, $userName) as $k => $val) {
-            $userId = $val["reply_id"];
-
-            // 插入朋友圈
-            $data['user_id'] = $userId;
-            $data['info'] = $textBox;
-            $data['img_url'] = $imageName;
-            $data['time'] = date("Y-m-d H:i:s");
-            $ret = D('Moment')->addMoment($data);
-            if (false === $ret) {
-                return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
+        // 上传图片
+        if (!empty($_FILES['upfile']['tmp_name'])) {
+            $destinationFolder = "moment_img/"; //上传文件路径
+            $inputFileName = "upfile";
+            $maxWidth = 640;
+            $maxHeight = 1136;
+            $uploadResult = UploadImgUtils::uploadImg($destinationFolder, $inputFileName, $maxWidth, $maxHeight); //调用上传函数
+            if (ErrCodeUtils::SUCCESS !== $uploadResult['code']) {
+                return ResponseUtils::json($uploadResult['code'], array(), $uploadResult['msg']);
             }
+
+            // 有图片上传且上传成功返回图片名
+            $imageName = $uploadResult['data']['image_name'];
         }
 
-        // 获取自己头像
-        $map['user_name'] = $userName;
-        $avatar = D('User')->getUserAvatar($map);
-        if (false === $avatar) {
+        // 新增朋友圈
+        $insertData = array(
+            'user_id' => $params['session_user_id'],
+            'info' => $textBox,
+            'img_url' => $imageName,
+            'time' => date("Y-m-d H:i:s"),
+        );
+        $newMomentId = D('Moment')->addMoment($insertData);
+        if (false === $newMomentId) {
             return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
         }
 
-        // 获取新增朋友圈的 moment_id
-        $moment_id = D('Moment')->getMaxMomentId();
-        if (false === $moment_id) {
-            return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
-        }
-
-        $response['isSuccess'] = true;
-        $response['moment_id'] = $moment_id;
-        $response['user_name'] = $userName;
-        $response['avatar'] = $avatar;
-        $response['text_box'] = $textBox;
-        $response['photo'] = $imageName;
-        $response['time'] = $this->obj->tranTime(strtotime(date("Y-m-d H:i:s")));
+        $response = array(
+            'isSuccess' => true,
+            'moment_id' => $newMomentId,
+            'user_name' => $params['session_user_name'],
+            'avatar' => $params['session_user_avatar'],
+            'text_box' => $textBox,
+            'photo' => $imageName,
+            'time' => TimeUtils::tranTime(strtotime(date("Y-m-d H:i:s"))),
+        );
 
         return ResponseUtils::json(ErrCodeUtils::SUCCESS, $response);
     }
@@ -457,6 +440,8 @@ class MomentsController extends BaseController
      */
     public function getRollingWall()
     {
+        $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
+
         $list = D('Moment')->getRollingWall();
         if (false === $list) {
             return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
@@ -480,13 +465,30 @@ class MomentsController extends BaseController
      */
     public function deleteMoment()
     {
-        $momentId = htmlspecialchars($_REQUEST['moment_id']);
-        $condition['moment_id'] = $momentId;
-        D('Moment')->updateMomentState($condition);
-        D('Comment')->updateCommentState($condition); // 删除moment的时候连带删除其下所有评论
-        $list[0] = "Delete moment is success.";
+        $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
 
-        return ResponseUtils::json(ErrCodeUtils::SUCCESS, $list);
+        $model = M();
+        $model->startTrans();
+
+        $condition = array(
+            'moment_id' => $params['moment_id'],
+        );
+        $ret = D('Moment')->updateMomentState($condition);
+        if (false === $ret) {
+            $model->rollback();
+            return ResponseUtils::arrayRet(ErrCodeUtils::SYSTEM_ERROR);
+        }
+
+        // 删除moment的时候连带删除其下所有评论
+        $ret = D('Comment')->updateCommentState($condition);
+        if (false === $ret) {
+            $model->rollback();
+            return ResponseUtils::arrayRet(ErrCodeUtils::SYSTEM_ERROR);
+        }
+
+        $model->commit();
+
+        return ResponseUtils::json(ErrCodeUtils::SUCCESS);
     }
 
     /**
@@ -494,12 +496,17 @@ class MomentsController extends BaseController
      */
     public function deleteComment()
     {
-        $commentId = htmlspecialchars($_REQUEST['comment_id']);
-        $condition['comment_id'] = $commentId;
-        D('Comment')->updateCommentState($condition);
-        $list[0] = "Delete comment is success.";
+        $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
 
-        return ResponseUtils::json(ErrCodeUtils::SUCCESS, $list);
+        $condition = array(
+            'comment_id' => $params['comment_id'],
+        );
+        $ret = D('Comment')->updateCommentState($condition);
+        if (false === $ret) {
+            return ResponseUtils::arrayRet(ErrCodeUtils::SYSTEM_ERROR);
+        }
+
+        return ResponseUtils::json(ErrCodeUtils::SUCCESS);
     }
 
     /**
@@ -507,14 +514,22 @@ class MomentsController extends BaseController
      */
     public function loadMessages()
     {
-        $userName = $_SESSION['user_name'];
-        $map['user_name'] = $userName;
-        $userId = D('User')->getUserId($map);
-        $list = D('Comment')->getUnreadMessagesViaUserId($userId);
-        foreach ($list as $key => &$value) {
-            $value['time'] = $this->obj->tranTime(strtotime($value['time']));
+        $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
+
+        $list = D('Comment')->getUnreadMessagesViaUserId($params['session_user_id']);
+        if (false === $list) {
+            return ResponseUtils::arrayRet(ErrCodeUtils::SYSTEM_ERROR);
         }
-        D('Comment')->updateNewsViaUserId($userId);
+
+        foreach ($list as $key => &$value) {
+            $value['time'] = TimeUtils::tranTime(strtotime($value['time']));
+        }
+        unset($value);
+
+        $ret = D('Comment')->updateNewsViaUserId($params['session_user_id']);
+        if (false === $ret) {
+            return ResponseUtils::arrayRet(ErrCodeUtils::SYSTEM_ERROR);
+        }
 
         return ResponseUtils::json(ErrCodeUtils::SUCCESS, $list);
     }
@@ -524,8 +539,9 @@ class MomentsController extends BaseController
      */
     public function getOneMoment()
     {
-        $momentId = htmlspecialchars($_POST['moment_id']);
-        $list = D('Moment')->getOneMoment($momentId);
+        $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
+
+        $list = D('Moment')->getOneMoment($params['moment_id']);
         if (false === $list) {
             return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
         }
@@ -533,9 +549,9 @@ class MomentsController extends BaseController
         foreach ($list as $key => &$value) {
             $value['text_box'] = $value['info'];
             $value['photo'] = $value['img_url'];
-            $value['moment_id'] = $momentId;
             $value['time'] = date("M j, Y H:i", strtotime($value['time']));
         }
+        unset($value);
 
         return ResponseUtils::json(ErrCodeUtils::SUCCESS, $list);
     }
@@ -545,17 +561,20 @@ class MomentsController extends BaseController
      */
     public function loadNextPage()
     {
-        $page = htmlspecialchars($_REQUEST['page']);
-        $list = D('Moment')->getNextPage($page);
+        $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
+
+        $list = D('Moment')->getNextPage($params['page']);
         if (false === $list) {
             return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
         }
 
         foreach ($list as $key => &$value) {
             $value['user_name'] = htmlspecialchars($value['user_name']);
-            $value['time'] = $this->obj->tranTime(strtotime($value['time']));
+            $value['time'] = TimeUtils::tranTime(strtotime($value['time']));
             $value['info'] = htmlspecialchars($value['info']);
         }
+        unset($value);
+
         return ResponseUtils::json(ErrCodeUtils::SUCCESS, $list);
     }
 
@@ -564,19 +583,21 @@ class MomentsController extends BaseController
      */
     public function loadNextPageViaHtml()
     {
-        $page = htmlspecialchars($_REQUEST['page']);
-        $list = D('Moment')->getNextPage($page);
+        $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
+
+        $list = D('Moment')->getNextPage($params['page']);
         if (false === $list) {
             return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
         }
 
         foreach ($list as $key => &$value) {
             $value['user_name'] = htmlspecialchars($value['user_name']);
-            $value['time'] = $this->obj->tranTime(strtotime($value['time']));
+            $value['time'] = TimeUtils::tranTime(strtotime($value['time']));
             $value['info'] = str_replace("\n", "<br>", htmlspecialchars($value['info']));
         }
+        unset($value);
 
-        $this->assign('page', $page);
+        $this->assign('page', $params['page']);
         $this->assign('list', $list);
         $this->display("Moments/flow");
     }
@@ -586,16 +607,24 @@ class MomentsController extends BaseController
      */
     public function loadNews()
     {
-        $user_name = $_SESSION['user_name'];
-        $map['user_name'] = $user_name;
-        $user_id = D('User')->getUserId($map);
-        $list = D('Moment')->getNews($user_id);
-        $map1['requested_id'] = $user_id;
-        $map1['state'] = 1;
-        $result = D('FriendRequest')->getFriendRequest($map1);
-        $num = count($list) + count($result);
+        $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
+
+        $list = D('Moment')->getNews($params['session_user_id']);
+        if (false === $list) {
+            return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
+        }
+
+        $map = array(
+            'requested_id' => $params['session_user_id'],
+            'state' => 1,
+        );
+        $result = D('FriendRequest')->getFriendRequest($map);
+        if (false === $result) {
+            return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
+        }
+
         $ret = array(
-            "number" => $num,
+            "number" => count($list) + count($result),
         );
 
         return ResponseUtils::json(ErrCodeUtils::SUCCESS, $ret);
@@ -606,10 +635,11 @@ class MomentsController extends BaseController
      */
     public function details()
     {
-        session_start();
-        $userName = $_SESSION['user_name'];
-        $userId = $_SESSION["user_id"];
-        $momentId = $_REQUEST['id'];
+        $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
+
+        $userName = $params['session_user_name'];
+        $userId = $params['session_user_id'];
+        $momentId = $params['moment_id'];
         $result = D('Moment')->getOneMoment($momentId);
         if (false === $result) {
             return ResponseUtils::json(ErrCodeUtils::SYSTEM_ERROR);
@@ -617,9 +647,10 @@ class MomentsController extends BaseController
 
         foreach ($result as $key => &$value) {
             $value['user_name'] = htmlspecialchars($value['user_name']);
-            $value['time'] = $this->obj->tranTime(strtotime($value['time']));
+            $value['time'] = TimeUtils::tranTime(strtotime($value['time']));
             $value['info'] = htmlspecialchars($value['info']);
         }
+        unset($value);
 
         $script = "<script>const GLOBAL_USER_NAME = \"" . $userName . "\"; const GLOBAL_USER_ID = \"" . $userId . "\";</script>";
 
