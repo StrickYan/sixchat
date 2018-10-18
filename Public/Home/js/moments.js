@@ -351,7 +351,7 @@ function getAllComments() {
                 html += "<div class='one-comment' id=" + data[i].comment_id + " ontouchstart='return false'>";
                 html += "<span class='comment-user-name'>" + data[i].reply_name + "</span>"; //回复人名字
 
-                if (data[i].comment_level === 1 || data[i].reply_name === data[i].replyed_name) {
+                if (data[i].comment_level == 1 || data[i].reply_name == data[i].replyed_name) {
                     html += "<span>：</span>";
                     html += "<span>" + data[i].comment + "</span>"; //评论
                     html += "</div>";
