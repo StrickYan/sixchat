@@ -31,7 +31,7 @@ class MomentModel extends BaseModel
     //加载更多
     public function getNextPage($page)
     {
-        $userName = $_SESSION["user_name"];
+        $userName = $_SESSION['user_name'];
         $sql = "
             select 
                 u.user_name, u.avatar, m.info, m.img_url, m.time, m.moment_id

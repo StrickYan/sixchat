@@ -22,7 +22,7 @@ class AuthController extends BaseController
      */
     public function login()
     {
-        if (isset($_SESSION['name']) && !empty($_SESSION['name'])) {
+        if (isset($_SESSION['user_name']) && !empty($_SESSION['user_name'])) {
             // 判断是否已经登录
             $this->redirect('/moments/index');
             return;

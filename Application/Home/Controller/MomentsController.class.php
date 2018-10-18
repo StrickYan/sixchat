@@ -37,7 +37,7 @@ class MomentsController extends BaseController
     public function _initialize()
     {
         // 判断用户是否已经登录
-        if (!isset($_SESSION['name'])) {
+        if (!isset($_SESSION['user_name'])) {
             $this->error('', U('/auth/login'), 1);
         }
     }
@@ -47,7 +47,7 @@ class MomentsController extends BaseController
      */
     public function index()
     {
-        $script = "<script>const GLOBAL_USER_NAME = \"" . $_SESSION["user_name"] . "\";const GLOBAL_USER_ID = \"" . $_SESSION["user_id"] . "\";</script>";
+        $script = "<script>const GLOBAL_USER_NAME = \"" . $_SESSION['user_name'] . "\";const GLOBAL_USER_ID = \"" . $_SESSION["user_id"] . "\";</script>";
         $this->assign('script', $script);
         $this->display();
     }
@@ -84,7 +84,7 @@ class MomentsController extends BaseController
             return ResponseUtils::json(ErrCodeUtils::PARAMS_INVALID);
         }
         $momentUserName = htmlspecialchars($_REQUEST['moment_user_name']); // 获取该条朋友圈的用户名
-        $userName = $_SESSION["user_name"]; //当前用户
+        $userName = $_SESSION['user_name']; //当前用户
 
         $list = D('Comment')->getLikesInAuth($id, $userName, $momentUserName);
         if (false === $list) {
@@ -175,7 +175,7 @@ class MomentsController extends BaseController
             return ResponseUtils::json(ErrCodeUtils::PARAMS_INVALID);
         }
         $momentUserName = htmlspecialchars($_REQUEST['moment_user_name']); // 获取该条朋友圈的用户名
-        $userName = $_SESSION["user_name"]; //当前用户
+        $userName = $_SESSION['user_name']; //当前用户
 
         $list = array();
         if (!strcmp($userName, $momentUserName)) {
@@ -215,7 +215,7 @@ class MomentsController extends BaseController
         if (empty($momentId) || empty($momentUserName)) {
             return ResponseUtils::json(ErrCodeUtils::PARAMS_INVALID);
         }
-        $replyName = $_SESSION["user_name"];
+        $replyName = $_SESSION['user_name'];
         $replyedName = $momentUserName;
 
         foreach ($this->obj->getUserId($replyName, $replyedName) as $k => $val) {
@@ -291,7 +291,7 @@ class MomentsController extends BaseController
         if (empty($momentId) || empty($replyedName) || empty($commentVal)) {
             return ResponseUtils::json(ErrCodeUtils::PARAMS_INVALID);
         }
-        $replyName = $_SESSION["user_name"];
+        $replyName = $_SESSION['user_name'];
 
         foreach ($this->obj->getUserId($replyName, $replyedName) as $k => $val) {
             $replyId = $val["reply_id"];
@@ -373,7 +373,7 @@ class MomentsController extends BaseController
             $imageName = $uploadResult;
         }
 
-        $userName = $_SESSION["user_name"];
+        $userName = $_SESSION['user_name'];
         foreach ($this->obj->getUserId($userName, $userName) as $k => $val) {
             $userId = $val["reply_id"];
 
@@ -467,7 +467,7 @@ class MomentsController extends BaseController
      */
     public function loadMessages()
     {
-        $userName = $_SESSION["user_name"];
+        $userName = $_SESSION['user_name'];
         $map['user_name'] = $userName;
         $userId = D('User')->getUserId($map);
         $list = D('Comment')->getUnreadMessagesViaUserId($userId);
@@ -546,7 +546,7 @@ class MomentsController extends BaseController
      */
     public function loadNews()
     {
-        $user_name = $_SESSION["user_name"];
+        $user_name = $_SESSION['user_name'];
         $map['user_name'] = $user_name;
         $user_id = D('User')->getUserId($map);
         $list = D('Moment')->getNews($user_id);
@@ -567,7 +567,7 @@ class MomentsController extends BaseController
     public function details()
     {
         session_start();
-        $userName = $_SESSION["user_name"];
+        $userName = $_SESSION['user_name'];
         $userId = $_SESSION["user_id"];
         $momentId = $_REQUEST['id'];
         $result = D('Moment')->getOneMoment($momentId);

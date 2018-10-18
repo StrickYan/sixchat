@@ -25,7 +25,7 @@ class UserController extends BaseController
         $params = ParamsUtils::execute(CONTROLLER_NAME . '/' . ACTION_NAME);
 
         $map = array(
-            "user_name" => $_SESSION["user_name"],
+            "user_name" => $_SESSION['user_name'],
         );
         $retData = D('User')->getUser($map);
         // var_dump($retData);exit;
@@ -181,7 +181,7 @@ class UserController extends BaseController
         }
 
         // 更新 session name
-        $_SESSION["user_name"] = $params['profile_name'];
+        $_SESSION['user_name'] = $params['profile_name'];
 
         $response = array(
             'isSuccess' => true,
