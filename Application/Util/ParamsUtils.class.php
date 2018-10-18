@@ -86,6 +86,7 @@ class ParamsUtils
                 $params['moment_id'] = $_POST['moment_id'];
                 $params['replyed_name'] = $_POST['replyed_name'];
                 $params['comment_val'] = $_POST['comment_val'];
+                $params['comment_level'] = $_POST['comment_level'];
                 break;
 
             case "Moments/addMoment":

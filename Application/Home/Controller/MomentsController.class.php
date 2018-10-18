@@ -181,6 +181,7 @@ class MomentsController extends BaseController
                 "comment_id" => $value['comment_id'],
                 "moment_id" => $value['moment_id'],
                 "comment" => htmlspecialchars($value['comment']),
+                "comment_level" => $value['comment_level'],
                 "time" => $value['time']);
         }
         unset($value);
@@ -294,6 +295,7 @@ class MomentsController extends BaseController
                 'time' => date("Y-m-d H:i:s"),
                 'type' => 1,
                 'comment' => '赞了你',
+                'comment_level' => 1,
             );
             $ret = D('Comment')->addComment($insertData);
             if (false === $ret) {
@@ -337,7 +339,8 @@ class MomentsController extends BaseController
         $momentId = $params['moment_id'];
         $replyedName = $params['replyed_name'];
         $commentVal = $params['comment_val'];
-        if (empty($momentId) || empty($replyedName) || empty($commentVal)) {
+        $commentLevel = $params['comment_level'];
+        if (empty($momentId) || empty($replyedName) || empty($commentVal) || empty($commentLevel)) {
             return ResponseUtils::json(ErrCodeUtils::PARAMS_INVALID);
         }
         $replyName = $params['session_user_name'];
@@ -360,6 +363,7 @@ class MomentsController extends BaseController
             'reply_id' => $replyId,
             'replyed_id' => $replyedId,
             'comment' => $commentVal,
+            'comment_level' => $commentLevel,
             'time' => date("Y-m-d H:i:s"),
             'type' => 2,
         );
