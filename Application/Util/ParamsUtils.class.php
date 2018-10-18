@@ -64,8 +64,11 @@ class ParamsUtils
 
             case "Moments/getLikes":
             case "Moments/getComments":
-            case "Moments/details":
                 $params['moment_id'] = $_POST['id'];
+                break;
+
+            case "Moments/details":
+                $params['moment_id'] = $_GET['id'];
                 break;
 
             case "Moments/getLikesInAuth":
@@ -90,11 +93,8 @@ class ParamsUtils
                 break;
 
             case "Moments/deleteMoment":
-                $params['moment_id'] = $_POST['moment_id'];
-                break;
-
             case "Moments/getOneMoment":
-                $params['moment_id'] = $_GET['moment_id'];
+                $params['moment_id'] = $_POST['moment_id'];
                 break;
 
             case "Moments/deleteComment":
