@@ -15,8 +15,8 @@
 
 namespace Home\Controller;
 
-use util\ErrCodeUtils;
-use util\ResponseUtils;
+use Util\ErrCodeUtils;
+use Util\ResponseUtils;
 
 class MomentsController extends BaseController
 {

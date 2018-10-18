@@ -2,9 +2,9 @@
 
 namespace Home\Controller;
 
-use util\ErrCodeUtils;
-use util\ResponseUtils;
-use util\SKLog;
+use Util\ErrCodeUtils;
+use Util\ResponseUtils;
+use Util\SKLog;
 
 use Monolog\Logger;
 use Monolog\Handler\RotatingFileHandler;

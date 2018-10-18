@@ -6,7 +6,7 @@
  * Time: 5:00
  */
 
-namespace util;
+namespace Util;
 
 class SKUtility
 {

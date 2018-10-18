@@ -13,7 +13,7 @@
  *
  **/
 
-namespace util;
+namespace Util;
 
 use Monolog\Logger;
 use Monolog\Handler\RotatingFileHandler;

@@ -12,7 +12,7 @@
  * @brief
  */
 
-namespace util;
+namespace Util;
 
 class ErrCodeUtils
 {
