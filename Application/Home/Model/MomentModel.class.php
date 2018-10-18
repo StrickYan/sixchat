@@ -15,7 +15,7 @@
 
 namespace Home\Model;
 
-use util\SKUtility;
+use Util\SKUtility;
 
 class MomentModel extends BaseModel
 {
