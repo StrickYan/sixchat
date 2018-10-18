@@ -59,7 +59,7 @@ class ParamsUtils
         // 参数类型转换
         self::$_params = array_map("self::checkInputString", $params);
 
-        LogUtils::info("params", serialize(self::$_params));
+        LogUtils::info("params", self::$_params);
         return self::$_params;
     }
 
