@@ -290,7 +290,7 @@ function getCommentsForAjax(moment_id, moment_user_name) {
                     html += "<span> @ </span>";
                     html += "<span class='comment-user-name'>" + data[i].replyed_name + "</span>"; //被回复人名
                 }
-                html += "<span>：</span>"
+                html += "<span>: </span>";
                 html += "<span>" + data[i].comment + "</span>"; //评论
                 html += "</div>";
             }
@@ -352,14 +352,14 @@ function getAllComments() {
                 html += "<span class='comment-user-name'>" + data[i].reply_name + "</span>"; //回复人名字
 
                 if (data[i].comment_level == 1 || data[i].reply_name == data[i].replyed_name) {
-                    html += "<span>：</span>";
+                    html += "<span>: </span>";
                     html += "<span>" + data[i].comment + "</span>"; //评论
                     html += "</div>";
                 } else {
                     html += "<span> @ </span>";
                     html += "<span class='comment-user-name'>" + data[i].replyed_name + "</span>"; //被回复人名
 
-                    html += "<span>：</span>";
+                    html += "<span>: </span>";
                     html += "<span>" + data[i].comment + "</span>"; //评论
                     html += "</div>";
                 }
@@ -399,10 +399,10 @@ function searchUser(search_name) {
             let html = '';
             html += "<form name='form_profile' id='form_profile'>";
             html += "<div id=profile_avatar><img src=" + "../avatar_img/" + data.avatar + "></div>";
-            html += "<div id='profile_name' ><span class='profile-span'>Name：</span><span id='profile_name_val' class='profile-val'>" + data.user_name + "</span></div><hr>";
-            html += "<div id='profile_sex' ><span class='profile-span'>Gender：</span><span id='profile_sex_val' class='profile-val'>" + data.sex + "</span></div><hr>";
-            html += "<div id='profile_region' ><span class='profile-span'>Region：</span><span id='profile_region_val' class='profile-val'>" + data.region + "</span></div><hr>";
-            html += "<div id='profile_whatsup' ><span class='profile-span'>What's Up：</span><span id='profile_whatsup_val' class='profile-val'>" + data.whatsup + "</span></div><hr>";
+            html += "<div id='profile_name' ><span class='profile-span'>Name: </span><span id='profile_name_val' class='profile-val'>" + data.user_name + "</span></div><hr>";
+            html += "<div id='profile_sex' ><span class='profile-span'>Gender: </span><span id='profile_sex_val' class='profile-val'>" + data.sex + "</span></div><hr>";
+            html += "<div id='profile_region' ><span class='profile-span'>Region: </span><span id='profile_region_val' class='profile-val'>" + data.region + "</span></div><hr>";
+            html += "<div id='profile_whatsup' ><span class='profile-span'>What's Up: </span><span id='profile_whatsup_val' class='profile-val'>" + data.whatsup + "</span></div><hr>";
             html += "</form>";
             if (data.user_name === GLOBAL_USER_NAME) { //自己的资料可以修改
                 html += "<div id='modify_profile_button'>modify</div>";

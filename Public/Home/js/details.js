@@ -104,14 +104,14 @@ function getCommentsForAjax(moment_id, moment_user_name) {
                 html += "<span class='comment-user-name'>" + data[i].reply_name + "</span>"; //回复人名字
 
                 if (data[i].comment_level == 1 || data[i].reply_name == data[i].replyed_name) {
-                    html += "<span>：</span>"
+                    html += "<span>: </span>"
                     html += "<span>" + data[i].comment + "</span>"; //评论
                     html += "</div>";
                 } else {
                     html += "<span> @ </span>";
                     html += "<span class='comment-user-name'>" + data[i].replyed_name + "</span>"; //被回复人名
 
-                    html += "<span>：</span>"
+                    html += "<span>: </span>";
                     html += "<span>" + data[i].comment + "</span>"; //评论
                     html += "</div>";
                 }
