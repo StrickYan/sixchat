@@ -21,7 +21,7 @@
             bgColor: '#2ecc71', // Default background color
             spinner: 'spinner7', // Default Spinner
             imagePath: '', // Default Path custom image
-            fakeBody: '', // 自定义的 body
+            fakeDiv: '', // 自定义的 body
         }, options);
 
         //Customized Spinners
@@ -90,8 +90,8 @@
         setTimeout(function () {
 
             //加载时间到了以后，显示主页面的body
-            if (settings.fakeBody != '') {
-                $("#" + settings.fakeBody).css("display", "block");
+            if (settings.fakeDiv != '') {
+                $("#" + settings.fakeDiv).css("display", "block");
             }
 
             $(el).fadeOut();
