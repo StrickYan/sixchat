@@ -66,16 +66,16 @@
 {$script}
 
 <script src="https://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
-<script src="__PUBLIC__/Home/js/lib/fakeLoader.min.js?v=__DEPLOY_VERSION__"></script>
+<script src="__PUBLIC__/Home/js/lib/fakeLoader.min.js"></script>
 <script>
     $(document).ready(function () {
         // spinner1, spinner2, spinner3 共3种效果
         let whichSpinner = "spinner" + Math.ceil(Math.random() * 3);
         $("#fakeloader").fakeLoader({
-            // timeToHide: 60000,
+            // timeToHide: 1200,
             bgColor: "#2ecc71",
             spinner: whichSpinner,
-            fakeDiv: 'fake_div'
+            fakeDiv: 'fake_div' // 在动画完成预加载前隐藏#fake_div
         });
         let winW = $(window).width();
         let winH = $(window).height();

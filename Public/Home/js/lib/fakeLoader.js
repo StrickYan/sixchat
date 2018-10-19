@@ -89,7 +89,7 @@
         //Time to hide fakeLoader
         setTimeout(function () {
 
-            //加载时间到了以后，显示主页面的body
+            //加载时间到了以后，显示主页面的 div
             if (settings.fakeDiv != '') {
                 $("#" + settings.fakeDiv).css("display", "block");
             }

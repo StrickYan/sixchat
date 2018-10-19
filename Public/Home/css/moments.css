@@ -231,6 +231,11 @@ a {
 
 }
 
+/*height: 100% 为 #slide_wall 的 height 服务*/
+#fake_div {
+    height: 100%;
+}
+
 /*滚动墙*/
 #slide_wall {
     position: relative;
@@ -498,8 +503,4 @@ hr {
     text-align: center;
     width: 100%;
     line-height: 40px;
-}
-
-#fake_div {
-    height: 100%;
 }
