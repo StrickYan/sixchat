@@ -93,6 +93,7 @@
             if (settings.fakeDiv != '') {
                 $("#" + settings.fakeDiv).css("display", "block");
             }
+            console.log(settings.fakeDiv);
 
             $(el).fadeOut();
         }, settings.timeToHide);
