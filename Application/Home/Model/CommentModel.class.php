@@ -53,9 +53,9 @@ class CommentModel extends BaseModel
     // 获取moment的点赞人
     public function getAllLikes()
     {
-        $sql = '
+        $sql = "
             SELECT 
-                group_concat(distinct(u.user_name)) as reply_names,c.moment_id,group_concat(c.comment_id) as comment_ids
+                group_concat(distinct(u.user_name) SEPARATOR ', ') as reply_names,c.moment_id,group_concat(c.comment_id) as comment_ids
             FROM 
                 think_comment c,think_user u 
             where 
@@ -64,7 +64,7 @@ class CommentModel extends BaseModel
                 c.moment_id
             order by 
                 c.moment_id desc
-        ';
+        ";
         return M()->query($sql);
     }
 
