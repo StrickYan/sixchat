@@ -10,11 +10,8 @@
     <link rel="stylesheet" href="__PUBLIC__/Home/css/messages.css?v=__DEPLOY_VERSION__"/>
     <link rel="stylesheet" type="text/css" media="screen and (min-device-width: 1200px)"
           href="__PUBLIC__/Home/css/pc.css?v=__DEPLOY_VERSION__"/>
-
-    <script src="https://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
-    <script src="__PUBLIC__/Home/js/lib/fakeLoader.min.js"></script>
 </head>
-<body>
+<body id="fakebody" style="display: none;">
 <div id="fakeloader"></div>
 
 <div id="top" data-role="header">
@@ -66,9 +63,11 @@
 </div>
 
 {$script}
+<script src="https://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
 <include file="./Public/footer.html"/>
 <script src="__PUBLIC__/Home/js/lib/swiper.min.js"></script>
 <script src="__PUBLIC__/Home/js/moments.js?v=__DEPLOY_VERSION__"></script>
+<script src="__PUBLIC__/Home/js/lib/fakeLoader.min.js?v=__DEPLOY_VERSION__"></script>
 <script>
     $(document).ready(function () {
         // spinner1, spinner2, spinner3 共3种效果
@@ -77,6 +76,7 @@
             timeToHide: 60000,
             bgColor: "#2ecc71",
             spinner: whichSpinner,
+            fakeBody: 'fakebody'
         });
         let winW = $(window).width();
         let winH = $(window).height();
