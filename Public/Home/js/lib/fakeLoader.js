@@ -21,7 +21,7 @@
             bgColor: '#2ecc71', // Default background color
             spinner: 'spinner7', // Default Spinner
             imagePath: '', // Default Path custom image
-            fakeDiv: '', // 自定义的 body
+            fakeDiv: '', // 自定义的 div
         }, options);
 
         //Customized Spinners
