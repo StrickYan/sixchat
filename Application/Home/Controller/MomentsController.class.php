@@ -33,7 +33,8 @@ class MomentsController extends BaseController
     {
         // 判断用户是否已经登录
         if (!isset($_SESSION['user_name'])) {
-            $this->error('', U('/auth/login'), 1);
+            // $this->error('', U('/auth/login'), 1);
+            $this->redirect('/auth/login');
         }
     }
 
