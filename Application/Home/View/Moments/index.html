@@ -67,26 +67,7 @@
 <script src="https://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
 <script src="__PUBLIC__/Home/js/lib/fakeLoader.min.js?v=__DEPLOY_VERSION__"></script>
 <script>
-    // $(document).ready(function () {
-    //     // spinner1, spinner2, spinner3 共3种效果
-    //     let whichSpinner = "spinner" + Math.ceil(Math.random() * 3);
-    //     $("#fakeloader").fakeLoader({
-    //         timeToHide: 60000,
-    //         bgColor: "#2ecc71",
-    //         spinner: whichSpinner,
-    //         fakeBody: 'fakebody'
-    //     });
-    //     let winW = $(window).width();
-    //     let winH = $(window).height();
-    //     let $selector = $('.' + whichSpinner);
-    //     let spinnerW = $selector.outerWidth();
-    //     let spinnerH = $selector.outerHeight();
-    //     $selector.css({
-    //         'left': (winW / 2) - (spinnerW / 2),
-    //         'top': (winH / 2) - (spinnerH / 2)
-    //     });
-    // });
-    $(function () {
+    $(document).ready(function () {
         // spinner1, spinner2, spinner3 共3种效果
         let whichSpinner = "spinner" + Math.ceil(Math.random() * 3);
         $("#fakeloader").fakeLoader({
