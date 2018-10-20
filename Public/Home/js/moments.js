@@ -227,7 +227,7 @@ function loadNextPageViaHtml(page) {
 function getLikesForAjax(moment_id, moment_user_name) {
     $.ajax({
         type: "POST",
-        url: reFormatUrl("Moments/getLikes"),
+        url: reFormatUrl("Comment/getLikes"),
         dataType: "json",
         data: {
             "id": moment_id,
@@ -265,7 +265,7 @@ function getLikesForAjax(moment_id, moment_user_name) {
 function getCommentsForAjax(moment_id, moment_user_name) {
     $.ajax({
         type: "POST",
-        url: reFormatUrl("Moments/getComments"),
+        url: reFormatUrl("Comment/getComments"),
         dataType: "json",
         data: {
             "id": moment_id,
@@ -304,7 +304,7 @@ function getCommentsForAjax(moment_id, moment_user_name) {
 function getAllLikes() {
     $.ajax({
         type: "POST",
-        url: reFormatUrl("Moments/getAllLikes"),
+        url: reFormatUrl("Comment/getAllLikes"),
         dataType: "json",
         data: {},
         error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -332,7 +332,7 @@ function getAllLikes() {
 function getAllComments() {
     $.ajax({
         type: "POST",
-        url: reFormatUrl("Moments/getAllComments"),
+        url: reFormatUrl("Comment/getAllComments"),
         dataType: "json",
         data: {},
         error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -501,7 +501,7 @@ function friendRequest(remark, requested_name) {
 function addLike(moment_id, moment_user_name) {
     $.ajax({
         type: "POST",
-        url: reFormatUrl("Moments/addLike"),
+        url: reFormatUrl("Comment/addLike"),
         dataType: "json",
         data: {
             "moment_id": moment_id,
@@ -527,7 +527,7 @@ function addLike(moment_id, moment_user_name) {
 function addComment() {
     $.ajax({
         type: "POST",
-        url: reFormatUrl("Moments/addComment"),
+        url: reFormatUrl("Comment/addComment"),
         dataType: "json",
         data: {
             "moment_id": $(".comment-box:focus").parent().parent().attr("id"),
@@ -727,7 +727,7 @@ function deleteComment(obj) {
                 if (data) {
                     $.ajax({
                         type: "POST",
-                        url: reFormatUrl("Moments/deleteComment"),
+                        url: reFormatUrl("Comment/deleteComment"),
                         dataType: "json",
                         data: {
                             "comment_id": obj.attr("id")
@@ -757,7 +757,7 @@ function deleteComment(obj) {
                     if (data) {
                         $.ajax({
                             type: "POST",
-                            url: reFormatUrl("Moments/deleteComment"),
+                            url: reFormatUrl("Comment/deleteComment"),
                             dataType: "json",
                             data: {
                                 "comment_id": obj.attr("id")
@@ -791,7 +791,7 @@ function deleteComment(obj) {
 function loadMessages() {
     $.ajax({
         type: "POST",
-        url: reFormatUrl("Moments/loadMessages"),
+        url: reFormatUrl("Comment/loadMessages"),
         dataType: "json",
         data: {},
         error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -857,7 +857,7 @@ function modifyProfile() {
 function loadNews() {
     $.ajax({
         type: "POST",
-        url: reFormatUrl("Moments/loadNews"),
+        url: reFormatUrl("Comment/loadNews"),
         dataType: "json",
         data: {},
         error: function (XMLHttpRequest, textStatus, errorThrown) {

@@ -29,6 +29,7 @@ class ParamsUtils
         $params['session_user_avatar'] = $_SESSION['avatar'];
 
         switch ($actionName) {
+            // Auth
             case "Auth/register":
             case "Auth/login":
                 $params['id'] = $_POST['id'];
@@ -49,6 +50,7 @@ class ParamsUtils
                 $params['search_name'] = $_POST['search_name'];
                 break;
 
+            // User
             case "User/follow":
                 $params['operation_follow'] = $_POST['operation_follow'];
                 $params['follow_id'] = $_POST['follow_id'];
@@ -62,31 +64,13 @@ class ParamsUtils
                 $params['profile_whatsup'] = $_POST['profile_whatsup_box'];
                 break;
 
-            case "Moments/getLikes":
-            case "Moments/getComments":
-                $params['moment_id'] = $_POST['id'];
+            // Moments
+            case "Moments/index":
+            case "Moments/getRollingWall":
                 break;
 
             case "Moments/details":
                 $params['moment_id'] = $_GET['id'];
-                break;
-
-            case "Moments/getLikesInAuth":
-            case "Moments/getCommentsInAuth":
-                $params['moment_id'] = $_POST['id'];
-                $params['moment_user_name'] = $_POST['moment_user_name'];
-                break;
-
-            case "Moments/addLike":
-                $params['moment_id'] = $_POST['moment_id'];
-                $params['moment_user_name'] = $_POST['moment_user_name'];
-                break;
-
-            case "Moments/addComment":
-                $params['moment_id'] = $_POST['moment_id'];
-                $params['replyed_name'] = $_POST['replyed_name'];
-                $params['comment_val'] = $_POST['comment_val'];
-                $params['comment_level'] = $_POST['comment_level'];
                 break;
 
             case "Moments/addMoment":
@@ -98,20 +82,43 @@ class ParamsUtils
                 $params['moment_id'] = $_POST['moment_id'];
                 break;
 
-            case "Moments/deleteComment":
-                $params['comment_id'] = $_POST['comment_id'];
-                break;
-
             case "Moments/loadNextPage":
             case "Moments/loadNextPageViaHtml":
                 $params['page'] = $_POST['page'];
                 break;
 
-            case "Moments/getAllLikes":
-            case "Moments/getAllComments":
-            case "Moments/getRollingWall":
-            case "Moments/loadMessages":
-            case "Moments/loadNews":
+            // Comment
+            case "Comment/getLikes":
+            case "Comment/getComments":
+                $params['moment_id'] = $_POST['id'];
+                break;
+
+            case "Comment/getLikesInAuth":
+            case "Comment/getCommentsInAuth":
+                $params['moment_id'] = $_POST['id'];
+                $params['moment_user_name'] = $_POST['moment_user_name'];
+                break;
+
+            case "Comment/addLike":
+                $params['moment_id'] = $_POST['moment_id'];
+                $params['moment_user_name'] = $_POST['moment_user_name'];
+                break;
+
+            case "Comment/addComment":
+                $params['moment_id'] = $_POST['moment_id'];
+                $params['replyed_name'] = $_POST['replyed_name'];
+                $params['comment_val'] = $_POST['comment_val'];
+                $params['comment_level'] = $_POST['comment_level'];
+                break;
+
+            case "Comment/deleteComment":
+                $params['comment_id'] = $_POST['comment_id'];
+                break;
+
+            case "Comment/getAllLikes":
+            case "Comment/getAllComments":
+            case "Comment/loadMessages":
+            case "Comment/loadNews":
                 break;
 
             default:

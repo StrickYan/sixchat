@@ -43,7 +43,7 @@ document.onkeypress = function EnterPress(e) {
 function getLikesForAjax(moment_id, moment_user_name) {
     $.ajax({
         type: "POST",
-        url: reFormatUrl("Moments/getLikes"),
+        url: reFormatUrl("Comment/getLikes"),
         dataType: "json",
         data: {
             "id": moment_id,
@@ -81,7 +81,7 @@ function getLikesForAjax(moment_id, moment_user_name) {
 function getCommentsForAjax(moment_id, moment_user_name) {
     $.ajax({
         type: "POST",
-        url: reFormatUrl("Moments/getComments"),
+        url: reFormatUrl("Comment/getComments"),
         dataType: "json",
         data: {
             "id": moment_id,
@@ -126,7 +126,7 @@ function getCommentsForAjax(moment_id, moment_user_name) {
 function addLike(moment_id, moment_user_name) {
     $.ajax({
         type: "POST",
-        url: reFormatUrl("Moments/addLike"),
+        url: reFormatUrl("Comment/addLike"),
         dataType: "json",
         data: {
             "moment_id": moment_id,
@@ -152,7 +152,7 @@ function addLike(moment_id, moment_user_name) {
 function addComment() {
     $.ajax({
         type: "POST",
-        url: reFormatUrl("Moments/addComment"),
+        url: reFormatUrl("Comment/addComment"),
         dataType: "json",
         data: {
             "moment_id": $(".comment-box:focus").parent().parent().attr("id"),
@@ -238,7 +238,7 @@ function deleteComment(obj) {
                 if (data) {
                     $.ajax({
                         type: "POST",
-                        url: reFormatUrl("Moments/deleteComment"),
+                        url: reFormatUrl("Comment/deleteComment"),
                         dataType: "json",
                         data: {
                             "comment_id": obj.attr("id")
@@ -268,7 +268,7 @@ function deleteComment(obj) {
                     if (data) {
                         $.ajax({
                             type: "POST",
-                            url: reFormatUrl("Moments/deleteComment"),
+                            url: reFormatUrl("Comment/deleteComment"),
                             dataType: "json",
                             data: {
                                 "comment_id": obj.attr("id")

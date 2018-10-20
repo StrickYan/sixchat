@@ -4,7 +4,6 @@ namespace Home\Model;
 
 class CommentModel extends BaseModel
 {
-
     // 获取moment的点赞人
     public function getLikes($id)
     {
@@ -115,4 +114,10 @@ class CommentModel extends BaseModel
         return M()->execute($sql);
     }
 
+    public function getNews($userId)
+    {
+        $sql = "SELECT moment_id FROM think_comment c,think_user u where c.reply_id=u.user_id and state=1 and news=1 and ((reply_id<>" . $userId . " and reply_id=replyed_id and moment_id in(select moment_id from think_moment where user_id=" . $userId . ")) or (replyed_id=" . $userId . " and reply_id<>replyed_id)) order by comment_id desc limit 0,100";
+        $list = M()->query($sql);
+        return $list;
+    }
 }
