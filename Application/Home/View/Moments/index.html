@@ -58,7 +58,7 @@
         // spinner1, spinner2, spinner3 共3种效果
         let whichSpinner = "spinner" + Math.ceil(Math.random() * 3);
         $("#fakeloader").fakeLoader({
-            // timeToHide: 1200,
+            timeToHide: 3000,
             bgColor: "#2ecc71",
             spinner: whichSpinner,
             fakeDiv: 'fake_div' // 在动画完成预加载前隐藏#fake_div

@@ -216,8 +216,9 @@ function loadNextPageViaHtml(page) {
             let end_time = new Date().getTime();
             let run_time = end_time - start_time;
             if (page === 0 && run_time < 1200) {
-                sleep(1200);
+                sleep(1200 - run_time);
             }
+            $("#fake_div").css('display', 'block');
             $("#fakeloader").fadeOut('slow');
         }
     });
