@@ -15,21 +15,23 @@ class CommentModel extends BaseModel
     // 获取权限内可看到的moment点赞人
     public function getLikesInAuth($id, $userName, $momentUserName)
     {
-        $sql = "";
-        if (!strcmp($userName, $momentUserName)) {
-            // 相等，浏览自己的帖子可以看到所有赞包括好友与非好友
-            $sql = "SELECT u.user_name as like_name FROM think_like l,think_user u where l.like_user_id = u.user_id and l.moment_id=" . $id . " and l.state=1 order by l.like_id asc";
-        } else {
-            // 浏览他人的帖子时只能看到互为好友的赞或者 自己与该用户的赞
-            $obj = new SixChatApi2016Controller();
-            foreach ($obj->getUserId($userName, $momentUserName) as $k => $val) {
-                $userId = $val["reply_id"];
-                $momentUserId = $val["replyed_id"];
-                $sql = "SELECT distinct(u.user_name) as like_name FROM think_like l, think_friend f, think_user u where l.like_user_id = u.user_id and l.moment_id=" . $id . " and l.state=1 and ((f.user_id=" . $userId . " and f.friend_id=l.like_user_id) OR (l.like_user_id=" . $momentUserId . ")) order by l.like_id asc"; //？？？？？查询结果三个重复待排查
-            }
-        }
-        $result = M()->query($sql);
-        return $result;
+//        $sql = "";
+//        if (!strcmp($userName, $momentUserName)) {
+//            // 相等，浏览自己的帖子可以看到所有赞包括好友与非好友
+//            $sql = "SELECT u.user_name as like_name FROM think_like l,think_user u where l.like_user_id = u.user_id and l.moment_id=" . $id . " and l.state=1 order by l.like_id asc";
+//        } else {
+//            // 浏览他人的帖子时只能看到互为好友的赞或者 自己与该用户的赞
+//            $obj = new SixChatApi2016Controller();
+//            foreach ($obj->getUserId($userName, $momentUserName) as $k => $val) {
+//                $userId = $val["reply_id"];
+//                $momentUserId = $val["replyed_id"];
+//                $sql = "SELECT distinct(u.user_name) as like_name FROM think_like l, think_friend f, think_user u where l.like_user_id = u.user_id and l.moment_id=" . $id . " and l.state=1 and ((f.user_id=" . $userId . " and f.friend_id=l.like_user_id) OR (l.like_user_id=" . $momentUserId . ")) order by l.like_id asc"; //？？？？？查询结果三个重复待排查
+//            }
+//        }
+//        $result = M()->query($sql);
+//        return $result;
+
+        return array();
     }
 
     // 获取所有评论
