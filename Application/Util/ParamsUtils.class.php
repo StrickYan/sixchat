@@ -39,6 +39,7 @@ class ParamsUtils
             case "Auth/logout":
                 break;
 
+            // User
             case "User/getSessionUser":
                 break;
 
@@ -50,7 +51,6 @@ class ParamsUtils
                 $params['search_name'] = $_POST['search_name'];
                 break;
 
-            // User
             case "User/follow":
                 $params['operation_follow'] = $_POST['operation_follow'];
                 $params['follow_id'] = $_POST['follow_id'];
