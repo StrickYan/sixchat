@@ -54,7 +54,7 @@ class CommentModel extends BaseModel
     {
         $sql = "
             SELECT 
-                group_concat(distinct(u.user_name) ORDER BY c.update_time DESC SEPARATOR ', ') as reply_names
+                group_concat(distinct(u.user_name) ORDER BY c.update_time SEPARATOR ', ') as reply_names,c.moment_id
             FROM 
                 think_comment c,think_user u 
             where 
