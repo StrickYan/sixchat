@@ -132,8 +132,8 @@ class MomentsController extends OnlineController
         $obj = new MomentsService();
         $ret = $obj->details();
 
-        $this->assign('details', $ret['details']);
-        $this->assign('script', $ret['script']);
+        $this->assign('details', $ret['data']['details']);
+        $this->assign('script', $ret['data']['script']);
         $this->display();
     }
 
