@@ -39,7 +39,7 @@
             <div class="info-flow-right-text">{$details.info}</div>
         </if>
         <div class="info-flow-right-time">{$details.time}</div>
-        <if condition="$details.user_name eq $_SESSION['name']">
+        <if condition="$details.user_name eq $_SESSION['user_name']">
             <div class="delete-moment">Delete</div>
         </if>
         <div class="info-flow-right-button">
