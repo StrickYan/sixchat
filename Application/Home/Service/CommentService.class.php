@@ -29,8 +29,10 @@ class CommentService extends BaseService
      * @param void
      * @return void
      */
-    public function _initialize()
+    public function __construct()
     {
+        parent::__construct();
+
         $this->arrInput = ParamsUtils::get();
     }
 
