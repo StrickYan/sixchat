@@ -14,8 +14,10 @@
 
 var swiper = new Swiper('.swiper-container', {
     // 定义滚动墙参数
-    pagination: '.swiper-pagination',
-    dynamicBullets: true,
+    pagination: {
+        el: '.swiper-pagination',
+        dynamicBullets: true,
+    },
     observer: true, // 修改swiper自己或子元素时，自动初始化swiper
     observeParents: true, // 修改swiper的父元素时，自动初始化swiper
     paginationClickable: true,
