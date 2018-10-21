@@ -218,7 +218,7 @@ function loadNextPageViaHtml(page) {
             if (page === 0 && run_time < 1200) {
                 sleep(1200 - run_time);
             }
-            $("#fake_div").css('display', 'block');
+            $("#fake_div").css('display', '');
             $("#fakeloader").fadeOut('slow');
         }
     });
