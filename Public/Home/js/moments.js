@@ -18,6 +18,7 @@ var swiper = new Swiper('.swiper-container', {
         el: '.swiper-pagination',
         dynamicBullets: true,
     },
+    observer:true,
     paginationClickable: true,
     spaceBetween: 0,
     centeredSlides: true,
