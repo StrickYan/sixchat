@@ -233,6 +233,7 @@ a {
 
 /*height: 100% 为 #slide_wall 的 height 服务*/
 #fake_div {
+    width: 100%;
     height: 100%;
 }
 
