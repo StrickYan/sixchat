@@ -22,7 +22,6 @@ var swiper = new Swiper('.swiper-container', {
     centeredSlides: true,
     autoplay: 10000,
     autoplayDisableOnInteraction: false,
-    loop: true,
 });
 
 var page = 1; // 上拉加载更多全局页数
