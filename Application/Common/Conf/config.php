@@ -17,6 +17,6 @@ return array(
 
     // 自定义全局模板变量
     'TMPL_PARSE_STRING' => array(
-        '__DEPLOY_VERSION__' => '2018102108',
+        '__DEPLOY_VERSION__' => '2018102109',
     ),
 );

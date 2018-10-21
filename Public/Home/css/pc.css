@@ -1,18 +1,17 @@
 body {
-    /*width: 40%;*/
-    width: 600px;
+    width: 40%;
     margin: auto;
-    /*    background-image: url("/sixchat/Public/Home/img/default/24.jpg");
-        background-repeat: no-repeat;
-        background-size: 100% 100%;
-        background-attachment: fixed;
-        background-position: 50% 50%;*/
-    /*  background-color: rgb(238,238,238);     */
+
+    /*background-image: url("/sixchat/Public/Home/img/default/24.jpg");*/
+    /*background-repeat: no-repeat;*/
+    /*background-size: 100% 100%;*/
+    /*background-attachment: fixed;*/
+    /*background-position: 50% 50%;*/
+    /*background-color: rgb(238, 238, 238);*/
 }
 
 #top {
-    /*width: 40%;*/
-    width: 600px;
+    width: 40%;
     position: fixed;
     top: 0;
     left: 30%;
@@ -45,8 +44,7 @@ body {
     position: absolute;
     top: 50px;
     left: 30%;
-    /*width: 40%;*/
-    width: 600px;
+    width: 40%;
     color: gray;
     line-height: 18px;
     padding-top: 60px;
@@ -96,8 +94,7 @@ body {
     position: absolute;
     top: 40px;
     left: 30%;
-    /*width: 40%;*/
-    width: 600px;
+    width: 40%;
     box-sizing: border-box;
     padding-top: 16px;
 }
