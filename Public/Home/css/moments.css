@@ -367,6 +367,7 @@ a {
     border: 0 solid red;
     cursor: zoom-in;
     width: 100%;
+    max-width: 600px;
     border-radius: 10px;
 }
 
